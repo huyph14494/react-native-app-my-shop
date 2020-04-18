@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import Routes from './Routes.js';
+import ListTab from './ListTab.js';
 import common from '../styles/common.js';
 import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,7 +12,7 @@ enableScreens();
 const Tab = createBottomTabNavigator();
 
 function showTabScreens() {
-  return Routes.map((screenObj, key) => (
+  return ListTab.map((screenObj, key) => (
     <Tab.Screen
       key={key}
       name={screenObj.name}
