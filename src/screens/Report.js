@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 import common from '../styles/common.js';
 import Header from '../components/Header.js';
 
-class Home extends Component {
+class Report extends Component {
   render() {
     return (
       <View style={common.container(1, 'column', {alignItems: 'center'})}>
@@ -69,4 +69,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Report;
