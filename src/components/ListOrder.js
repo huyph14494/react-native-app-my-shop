@@ -43,6 +43,7 @@ const ListOrder = props => {
   return (
     <FlatList
       scrollEnabled={true}
+      showsVerticalScrollIndicator={false}
       data={props.orders}
       renderItem={({item}) => showItems(item)}
       keyExtractor={item => item.id}
