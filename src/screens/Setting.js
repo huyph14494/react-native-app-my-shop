@@ -4,7 +4,7 @@ import {Button} from 'react-native-elements';
 import common from '../styles/common.js';
 import Header from '../components/Header.js';
 
-class Home extends Component {
+class Setting extends Component {
   render() {
     return (
       <View style={common.container(1, 'column', {alignItems: 'center'})}>
@@ -24,7 +24,6 @@ class Home extends Component {
               <Text>Quản lý chung</Text>
               <Text>{new Date().getFullYear()}</Text>
             </View>
-
             {/* ------------------------------------------------------------------------------ */}
             <View style={[common.container(1, 'row'), common.padding(15)]}>
               <View
@@ -44,7 +43,6 @@ class Home extends Component {
               </View>
             </View>
           </View>
-          {/* ------------------------------------------------------------------------------ */}
           <View style={common.group(1, 'row', 15)}>
             <View
               style={[
@@ -53,7 +51,7 @@ class Home extends Component {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Button title="+ Create Product" type="outline" />
+              <Button title="Create Product" type="outline" />
             </View>
             <View
               style={[
@@ -62,7 +60,7 @@ class Home extends Component {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Button title="+ Create Order" type="outline" />
+              <Button title="Create Order" type="outline" />
             </View>
           </View>
         </ScrollView>
@@ -71,4 +69,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Setting;

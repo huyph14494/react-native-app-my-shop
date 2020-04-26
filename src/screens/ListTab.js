@@ -1,7 +1,7 @@
 import Home from './Home.js';
 import Order from './Order.js';
 import Product from './Product.js';
-import Report from './Report.js';
+import Setting from './Setting.js';
 
 export default [
   {
@@ -20,8 +20,8 @@ export default [
     icon: 'tag',
   },
   {
-    name: 'Report',
-    component: Report,
-    icon: 'store',
+    name: 'Setting',
+    component: Setting,
+    icon: 'settings',
   },
 ];

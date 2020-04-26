@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Text, View, ScrollView} from 'react-native';
-import {Button} from 'react-native-elements';
+import {TextInput, View, ScrollView} from 'react-native';
 import common from '../styles/common.js';
 import Header from '../components/Header.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import ListOrder from '../components/ListOrder.js';
 
 class Order extends Component {
   render() {
@@ -11,57 +12,42 @@ class Order extends Component {
         <Header name={this.props.route.name} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={common.group(1, 'column', 15)}>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  borderBottomColor: 'rgba(0,0,0,.075)',
-                  borderBottomWidth: 1,
-                  justifyContent: 'space-between',
-                }),
-                common.padding(15, 15),
-              ]}>
-              <Text>Quản lý chung</Text>
-              <Text>{new Date().getFullYear()}</Text>
-            </View>
-            {/* ------------------------------------------------------------------------------ */}
-            <View style={[common.container(1, 'row'), common.padding(15)]}>
-              <View
-                style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={{marginBottom: 15}}>Customer</Text>
-                <Text>2</Text>
-              </View>
-              <View
-                style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={{marginBottom: 15}}>Order</Text>
-                <Text>18</Text>
-              </View>
-              <View
-                style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={{marginBottom: 15}}>Revenue</Text>
-                <Text>100$</Text>
-              </View>
-            </View>
-          </View>
+          {/* ------------------- Filter --------------------- */}
           <View style={common.group(1, 'row', 15)}>
             <View
               style={[
-                common.container(1, 'column', {
+                common.container(7, 'column', {
                   justifyContent: 'center',
                 }),
-                common.padding(15, 15),
+                common.padding(5, 5),
               ]}>
-              <Button title="Create Product" type="outline" />
+              <TextInput style={common.textInput} />
             </View>
             <View
               style={[
                 common.container(1, 'column', {
                   justifyContent: 'center',
+                  alignItems: 'center',
                 }),
-                common.padding(15, 15),
+                common.padding(5, 5),
               ]}>
-              <Button title="Create Order" type="outline" />
+              <Icon name="search" size={24} />
             </View>
+            <View
+              style={[
+                common.container(1, 'column', {
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }),
+                common.padding(5, 5),
+              ]}>
+              <Icon name="plus-circle" size={24} />
+            </View>
+          </View>
+
+          {/* ------------------- LIST ORDER --------------------- */}
+          <View style={common.group(1, 'row', 15)}>
+            <ListOrder />
           </View>
         </ScrollView>
       </View>

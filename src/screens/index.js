@@ -39,7 +39,7 @@ const App = function() {
       })}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Home"
+          initialRouteName="Order"
           backBehavior="order"
           tabBarOptions={{
             activeTintColor: '#e91e63',

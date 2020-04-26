@@ -35,4 +35,10 @@ export default StyleSheet.create({
     }
     return styles;
   },
+  textInput: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+  },
 });
