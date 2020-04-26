@@ -15,11 +15,10 @@ class Home extends Component {
             <View
               style={[
                 common.container(1, 'row', {
-                  borderBottomColor: 'rgba(0,0,0,.075)',
-                  borderBottomWidth: 1,
                   justifyContent: 'space-between',
                 }),
                 common.padding(15, 15),
+                common.borderBottom('rgba(0,0,0,.075)', 1),
               ]}>
               <Text>Quản lý chung</Text>
               <Text>{new Date().getFullYear()}</Text>

@@ -1,9 +1,66 @@
 import React, {Component} from 'react';
-import {TextInput, View, ScrollView} from 'react-native';
+import {TextInput, View} from 'react-native';
 import common from '../styles/common.js';
 import Header from '../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ListOrder from '../components/ListOrder.js';
+const orders = [
+  {
+    id: '1',
+    order_number: '#10001',
+    financial_status: 'paid',
+    fulfillment_status: 'fulfilled',
+    created_at: new Date(),
+    customer: {
+      name: 'Nguyen Van A',
+      phone: '123456789',
+    },
+  },
+  {
+    id: '2',
+    order_number: '#10002',
+    financial_status: 'paid',
+    fulfillment_status: 'fulfilled',
+    created_at: new Date(),
+    customer: {
+      name: 'Nguyen Van A',
+      phone: '123456789',
+    },
+  },
+  {
+    id: '3',
+    order_number: '#10003',
+    financial_status: 'paid',
+    fulfillment_status: 'fulfilled',
+    created_at: new Date(),
+    customer: {
+      name: 'Nguyen Van A',
+      phone: '123456789',
+    },
+  },
+  {
+    id: '4',
+    order_number: '#10004',
+    financial_status: 'paid',
+    fulfillment_status: 'fulfilled',
+    created_at: new Date(),
+    customer: {
+      name: 'Nguyen Van A',
+      phone: '123456789',
+    },
+  },
+  {
+    id: '5',
+    order_number: '#10005',
+    financial_status: 'paid',
+    fulfillment_status: 'fulfilled',
+    created_at: new Date(),
+    customer: {
+      name: 'Nguyen Van A',
+      phone: '123456789',
+    },
+  },
+];
 
 class Order extends Component {
   render() {
@@ -11,45 +68,43 @@ class Order extends Component {
       <View style={common.container(1, 'column', {alignItems: 'center'})}>
         <Header name={this.props.route.name} />
 
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* ------------------- Filter --------------------- */}
-          <View style={common.group(1, 'row', 15)}>
-            <View
-              style={[
-                common.container(7, 'column', {
-                  justifyContent: 'center',
-                }),
-                common.padding(5, 5),
-              ]}>
-              <TextInput style={common.textInput} />
-            </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(5, 5),
-              ]}>
-              <Icon name="search" size={24} />
-            </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(5, 5),
-              ]}>
-              <Icon name="plus-circle" size={24} />
-            </View>
+        {/* ------------------- Filter --------------------- */}
+        <View style={common.groupHeight(50, 'row', 15)}>
+          <View
+            style={[
+              common.container(7, 'column', {
+                justifyContent: 'center',
+              }),
+              common.padding(5, 5),
+            ]}>
+            <TextInput style={common.textInput} />
           </View>
+          <View
+            style={[
+              common.container(1, 'column', {
+                justifyContent: 'center',
+                alignItems: 'center',
+              }),
+              common.padding(5, 5),
+            ]}>
+            <Icon name="search" size={24} />
+          </View>
+          <View
+            style={[
+              common.container(1, 'column', {
+                justifyContent: 'center',
+                alignItems: 'center',
+              }),
+              common.padding(5, 5),
+            ]}>
+            <Icon name="plus-circle" size={24} />
+          </View>
+        </View>
 
-          {/* ------------------- LIST ORDER --------------------- */}
-          <View style={common.group(1, 'row', 15)}>
-            <ListOrder />
-          </View>
-        </ScrollView>
+        {/* ------------------- LIST ORDER --------------------- */}
+        <View style={common.group(1, 'row', 15)}>
+          <ListOrder orders={orders} />
+        </View>
       </View>
     );
   }
