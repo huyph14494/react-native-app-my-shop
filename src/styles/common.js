@@ -79,7 +79,7 @@ export default StyleSheet.create({
   },
   textInput: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: 'rgba(0,0,0,.075)',
     borderWidth: 1,
     borderRadius: 5,
   },
@@ -97,5 +97,27 @@ export default StyleSheet.create({
       styles.borderBottomWidth = borderBottomWidth;
     }
     return styles;
+  },
+  searchBox: {
+    position: 'absolute',
+    zIndex: 1,
+    flex: 1,
+    width: Dimensions.get('window').width - 15 * 2,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    top: 90,
+    borderColor: 'rgba(0,0,0,.075)',
+    borderWidth: 1,
+    borderRadius: 5,
+
+    /* ------------------- shadow --------------------- */
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
