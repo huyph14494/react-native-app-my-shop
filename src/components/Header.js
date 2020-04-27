@@ -1,5 +1,6 @@
 import React from 'react';
 import {Header} from 'react-native-elements';
+import common from '../styles/common';
 
 const HeaderComponent = props => {
   return (
@@ -13,7 +14,7 @@ const HeaderComponent = props => {
         translucent: true,
         backgroundColor: 'transparent',
       }}
-      containerStyle={{backgroundColor: 'red'}}
+      containerStyle={common.headerStyle}
     />
   );
 };

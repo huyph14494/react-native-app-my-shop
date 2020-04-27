@@ -1,7 +1,18 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const widthWindow = Dimensions.get('window').width;
+const heightWindow = Dimensions.get('window').height;
+const headerHeight = (heightWindow * 12) / 100;
+const marginHeader = 50;
+const textIputHeight = 40;
 
 export default StyleSheet.create({
+  headerStyle: {
+    backgroundColor: 'red',
+    height: headerHeight,
+  },
+  marginTopHeader: {
+    marginTop: marginHeader,
+  },
   container(flex = 1, flexDirection = 'column', options) {
     let styles = {
       flex: flex,
@@ -70,7 +81,7 @@ export default StyleSheet.create({
     return styles;
   },
   textInput: {
-    height: 40,
+    height: textIputHeight,
     borderColor: 'rgba(0,0,0,.075)',
     borderWidth: 1,
     borderRadius: 5,
@@ -94,10 +105,10 @@ export default StyleSheet.create({
     position: 'absolute',
     zIndex: 1,
     flex: 1,
-    width: Dimensions.get('window').width - 15 * 2,
+    width: widthWindow - 15 * 2,
     flexDirection: 'row',
     backgroundColor: 'white',
-    top: 90,
+    top: headerHeight + 10,
     borderColor: 'rgba(0,0,0,.075)',
     borderWidth: 1,
     borderRadius: 5,

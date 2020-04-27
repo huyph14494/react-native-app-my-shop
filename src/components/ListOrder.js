@@ -2,12 +2,10 @@ import React from 'react';
 import {View, Text, FlatList} from 'react-native';
 import common from '../styles/common.js';
 
-const MARGIN_HEADER = 60;
-
 function showItems(item, index) {
   let styleFirstItem = {};
   if (index === 0) {
-    styleFirstItem = {marginTop: MARGIN_HEADER};
+    styleFirstItem = common.marginTopHeader;
   }
 
   return (
