@@ -3,6 +3,7 @@ import {Text, View, ScrollView} from 'react-native';
 import {Button} from 'react-native-elements';
 import common from '../styles/common.js';
 import Header from '../components/Header.js';
+import { formatDate } from '../helpers/moment.js';
 
 class Home extends Component {
   render() {
@@ -11,7 +12,8 @@ class Home extends Component {
         <Header name={this.props.route.name} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={[common.group(1, 'column', 15), common.marginTop(15)]}>
+          <View
+            style={[common.groupWidth(1, 'column', 15), common.marginTop(15)]}>
             <View
               style={[
                 common.container(1, 'row', {
@@ -20,31 +22,31 @@ class Home extends Component {
                 common.padding(15, 15),
                 common.borderBottom('rgba(0,0,0,.075)', 1),
               ]}>
-              <Text>Quản lý chung</Text>
-              <Text>{new Date().getFullYear()}</Text>
+              <Text style={common.textHeader}>General</Text>
+              <Text style={common.textHeader}>{formatDate(new Date())}</Text>
             </View>
 
             {/* ------------------------------------------------------------------------------ */}
             <View style={[common.container(1, 'row'), common.padding(15)]}>
               <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={{marginBottom: 15}}>Customer</Text>
+                <Text style={common.marginBottom(15)}>Products</Text>
                 <Text>2</Text>
               </View>
               <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={{marginBottom: 15}}>Order</Text>
+                <Text style={common.marginBottom(15)}>Orders</Text>
                 <Text>18</Text>
               </View>
               <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={{marginBottom: 15}}>Revenue</Text>
+                <Text style={common.marginBottom(15)}>Revenue</Text>
                 <Text>100$</Text>
               </View>
             </View>
           </View>
           {/* ------------------------------------------------------------------------------ */}
-          <View style={[common.group(1, 'row', 15), common.marginTop(15)]}>
+          <View style={[common.groupWidth(1, 'row', 15), common.marginTop(15)]}>
             <View
               style={[
                 common.container(1, 'column', {

@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const widthWindow = Dimensions.get('window').width;
 const heightWindow = Dimensions.get('window').height;
 const headerHeight = (heightWindow * 12) / 100;
-const marginHeader = 50;
+const marginHeader = 60;
 const textIputHeight = 40;
 
 export default StyleSheet.create({
@@ -25,22 +25,42 @@ export default StyleSheet.create({
 
     return styles;
   },
-  group(flex = 1, flexDirection = 'column', separation = 10) {
+  groupWidth(
+    flex = 1,
+    flexDirection = 'column',
+    separation = 10,
+    backgroundColor = 'white',
+  ) {
     let styles = {
       flex: flex,
       flexDirection: flexDirection,
-      backgroundColor: 'white',
+      backgroundColor: backgroundColor,
       width: widthWindow - separation * 2,
       borderRadius: 5,
     };
 
     return styles;
   },
-  groupHeight(height = 1, flexDirection = 'column', separation = 10) {
+  group(flex = 1, flexDirection = 'column', backgroundColor = 'white') {
+    let styles = {
+      flex: flex,
+      flexDirection: flexDirection,
+      backgroundColor: backgroundColor,
+      borderRadius: 5,
+    };
+
+    return styles;
+  },
+  groupWidthHeight(
+    height = 1,
+    flexDirection = 'column',
+    separation = 10,
+    backgroundColor = 'white',
+  ) {
     let styles = {
       height: height,
       flexDirection: flexDirection,
-      backgroundColor: 'white',
+      backgroundColor: backgroundColor,
       width: widthWindow - separation * 2,
       borderRadius: 5,
     };
@@ -76,6 +96,15 @@ export default StyleSheet.create({
 
     if (marginTop) {
       styles.marginTop = marginTop;
+    }
+
+    return styles;
+  },
+  marginBottom(marginBottom) {
+    let styles = {};
+
+    if (marginBottom) {
+      styles.marginBottom = marginBottom;
     }
 
     return styles;
@@ -122,5 +151,33 @@ export default StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  labelSuccess: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: '#e5f2ce',
+    color: '#4b6319',
+    borderWidth: 1,
+    borderColor: '#cddeb5',
+  },
+  labelDanger: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: '#f4b28f',
+    color: '#815621',
+    borderWidth: 1,
+    borderColor: '#e6b77f',
+  },
+  labelWarning: {
+    padding: 5,
+    borderRadius: 5,
+    backgroundColor: '#fcf5d9',
+    color: '#9b731d',
+    borderWidth: 1,
+    borderColor: '#e2dcc2',
+  },
+  textHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

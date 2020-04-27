@@ -87,7 +87,10 @@ const orders = [
 class Order extends Component {
   render() {
     return (
-      <View style={common.container(1, 'column', {alignItems: 'center'})}>
+      <View
+        style={common.container(1, 'column', {
+          alignItems: 'center',
+        })}>
         <Header name={this.props.route.name} />
 
         {/* ------------------- Filter --------------------- */}
@@ -108,7 +111,13 @@ class Order extends Component {
         </View>
 
         {/* ------------------- LIST ORDER --------------------- */}
-        <ListOrder orders={orders} />
+        <View
+          style={[
+            common.groupWidthHeight('100%', 'row', 15),
+            common.marginTop(15),
+          ]}>
+          <ListOrder orders={orders} />
+        </View>
       </View>
     );
   }
