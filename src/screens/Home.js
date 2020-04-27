@@ -11,7 +11,7 @@ class Home extends Component {
         <Header name={this.props.route.name} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={common.group(1, 'column', 15)}>
+          <View style={[common.group(1, 'column', 15), common.marginTop(15)]}>
             <View
               style={[
                 common.container(1, 'row', {
@@ -44,7 +44,7 @@ class Home extends Component {
             </View>
           </View>
           {/* ------------------------------------------------------------------------------ */}
-          <View style={common.group(1, 'row', 15)}>
+          <View style={[common.group(1, 'row', 15), common.marginTop(15)]}>
             <View
               style={[
                 common.container(1, 'column', {

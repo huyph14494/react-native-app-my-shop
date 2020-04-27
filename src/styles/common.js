@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+const widthWindow = Dimensions.get('window').width;
 
 export default StyleSheet.create({
   container(flex = 1, flexDirection = 'column', options) {
@@ -13,43 +14,25 @@ export default StyleSheet.create({
 
     return styles;
   },
-  group(
-    flex = 1,
-    flexDirection = 'column',
-    separation = 10,
-    isMarginTop = true,
-  ) {
+  group(flex = 1, flexDirection = 'column', separation = 10) {
     let styles = {
       flex: flex,
       flexDirection: flexDirection,
       backgroundColor: 'white',
-      width: Dimensions.get('window').width - separation * 2,
+      width: widthWindow - separation * 2,
       borderRadius: 5,
     };
 
-    if (isMarginTop) {
-      styles.marginTop = separation;
-    }
-
     return styles;
   },
-  groupHeight(
-    height = 1,
-    flexDirection = 'column',
-    separation = 10,
-    isMarginTop = true,
-  ) {
+  groupHeight(height = 1, flexDirection = 'column', separation = 10) {
     let styles = {
       height: height,
       flexDirection: flexDirection,
       backgroundColor: 'white',
-      width: Dimensions.get('window').width - separation * 2,
+      width: widthWindow - separation * 2,
       borderRadius: 5,
     };
-
-    if (isMarginTop) {
-      styles.marginTop = separation;
-    }
 
     return styles;
   },
@@ -75,6 +58,15 @@ export default StyleSheet.create({
     if (marginHorizontal) {
       styles.marginHorizontal = marginHorizontal;
     }
+    return styles;
+  },
+  marginTop(marginTop) {
+    let styles = {};
+
+    if (marginTop) {
+      styles.marginTop = marginTop;
+    }
+
     return styles;
   },
   textInput: {

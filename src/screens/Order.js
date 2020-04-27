@@ -108,9 +108,7 @@ class Order extends Component {
         </View>
 
         {/* ------------------- LIST ORDER --------------------- */}
-        <View style={common.group(1, 'row', 15)}>
-          <ListOrder orders={orders} />
-        </View>
+        <ListOrder orders={orders} />
       </View>
     );
   }

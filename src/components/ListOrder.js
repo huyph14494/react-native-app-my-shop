@@ -1,6 +1,7 @@
 import React from 'react';
-import {View, Text, FlatList, TextInput} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import common from '../styles/common.js';
+
 const MARGIN_HEADER = 60;
 
 function showItems(item, index) {
@@ -13,7 +14,7 @@ function showItems(item, index) {
     <View
       key={item.id}
       style={[
-        common.group(1, 'row', 15, false),
+        common.group(1, 'row', 15),
         common.padding(5, 5),
         common.borderBottom('rgba(0,0,0,.075)', 1),
         styleFirstItem,
@@ -49,14 +50,16 @@ function showItems(item, index) {
 
 const ListOrder = props => {
   return (
-    <FlatList
-      scrollEnabled={true}
-      showsVerticalScrollIndicator={false}
-      data={props.orders}
-      renderItem={({item, index}) => showItems(item, index)}
-      keyExtractor={item => item.id}
-      extraData={props.orders}
-    />
+    <View style={[common.group(1, 'row', 15), common.marginTop(15)]}>
+      <FlatList
+        scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+        data={props.orders}
+        renderItem={({item, index}) => showItems(item, index)}
+        keyExtractor={item => item.id}
+        extraData={props.orders}
+      />
+    </View>
   );
 };
 
