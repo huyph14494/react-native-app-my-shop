@@ -7,11 +7,12 @@ const OrderContainer = ({route}) => {
 
   return (
     <Stack.Navigator
+      initialRouteName="OrderList"
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Order" component={OrderList} />
-      <Stack.Screen name="Profile" component={OrderDetail} />
+      <Stack.Screen name="OrderList" component={OrderList} />
+      <Stack.Screen name="OrderDetail" component={OrderDetail} />
     </Stack.Navigator>
   );
 };

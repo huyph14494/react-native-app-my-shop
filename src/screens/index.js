@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import ListTab from './ListTab.js';
+import {screenList, getIsTabBarVisible} from './configScreen.js';
 import common from '../styles/common.js';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function showTabScreens() {
-  return ListTab.map((screenObj, key) => (
+  return screenList.map((screenObj, key) => (
     <Tab.Screen
       key={key}
       initialParams={{Stack}}
@@ -41,6 +41,9 @@ const App = function() {
         <Tab.Navigator
           initialRouteName="Order"
           backBehavior="order"
+          screenOptions={({route}) => ({
+            tabBarVisible: getIsTabBarVisible(route),
+          })}
           tabBarOptions={{
             activeTintColor: '#e91e63',
             tabStyle: {paddingVertical: 5},

@@ -116,7 +116,7 @@ class Order extends Component {
             common.groupWidthHeight('100%', 'row', 15),
             common.marginTop(15),
           ]}>
-          <ListOrder orders={orders} />
+          <ListOrder orders={orders} navigation={this.props.navigation} />
         </View>
       </View>
     );
