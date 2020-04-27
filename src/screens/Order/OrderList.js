@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {TextInput, View} from 'react-native';
-import common from '../styles/common.js';
-import Header from '../components/Header.js';
+import common from '../../styles/common.js';
+import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ListOrder from '../components/ListOrder.js';
+import ListOrder from '../../components/ListOrder.js';
 const orders = [
   {
     id: '1',

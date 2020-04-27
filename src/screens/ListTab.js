@@ -1,6 +1,6 @@
-import Home from './Home.js';
-import Order from './Order.js';
-import Product from './Product.js';
+import Home from './Home/Home.js';
+import OrderContainer from './Order/OrderContainer.js';
+import Product from './Product/Product.js';
 
 export default [
   {
@@ -10,7 +10,7 @@ export default [
   },
   {
     name: 'Order',
-    component: Order,
+    component: OrderContainer,
     icon: 'format-list-checks',
   },
   {

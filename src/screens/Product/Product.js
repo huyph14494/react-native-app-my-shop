@@ -1,52 +1,49 @@
 import React, {Component} from 'react';
 import {Text, View, ScrollView} from 'react-native';
 import {Button} from 'react-native-elements';
-import common from '../styles/common.js';
-import Header from '../components/Header.js';
-import { formatDate } from '../helpers/moment.js';
+import common from '../../styles/common.js';
+import Header from '../../components/Header.js';
 
-class Home extends Component {
+class Product extends Component {
   render() {
     return (
       <View style={common.container(1, 'column', {alignItems: 'center'})}>
         <Header name={this.props.route.name} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={[common.groupWidth(1, 'column', 15), common.marginTop(15)]}>
+          <View style={common.group(1, 'column', 15)}>
             <View
               style={[
                 common.container(1, 'row', {
+                  borderBottomColor: 'rgba(0,0,0,.075)',
+                  borderBottomWidth: 1,
                   justifyContent: 'space-between',
                 }),
                 common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
               ]}>
-              <Text style={common.textHeader}>General</Text>
-              <Text style={common.textHeader}>{formatDate(new Date())}</Text>
+              <Text>Quản lý chung</Text>
+              <Text>{new Date().getFullYear()}</Text>
             </View>
-
             {/* ------------------------------------------------------------------------------ */}
             <View style={[common.container(1, 'row'), common.padding(15)]}>
               <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={common.marginBottom(15)}>Products</Text>
+                <Text style={{marginBottom: 15}}>Customer</Text>
                 <Text>2</Text>
               </View>
               <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={common.marginBottom(15)}>Orders</Text>
+                <Text style={{marginBottom: 15}}>Order</Text>
                 <Text>18</Text>
               </View>
               <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
-                <Text style={common.marginBottom(15)}>Revenue</Text>
+                <Text style={{marginBottom: 15}}>Revenue</Text>
                 <Text>100$</Text>
               </View>
             </View>
           </View>
-          {/* ------------------------------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'row', 15), common.marginTop(15)]}>
+          <View style={common.group(1, 'row', 15)}>
             <View
               style={[
                 common.container(1, 'column', {
@@ -54,7 +51,7 @@ class Home extends Component {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Button title="+ Create Product" type="outline" />
+              <Button title="Create Product" type="outline" />
             </View>
             <View
               style={[
@@ -63,7 +60,7 @@ class Home extends Component {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Button title="+ Create Order" type="outline" />
+              <Button title="Create Order" type="outline" />
             </View>
           </View>
         </ScrollView>
@@ -72,4 +69,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Product;

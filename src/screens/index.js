@@ -2,19 +2,19 @@ import React from 'react';
 import {View} from 'react-native';
 import ListTab from './ListTab.js';
 import common from '../styles/common.js';
-import {enableScreens} from 'react-native-screens';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
-enableScreens();
+import {createStackNavigator} from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function showTabScreens() {
   return ListTab.map((screenObj, key) => (
     <Tab.Screen
       key={key}
+      initialParams={{Stack}}
       name={screenObj.name}
       component={screenObj.component}
       options={{
