@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
-import ListOrder from '../../components/ListOrder.js';
+import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
 
-const orders = [
+const products = [
   {
     id: '1',
     order_number: '#10001',
@@ -85,7 +85,7 @@ const orders = [
   },
 ];
 
-class Order extends Component {
+class ProductList extends Component {
   render() {
     return (
       <View
@@ -96,18 +96,17 @@ class Order extends Component {
 
         {/* ------------------- Filter --------------------- */}
         <SearchBox />
-
-        {/* ------------------- LIST ORDER --------------------- */}
+        {/* ------------------- LIST PRODUCT --------------------- */}
         <View
           style={[
             common.groupWidthHeight('100%', 'row', 15),
             common.marginTop(15),
           ]}>
-          <ListOrder orders={orders} navigation={this.props.navigation} />
+          <ListProduct products={products} navigation={this.props.navigation} />
         </View>
       </View>
     );
   }
 }
 
-export default Order;
+export default ProductList;

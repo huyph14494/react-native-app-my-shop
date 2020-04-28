@@ -1,6 +1,6 @@
 import Home from './Home/Home.js';
 import OrderContainer from './Order/OrderContainer.js';
-import Product from './Product/Product.js';
+import ProductContainer from './Product/ProductContainer.js';
 
 const screenList = [
   {
@@ -15,7 +15,7 @@ const screenList = [
   },
   {
     name: 'Product',
-    component: Product,
+    component: ProductContainer,
     icon: 'tag',
   },
 ];
@@ -28,6 +28,7 @@ const getIsTabBarVisible = route => {
     : 'Tab1';
 
   switch (routeName) {
+    case 'ProductDetail':
     case 'OrderDetail':
       return false;
     default:
