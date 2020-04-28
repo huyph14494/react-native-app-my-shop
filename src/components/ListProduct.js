@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import common from '../styles/common.js';
-import {formatDateTime} from '../helpers/moment';
 
 function showItems(item, index, navigation) {
   let styleFirstItem = {};
@@ -33,41 +32,19 @@ function showItems(item, index, navigation) {
                 alignItems: 'flex-start',
               }),
             ]}>
-            <Text style={common.textHeader}>{item.order_number}</Text>
+            <Image
+              style={common.tinyLogo}
+              source={require('../assets/no-image.jpg')}
+            />
           </View>
           <View
             style={[
-              common.container(1, 'column', {
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }),
-            ]}>
-            <Text style={common.labelWarning}>{item.financial_status}</Text>
-          </View>
-          <View
-            style={[
-              common.container(1, 'column', {
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }),
-            ]}>
-            <Text style={common.labelDanger}>{item.fulfillment_status}</Text>
-          </View>
-        </View>
-        <View
-          style={[
-            common.group(1, 'row'),
-            common.padding(5, 5),
-            common.marginBottom(10),
-          ]}>
-          <View
-            style={[
-              common.container(1, 'column', {
+              common.container(3, 'column', {
                 justifyContent: 'center',
                 alignItems: 'flex-start',
               }),
             ]}>
-            <Text>{formatDateTime(new Date())}</Text>
+            <Text style={common.textBold}>{item.name}</Text>
           </View>
           <View
             style={[
@@ -76,7 +53,7 @@ function showItems(item, index, navigation) {
                 alignItems: 'flex-end',
               }),
             ]}>
-            <Text style={common.textHeader}>100.000</Text>
+            <Text>100.000</Text>
           </View>
         </View>
       </View>

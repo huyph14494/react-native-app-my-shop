@@ -8,80 +8,44 @@ import SearchBox from '../../components/SearchBox.js';
 const products = [
   {
     id: '1',
-    order_number: '#10001',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name: 'Ly Giữ Nhiệt Lock&Lock Swing Tumbler',
   },
   {
     id: '2',
-    order_number: '#10002',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name:
+      'Bình Nước Giữ Nhiệt Lock&Lock City Vacuum Bottle Olympic Montreal (700ml)',
   },
   {
     id: '3',
-    order_number: '#10003',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
   },
   {
     id: '4',
-    order_number: '#10004',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name: 'Lốc 24 Lon Nước Tăng Lực Monster Energy',
   },
   {
     id: '5',
-    order_number: '#10005',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name: 'Điện Thoại Vsmart Joy 2+',
   },
   {
     id: '6',
-    order_number: '#10006',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
   },
   {
     id: '7',
-    order_number: '#10007',
-    financial_status: 'paid',
-    fulfillment_status: 'fulfilled',
-    created_at: new Date(),
-    customer: {
-      name: 'Nguyen Van A',
-      phone: '123456789',
-    },
+    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
+  },
+  {
+    id: '8',
+    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
+  },
+  {
+    id: '9',
+    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
+  },
+  {
+    id: '10',
+    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
   },
 ];
 

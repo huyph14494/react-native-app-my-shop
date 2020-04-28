@@ -180,4 +180,13 @@ export default StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  textBold: {
+    fontWeight: 'bold',
+  },
+  tinyLogo: {
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,.075)',
+  },
 });
