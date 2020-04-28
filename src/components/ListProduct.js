@@ -11,9 +11,9 @@ function showItems(item, index, navigation) {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate('OrderDetail', {
-          screen: 'OrderList',
-          order: item,
+        navigation.navigate('ProductDetail', {
+          screen: 'ProductList',
+          product: item,
         })
       }>
       <View

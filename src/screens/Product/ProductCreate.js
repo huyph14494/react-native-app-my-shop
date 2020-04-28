@@ -1,13 +1,28 @@
 import React from 'react';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import {formatDate} from '../../helpers/moment.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-const ProductDetail = ({route}) => {
+function leftComponent(navigation) {
+  return (
+    <TouchableOpacity
+      style={common.padding(0, 5)}
+      onPress={() =>
+        navigation.navigate('ProductList', {
+          screen: 'ProductCreate',
+        })
+      }>
+      <Icon color="white" name="arrow-left" size={28} />
+    </TouchableOpacity>
+  );
+}
+
+const ProductCreate = ({route, navigation}) => {
   return (
     <View style={common.container(1, 'column', {alignItems: 'center'})}>
-      <Header name={route.name} />
+      <Header name={route.name} leftComponent={leftComponent(navigation)} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
@@ -20,7 +35,7 @@ const ProductDetail = ({route}) => {
               common.padding(15, 15),
               common.borderBottom('rgba(0,0,0,.075)', 1),
             ]}>
-            <Text style={common.textHeader}>{route.params.product.name}</Text>
+            <Text style={common.textHeader}>aaaaa</Text>
             <Text style={common.textHeader}>{formatDate(new Date())}</Text>
           </View>
 
@@ -45,4 +60,4 @@ const ProductDetail = ({route}) => {
   );
 };
 
-export default ProductDetail;
+export default ProductCreate;

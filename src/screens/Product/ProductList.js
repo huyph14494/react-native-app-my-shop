@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import {View} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const products = [
   {
@@ -50,13 +51,30 @@ const products = [
 ];
 
 class ProductList extends Component {
+  leftComponent = () => {
+    return (
+      <TouchableOpacity
+        style={common.padding(0, 5)}
+        onPress={() =>
+          this.props.navigation.navigate('ProductCreate', {
+            screen: 'ProductList',
+          })
+        }>
+        <Icon color="white" name="plus-circle" size={28} />
+      </TouchableOpacity>
+    );
+  };
+
   render() {
     return (
       <View
         style={common.container(1, 'column', {
           alignItems: 'center',
         })}>
-        <Header name={this.props.route.name} />
+        <Header
+          name={this.props.route.name}
+          leftComponent={this.leftComponent()}
+        />
 
         {/* ------------------- Filter --------------------- */}
         <SearchBox />
