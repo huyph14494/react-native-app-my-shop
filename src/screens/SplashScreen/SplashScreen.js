@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 
 const SplashScreen = () => {
   return (
     <View style={styles.viewStyles}>
-      <Text style={styles.textStyles}>Blitz Reading</Text>
+      <ActivityIndicator size="large" color="red" />
     </View>
   );
 };
@@ -14,12 +14,7 @@ const styles = {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'orange',
-  },
-  textStyles: {
-    color: 'white',
-    fontSize: 40,
-    fontWeight: 'bold',
+    backgroundColor: 'white',
   },
 };
 

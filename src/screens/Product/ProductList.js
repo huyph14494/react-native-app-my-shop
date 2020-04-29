@@ -5,6 +5,7 @@ import Header from '../../components/Header.js';
 import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import SplashScreen from '../SplashScreen/SplashScreen';
 
 const products = [
   {
@@ -51,6 +52,13 @@ const products = [
 ];
 
 class ProductList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   leftComponent = () => {
     return (
       <TouchableOpacity
@@ -66,29 +74,41 @@ class ProductList extends Component {
   };
 
   render() {
-    return (
-      <View
-        style={common.container(1, 'column', {
-          alignItems: 'center',
-          backgroundColor: 'white',
-        })}>
-        <Header
-          name={this.props.route.name}
-          leftComponent={this.leftComponent()}
-        />
-
-        {/* ------------------- Filter --------------------- */}
-        <SearchBox />
-        {/* ------------------- LIST PRODUCT --------------------- */}
+    if (this.state.isLoading) {
+      setTimeout(() => {
+        this.setState({
+          isLoading: false,
+        });
+      }, 300);
+      return <SplashScreen />;
+    } else {
+      return (
         <View
-          style={[
-            common.groupWidthHeight('100%', 'row'),
-            common.marginTop(15),
-          ]}>
-          <ListProduct products={products} navigation={this.props.navigation} />
+          style={common.container(1, 'column', {
+            alignItems: 'center',
+            backgroundColor: 'white',
+          })}>
+          <Header
+            name={this.props.route.name}
+            leftComponent={this.leftComponent()}
+          />
+
+          {/* ------------------- Filter --------------------- */}
+          <SearchBox />
+          {/* ------------------- LIST PRODUCT --------------------- */}
+          <View
+            style={[
+              common.groupWidthHeight('100%', 'row'),
+              common.marginTop(15),
+            ]}>
+            <ListProduct
+              products={products}
+              navigation={this.props.navigation}
+            />
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 

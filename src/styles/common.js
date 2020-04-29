@@ -14,7 +14,7 @@ export default StyleSheet.create({
     marginTop: marginHeader,
   },
   widthFull: {
-    width: widthWindow,
+    width: '100%',
   },
   container(flex = 1, flexDirection = 'column', options) {
     let styles = {
@@ -112,6 +112,10 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
   },
+  textInputNoBorder: {
+    height: textIputHeight,
+    width: '100%',
+  },
   borderBottom(borderBottomColor = 'rgba(0,0,0,.075)', borderBottomWidth = 1) {
     let styles = {
       borderBottomColor: 'rgba(0,0,0,.075)',
@@ -185,5 +189,15 @@ export default StyleSheet.create({
     height: 50,
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,.075)',
+  },
+  checkBoxElementCustom: {
+    backgroundColor: 'white',
+    borderWidth: 0,
+    paddingLeft: 0,
+  },
+  fontWeight(fontWeight = 'bold') {
+    return {
+      fontWeight,
+    };
   },
 });
