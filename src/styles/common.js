@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const widthWindow = Dimensions.get('window').width;
 const heightWindow = Dimensions.get('window').height;
 const headerHeight = (heightWindow * 12) / 100;
-const marginHeader = 60;
+const marginHeader = 67;
 const textIputHeight = 40;
 
 export default StyleSheet.create({
@@ -25,17 +25,12 @@ export default StyleSheet.create({
 
     return styles;
   },
-  groupWidth(
-    flex = 1,
-    flexDirection = 'column',
-    separation = 10,
-    backgroundColor = 'white',
-  ) {
+  groupWidth(flex = 1, flexDirection = 'column', backgroundColor = 'white') {
     let styles = {
       flex: flex,
       flexDirection: flexDirection,
       backgroundColor: backgroundColor,
-      width: widthWindow - separation * 2,
+      width: widthWindow,
       borderRadius: 5,
     };
 
@@ -54,14 +49,13 @@ export default StyleSheet.create({
   groupWidthHeight(
     height = 1,
     flexDirection = 'column',
-    separation = 10,
     backgroundColor = 'white',
   ) {
     let styles = {
       height: height,
       flexDirection: flexDirection,
       backgroundColor: backgroundColor,
-      width: widthWindow - separation * 2,
+      width: widthWindow,
       borderRadius: 5,
     };
 

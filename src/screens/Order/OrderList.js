@@ -91,6 +91,7 @@ class Order extends Component {
       <View
         style={common.container(1, 'column', {
           alignItems: 'center',
+          backgroundColor: 'white',
         })}>
         <Header name={this.props.route.name} />
 
@@ -100,7 +101,7 @@ class Order extends Component {
         {/* ------------------- LIST ORDER --------------------- */}
         <View
           style={[
-            common.groupWidthHeight('100%', 'row', 15),
+            common.groupWidthHeight('100%', 'row'),
             common.marginTop(15),
           ]}>
           <ListOrder orders={orders} navigation={this.props.navigation} />

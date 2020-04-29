@@ -26,7 +26,7 @@ const ProductCreate = ({route, navigation}) => {
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
-          style={[common.groupWidth(1, 'column', 15), common.marginTop(15)]}>
+          style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
           <View
             style={[
               common.container(1, 'row', {

@@ -21,7 +21,7 @@ function showItems(item, index, navigation) {
         key={item.id}
         style={[
           common.group(1, 'column'),
-          common.margin(5, 5),
+          common.margin(5, 15),
           common.borderBottom('rgba(0,0,0,.075)', 1),
           styleFirstItem,
         ]}>
