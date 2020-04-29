@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   ScrollView,
@@ -10,6 +10,7 @@ import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CheckBox} from 'react-native-elements';
+import ModalVariantCreate from '../../components/ModalVariantCreate.js';
 
 function leftComponent(navigation) {
   return (
@@ -40,6 +41,8 @@ function leftComponent(navigation) {
 // }
 
 const ProductCreate = ({route, navigation}) => {
+  const [modalVarVisible, setModalVarVisible] = useState(false);
+
   return (
     <View>
       <Header name={route.name} leftComponent={leftComponent(navigation)} />
@@ -112,7 +115,10 @@ const ProductCreate = ({route, navigation}) => {
                   alignItems: 'flex-start',
                 }),
                 common.padding(15, 15),
-              ]}>
+              ]}
+              onPress={() => {
+                setModalVarVisible(true);
+              }}>
               <View
                 style={[
                   common.container(1, 'column', {
@@ -134,6 +140,11 @@ const ProductCreate = ({route, navigation}) => {
               </View>
             </TouchableOpacity>
           </View>
+          {/* ------------------------------------------------------ */}
+          <ModalVariantCreate
+            setModalVarVisible={setModalVarVisible}
+            modalVarVisible={modalVarVisible}
+          />
         </View>
       </ScrollView>
     </View>

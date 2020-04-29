@@ -16,6 +16,9 @@ export default StyleSheet.create({
   widthFull: {
     width: '100%',
   },
+  width100Per: {
+    width: '100%',
+  },
   container(flex = 1, flexDirection = 'column', options) {
     let styles = {
       flex: flex,
@@ -199,5 +202,23 @@ export default StyleSheet.create({
     return {
       fontWeight,
     };
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    padding: 20,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  backgroundRed: {
+    backgroundColor: 'red',
   },
 });
