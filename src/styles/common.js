@@ -13,6 +13,9 @@ export default StyleSheet.create({
   marginTopHeader: {
     marginTop: marginHeader,
   },
+  widthFull: {
+    width: widthWindow,
+  },
   container(flex = 1, flexDirection = 'column', options) {
     let styles = {
       flex: flex,

@@ -56,11 +56,11 @@ class ProductList extends Component {
       <TouchableOpacity
         style={common.padding(0, 5)}
         onPress={() =>
-          this.props.navigation.navigate('ProductCreate', {
+          this.props.navigation.navigate('ProductHome', {
             screen: 'ProductList',
           })
         }>
-        <Icon color="white" name="plus-circle" size={28} />
+        <Icon color="white" name="arrow-left" size={28} />
       </TouchableOpacity>
     );
   };

@@ -10,7 +10,7 @@ function leftComponent(navigation) {
     <TouchableOpacity
       style={common.padding(0, 5)}
       onPress={() =>
-        navigation.navigate('ProductList', {
+        navigation.navigate('ProductHome', {
           screen: 'ProductCreate',
         })
       }>
@@ -25,8 +25,7 @@ const ProductCreate = ({route, navigation}) => {
       <Header name={route.name} leftComponent={leftComponent(navigation)} />
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View
-          style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+        <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
           <View
             style={[
               common.container(1, 'row', {

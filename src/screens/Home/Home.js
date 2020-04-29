@@ -12,8 +12,7 @@ class Home extends Component {
         <Header name={this.props.route.name} />
 
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View
-            style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
             <View
               style={[
                 common.container(1, 'row', {

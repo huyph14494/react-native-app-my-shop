@@ -30,6 +30,7 @@ const getIsTabBarVisible = route => {
   switch (routeName) {
     case 'ProductDetail':
     case 'ProductCreate':
+    case 'ProductList':
     case 'OrderDetail':
       return false;
     default:
