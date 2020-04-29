@@ -1,0 +1,5 @@
+const ON_TOGGLE_LOADING = 'ON_TOGGLE_LOADING';
+
+export default {
+  ON_TOGGLE_LOADING,
+};
