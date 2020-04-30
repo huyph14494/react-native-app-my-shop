@@ -26,6 +26,7 @@ const ProductContainer = ({route}) => {
       initialRouteName="ProductHome"
       screenOptions={{
         headerShown: false,
+        gestureDirection: 'horizontal',
       }}>
       <Stack.Screen
         name="ProductHome"

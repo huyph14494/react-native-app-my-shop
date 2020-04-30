@@ -26,6 +26,9 @@ const OrderContainer = ({route, navigation}) => {
       initialRouteName="OrderHome"
       screenOptions={{
         headerShown: false,
+        cardOverlayEnabled: true,
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
       }}>
       <Stack.Screen
         name="OrderHome"
