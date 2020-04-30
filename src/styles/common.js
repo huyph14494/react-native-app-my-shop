@@ -13,6 +13,9 @@ export default StyleSheet.create({
   marginTopHeader: {
     marginTop: marginHeader,
   },
+  marginBottomHeader: {
+    marginBottom: marginHeader,
+  },
   widthFull: {
     width: '100%',
   },
@@ -225,5 +228,24 @@ export default StyleSheet.create({
     return {
       fontSize,
     };
+  },
+  badgeIconView: {
+    position: 'relative',
+    padding: 5,
+  },
+  badge: {
+    color: '#fff',
+    fontSize: 11,
+    position: 'absolute',
+    zIndex: 10,
+    top: -1,
+    right: 1,
+    padding: 1,
+    backgroundColor: 'red',
+    paddingLeft: 3,
+    // borderRadius: 5,
+    width: 18,
+    height: 18,
+    borderRadius: 18 / 2,
   },
 });

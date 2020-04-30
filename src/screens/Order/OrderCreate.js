@@ -10,6 +10,14 @@ import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button} from 'react-native-elements';
+import LineItems from '../../components/LineItems.js';
+
+const products = [
+  {
+    id: '1',
+    name: 'Ly Giữ Nhiệt Lock&Lock',
+  },
+];
 
 function leftComponent(navigation) {
   return (
@@ -44,8 +52,14 @@ const OrderCreate = ({route, navigation}) => {
     <View>
       <Header name={route.name} leftComponent={leftComponent(navigation)} />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={[common.container(1, 'column', {alignItems: 'center'})]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={common.marginBottomHeader}>
+        <View
+          style={[
+            common.container(1, 'column', {alignItems: 'center'}),
+            common.marginBottom(15),
+          ]}>
           {/* ------------------------------------------------------ */}
           <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
             <View
@@ -67,6 +81,17 @@ const OrderCreate = ({route, navigation}) => {
                 }),
                 common.padding(0, 15),
               ]}>
+              <View
+                style={[
+                  common.container(1, 'row', {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }),
+                  common.padding(0, 10),
+                ]}>
+                <LineItems items={products} />
+              </View>
+
               <View
                 style={[
                   common.container(1, 'row', {
@@ -176,7 +201,12 @@ const OrderCreate = ({route, navigation}) => {
           </View>
 
           {/* ------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+          <View
+            style={[
+              common.groupWidth(1, 'column'),
+              common.marginTop(15),
+              common.marginBottom(15),
+            ]}>
             <View
               style={[
                 common.container(1, 'column', {

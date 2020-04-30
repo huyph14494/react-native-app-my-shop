@@ -64,7 +64,7 @@ function showItems(item, index, navigation) {
 const ListProduct = props => {
   return (
     <FlatList
-      scrollEnabled={true}
+      scrollEnabled={false}
       showsVerticalScrollIndicator={false}
       data={props.products}
       renderItem={({item, index}) => showItems(item, index, props.navigation)}

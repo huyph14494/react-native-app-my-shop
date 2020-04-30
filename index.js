@@ -8,6 +8,7 @@ enableScreens();
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
+  'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation',
 ]);
 
 AppRegistry.registerComponent(appName, () => App);
