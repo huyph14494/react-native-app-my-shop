@@ -9,8 +9,7 @@ import {
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {CheckBox} from 'react-native-elements';
-import ModalVariantCreate from '../../components/ModalVariantCreate.js';
+import {Button} from 'react-native-elements';
 
 function leftComponent(navigation) {
   return (
@@ -41,8 +40,6 @@ function leftComponent(navigation) {
 // }
 
 const OrderCreate = ({route, navigation}) => {
-  const [modalVarVisible, setModalVarVisible] = useState(false);
-
   return (
     <View>
       <Header name={route.name} leftComponent={leftComponent(navigation)} />
@@ -60,7 +57,7 @@ const OrderCreate = ({route, navigation}) => {
                 common.padding(15, 15),
                 common.borderBottom('rgba(0,0,0,.075)', 1),
               ]}>
-              <Text style={common.textHeader}>General</Text>
+              <Text style={common.textHeader}>Items</Text>
             </View>
             <View
               style={[
@@ -68,29 +65,112 @@ const OrderCreate = ({route, navigation}) => {
                   justifyContent: 'center',
                   alignItems: 'flex-start',
                 }),
-                common.padding(15, 15),
+                common.padding(0, 15),
               ]}>
-              <TextInput
-                style={common.textInputNoBorder}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Title'}
-              />
-              <TextInput
-                style={[common.textInputNoBorder, common.marginTop(15)]}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Description'}
-              />
-              <TextInput
-                style={[common.textInputNoBorder, common.marginTop(15)]}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Price'}
-              />
+              <View
+                style={[
+                  common.container(1, 'row', {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }),
+                  common.padding(0, 10),
+                ]}>
+                <Button
+                  title="Add Product"
+                  type="solid"
+                  containerStyle={[common.width100Per, common.marginTop(15)]}
+                  raised={true}
+                />
+              </View>
+              <View
+                style={[
+                  common.container(1, 'row', {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }),
+                  common.padding(0, 10),
+                  common.marginBottom(20),
+                ]}>
+                <Button
+                  title="Add Custom Item"
+                  type="outline"
+                  containerStyle={[common.width100Per, common.marginTop(15)]}
+                  raised={true}
+                />
+              </View>
+            </View>
+          </View>
 
-              <CheckBox
-                title="Publish"
-                checked={true}
-                containerStyle={common.checkBoxElementCustom}
-                textStyle={common.fontWeight('normal')}
+          {/* ------------------------------------------------------ */}
+          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+            <View
+              style={[
+                common.container(1, 'column', {
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }),
+                common.padding(15, 15),
+                common.borderBottom('rgba(0,0,0,.075)', 1),
+              ]}>
+              <Text style={common.textHeader}>Pricing</Text>
+            </View>
+            <View
+              style={[
+                common.container(1, 'row', {
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }),
+                common.padding(10, 15),
+              ]}>
+              <View
+                style={[
+                  common.container(1, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                  }),
+                ]}>
+                <Text style={common.fontSize(16)}>Total</Text>
+              </View>
+              <View
+                style={[
+                  common.container(1, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-end',
+                  }),
+                ]}>
+                <Text style={common.fontSize(16)}>100.000</Text>
+              </View>
+            </View>
+            <View
+              style={[
+                common.container(1, 'row', {
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }),
+                common.padding(0, 10),
+                common.marginBottom(5),
+              ]}>
+              <Button
+                title="Mark As Pending"
+                type="outline"
+                containerStyle={[common.width100Per, common.marginTop(15)]}
+                raised={true}
+              />
+            </View>
+            <View
+              style={[
+                common.container(1, 'row', {
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }),
+                common.padding(0, 10),
+                common.marginBottom(20),
+              ]}>
+              <Button
+                title="Mark As Paid"
+                type="outline"
+                containerStyle={[common.width100Per, common.marginTop(15)]}
+                raised={true}
               />
             </View>
           </View>
@@ -106,45 +186,23 @@ const OrderCreate = ({route, navigation}) => {
                 common.padding(15, 15),
                 common.borderBottom('rgba(0,0,0,.075)', 1),
               ]}>
-              <Text style={common.textHeader}>Variants</Text>
+              <Text style={common.textHeader}>Note</Text>
             </View>
-            <TouchableOpacity
+            <View
               style={[
-                common.container(1, 'row', {
+                common.container(1, 'column', {
                   justifyContent: 'center',
                   alignItems: 'flex-start',
                 }),
                 common.padding(15, 15),
-              ]}
-              onPress={() => {
-                setModalVarVisible(true);
-              }}>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                ]}>
-                <Icon color="red" name="plus-circle" size={20} />
-              </View>
-              <View
-                style={[
-                  common.container(12, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }),
-                ]}>
-                <Text>Add Variant</Text>
-              </View>
-            </TouchableOpacity>
+              ]}>
+              <TextInput
+                style={common.textInputNoBorder}
+                underlineColorAndroid={'rgba(0,0,0,.075)'}
+                placeholder={'Add Note'}
+              />
+            </View>
           </View>
-          {/* ------------------------------------------------------ */}
-          <ModalVariantCreate
-            setModalVarVisible={setModalVarVisible}
-            modalVarVisible={modalVarVisible}
-          />
         </View>
       </ScrollView>
     </View>

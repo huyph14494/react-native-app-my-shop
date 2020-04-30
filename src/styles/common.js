@@ -221,4 +221,9 @@ export default StyleSheet.create({
   backgroundRed: {
     backgroundColor: 'red',
   },
+  fontSize(fontSize) {
+    return {
+      fontSize,
+    };
+  },
 });

@@ -55,6 +55,7 @@ const ModalVariantCreate = props => {
                 title="Add"
                 buttonStyle={common.backgroundRed}
                 containerStyle={[common.width100Per, common.marginTop(15)]}
+                raised={true}
                 onPress={() => {
                   props.setModalVarVisible(false);
                 }}
@@ -63,6 +64,7 @@ const ModalVariantCreate = props => {
                 title="Close"
                 type="outline"
                 containerStyle={[common.width100Per, common.marginTop(15)]}
+                raised={true}
                 onPress={() => {
                   props.setModalVarVisible(false);
                 }}
