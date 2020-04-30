@@ -3,6 +3,20 @@ import ProductList from './ProductList';
 import ProductDetail from './ProductDetail';
 import ProductCreate from './ProductCreate';
 import ProductHome from './ProductHome';
+import {Easing} from 'react-native';
+
+const config = {
+  animation: 'timing',
+  config: {
+    duration: 180,
+    easing: Easing.in(Easing.linear),
+  },
+};
+
+const transitionSpec = {
+  open: config,
+  close: config,
+};
 
 const ProductContainer = ({route}) => {
   let Stack = route.params.Stack;
@@ -13,10 +27,34 @@ const ProductContainer = ({route}) => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="ProductHome" component={ProductHome} />
-      <Stack.Screen name="ProductList" component={ProductList} />
-      <Stack.Screen name="ProductDetail" component={ProductDetail} />
-      <Stack.Screen name="ProductCreate" component={ProductCreate} />
+      <Stack.Screen
+        name="ProductHome"
+        component={ProductHome}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="ProductList"
+        component={ProductList}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="ProductDetail"
+        component={ProductDetail}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="ProductCreate"
+        component={ProductCreate}
+        options={{
+          transitionSpec,
+        }}
+      />
     </Stack.Navigator>
   );
 };

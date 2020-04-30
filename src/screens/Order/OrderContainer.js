@@ -3,6 +3,20 @@ import OrderList from './OrderList';
 import OrderDetail from './OrderDetail';
 import OrderHome from './OrderHome';
 import OrderCreate from './OrderCreate';
+import {Easing} from 'react-native';
+
+const config = {
+  animation: 'timing',
+  config: {
+    duration: 180,
+    easing: Easing.in(Easing.linear),
+  },
+};
+
+const transitionSpec = {
+  open: config,
+  close: config,
+};
 
 const OrderContainer = ({route}) => {
   let Stack = route.params.Stack;
@@ -13,10 +27,34 @@ const OrderContainer = ({route}) => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="OrderHome" component={OrderHome} />
-      <Stack.Screen name="OrderCreate" component={OrderCreate} />
-      <Stack.Screen name="OrderList" component={OrderList} />
-      <Stack.Screen name="OrderDetail" component={OrderDetail} />
+      <Stack.Screen
+        name="OrderHome"
+        component={OrderHome}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="OrderCreate"
+        component={OrderCreate}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="OrderList"
+        component={OrderList}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="OrderDetail"
+        component={OrderDetail}
+        options={{
+          transitionSpec,
+        }}
+      />
     </Stack.Navigator>
   );
 };

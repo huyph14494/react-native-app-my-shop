@@ -85,7 +85,7 @@ const orders = [
   },
 ];
 
-class Order extends Component {
+class OrderList extends Component {
   render() {
     return (
       <View
@@ -111,4 +111,4 @@ class Order extends Component {
   }
 }
 
-export default Order;
+export default OrderList;
