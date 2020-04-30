@@ -32,6 +32,8 @@ const getIsTabBarVisible = route => {
     case 'ProductCreate':
     case 'ProductList':
     case 'OrderDetail':
+    case 'OrderList':
+    case 'OrderCreate':
       return false;
     default:
       return true;

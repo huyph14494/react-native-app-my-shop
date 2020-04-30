@@ -39,7 +39,7 @@ const App = function() {
       })}>
       <NavigationContainer>
         <Tab.Navigator
-          initialRouteName="Product"
+          initialRouteName="Order"
           backBehavior="order"
           screenOptions={({route}) => ({
             tabBarVisible: getIsTabBarVisible(route),
