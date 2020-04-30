@@ -4,6 +4,7 @@ import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import ListOrder from '../../components/ListOrder.js';
 import SearchBox from '../../components/SearchBox.js';
+import SplashScreen from '../SplashScreen/SplashScreen';
 
 const orders = [
   {
@@ -86,28 +87,44 @@ const orders = [
 ];
 
 class OrderList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+    };
+  }
+
   render() {
-    return (
-      <View
-        style={common.container(1, 'column', {
-          alignItems: 'center',
-          backgroundColor: 'white',
-        })}>
-        <Header name={this.props.route.name} />
-
-        {/* ------------------- Filter --------------------- */}
-        <SearchBox />
-
-        {/* ------------------- LIST ORDER --------------------- */}
+    if (this.state.isLoading) {
+      setTimeout(() => {
+        this.setState({
+          isLoading: false,
+        });
+      }, 300);
+      return <SplashScreen />;
+    } else {
+      return (
         <View
-          style={[
-            common.groupWidthHeight('100%', 'row'),
-            common.marginTop(15),
-          ]}>
-          <ListOrder orders={orders} navigation={this.props.navigation} />
+          style={common.container(1, 'column', {
+            alignItems: 'center',
+            backgroundColor: 'white',
+          })}>
+          <Header name={this.props.route.name} />
+
+          {/* ------------------- Filter --------------------- */}
+          <SearchBox />
+
+          {/* ------------------- LIST ORDER --------------------- */}
+          <View
+            style={[
+              common.groupWidthHeight('100%', 'row'),
+              common.marginTop(15),
+            ]}>
+            <ListOrder orders={orders} navigation={this.props.navigation} />
+          </View>
         </View>
-      </View>
-    );
+      );
+    }
   }
 }
 

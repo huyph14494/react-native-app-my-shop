@@ -18,7 +18,7 @@ const transitionSpec = {
   close: config,
 };
 
-const OrderContainer = ({route}) => {
+const OrderContainer = ({route, navigation}) => {
   let Stack = route.params.Stack;
 
   return (
