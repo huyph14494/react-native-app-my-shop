@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import {View, Text, FlatList, Image} from 'react-native';
 import common from '../styles/common.js';
 
 function showItems(item, index) {
@@ -54,16 +54,20 @@ function showItems(item, index) {
 }
 
 const LineItems = props => {
-  return (
-    <FlatList
-      scrollEnabled={true}
-      showsVerticalScrollIndicator={false}
-      data={props.items}
-      renderItem={({item, index}) => showItems(item, index)}
-      keyExtractor={item => item.id}
-      extraData={props.items}
-    />
-  );
+  if (Array.isArray(props.items) && props.items.length) {
+    return (
+      <FlatList
+        scrollEnabled={true}
+        showsVerticalScrollIndicator={false}
+        data={props.items}
+        renderItem={({item, index}) => showItems(item, index)}
+        keyExtractor={item => item.id}
+        extraData={props.items}
+      />
+    );
+  } else {
+    return <View />;
+  }
 };
 
 export default LineItems;

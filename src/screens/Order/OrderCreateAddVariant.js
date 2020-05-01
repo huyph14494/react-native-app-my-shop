@@ -1,21 +1,17 @@
 import React from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import ListVariant from '../../components/ListVariant.js';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import IconBack from '../../components/IconBack.js';
 
 const leftComponent = navigation => {
   return (
-    <TouchableOpacity
-      style={common.padding(0, 5)}
-      onPress={() =>
-        navigation.navigate('OrderCreateAddProduct', {
-          screen: 'OrderCreateAddVariant',
-        })
-      }>
-      <Icon color="white" name="arrow-left" size={28} />
-    </TouchableOpacity>
+    <IconBack
+      navigation={navigation}
+      screenNext={'OrderCreateAddProduct'}
+      screenCurrent={'OrderCreateAddVariant'}
+    />
   );
 };
 

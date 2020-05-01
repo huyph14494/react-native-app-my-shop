@@ -6,6 +6,7 @@ import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SplashScreen from '../SplashScreen/SplashScreen';
+import IconBack from '../../components/IconBack.js';
 
 const products = [
   {
@@ -66,19 +67,13 @@ class ProductList extends Component {
     });
   };
 
-  navigationBackFn = () => {
-    this.props.navigation.navigate('ProductHome', {
-      screen: 'ProductList',
-    });
-  };
-
   leftComponent = () => {
     return (
-      <TouchableOpacity
-        style={common.padding(0, 5)}
-        onPress={() => this.navigationBackFn()}>
-        <Icon color="white" name="arrow-left" size={28} />
-      </TouchableOpacity>
+      <IconBack
+        navigation={this.props.navigation}
+        screenNext={'ProductHome'}
+        screenCurrent={'ProductList'}
+      />
     );
   };
 

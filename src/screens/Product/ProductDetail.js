@@ -11,34 +11,17 @@ import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CheckBox} from 'react-native-elements';
 import ModalVariantCreate from '../../components/ModalVariantCreate.js';
+import IconBack from '../../components/IconBack.js';
 
 function leftComponent(navigation) {
   return (
-    <TouchableOpacity
-      style={common.padding(0, 5)}
-      onPress={() =>
-        navigation.navigate('ProductList', {
-          screen: 'ProductDetail',
-        })
-      }>
-      <Icon color="white" name="check" size={28} />
-    </TouchableOpacity>
+    <IconBack
+      navigation={navigation}
+      screenNext={'ProductList'}
+      screenCurrent={'ProductDetail'}
+    />
   );
 }
-
-// function leftComponent(navigation) {
-//   return (
-//     <TouchableOpacity
-//       style={common.padding(0, 5)}
-//       onPress={() =>
-//         navigation.navigate('ProductHome', {
-//           screen: 'ProductCreate',
-//         })
-//       }>
-//       <Icon color="white" name="arrow-left" size={28} />
-//     </TouchableOpacity>
-//   );
-// }
 
 const ProductDetail = ({route, navigation}) => {
   const [modalVarVisible, setModalVarVisible] = useState(false);

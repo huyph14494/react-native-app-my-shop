@@ -1,39 +1,18 @@
 import React from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
+import {View, ScrollView, Text, TextInput} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button} from 'react-native-elements';
 import LineItems from '../../components/LineItems.js';
-
-const products = [
-  {
-    id: '1',
-    name: 'Ly Giữ Nhiệt Lock&Lock',
-  },
-  {
-    id: '2',
-    name: 'Ly Giữ Nhiệt Lock&Lock',
-  },
-];
+import IconBack from '../../components/IconBack.js';
 
 const leftComponent = navigation => {
   return (
-    <TouchableOpacity
-      style={common.padding(0, 5)}
-      onPress={() =>
-        navigation.navigate('OrderHome', {
-          screen: 'OrderCreate',
-        })
-      }>
-      <Icon color="white" name="arrow-left" size={28} />
-    </TouchableOpacity>
+    <IconBack
+      navigation={navigation}
+      screenNext={'OrderHome'}
+      screenCurrent={'OrderCreate'}
+    />
   );
 };
 
@@ -50,6 +29,12 @@ const OrderCreate = ({route, navigation}) => {
       item,
     });
   };
+
+  let itemNew = route.params?.product ?? null;
+  let products = [];
+  if (itemNew) {
+    products.push(itemNew);
+  }
 
   return (
     <View>

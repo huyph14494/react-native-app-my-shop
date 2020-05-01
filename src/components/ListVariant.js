@@ -2,14 +2,14 @@ import React from 'react';
 import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import common from '../styles/common.js';
 
-function showItems(item, index, navigationFn) {
+function showItems(item, index, navigationFn, product) {
   let styleFirstItem = {};
   if (index === 0) {
     styleFirstItem = common.marginTopHeader;
   }
 
   return (
-    <TouchableOpacity onPress={() => navigationFn(item)}>
+    <TouchableOpacity onPress={() => navigationFn(product, item)}>
       <View
         key={item.id}
         style={[
@@ -61,7 +61,9 @@ const ListVariant = props => {
       scrollEnabled={false}
       showsVerticalScrollIndicator={false}
       data={props.product.variants}
-      renderItem={({item, index}) => showItems(item, index, props.navigationFn)}
+      renderItem={({item, index}) =>
+        showItems(item, index, props.navigationFn, props.product)
+      }
       keyExtractor={item => item.id}
       extraData={props.product.variants}
     />

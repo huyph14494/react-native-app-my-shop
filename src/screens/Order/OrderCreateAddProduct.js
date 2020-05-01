@@ -1,11 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {View} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import SplashScreen from '../SplashScreen/SplashScreen';
+import IconBack from '../../components/IconBack.js';
 
 const products = [
   {
@@ -45,15 +45,11 @@ const products = [
 
 const leftComponent = navigation => {
   return (
-    <TouchableOpacity
-      style={common.padding(0, 5)}
-      onPress={() =>
-        navigation.navigate('OrderCreate', {
-          screen: 'OrderCreateAddProduct',
-        })
-      }>
-      <Icon color="white" name="arrow-left" size={28} />
-    </TouchableOpacity>
+    <IconBack
+      navigation={navigation}
+      screenNext={'OrderCreate'}
+      screenCurrent={'OrderCreateAddProduct'}
+    />
   );
 };
 
