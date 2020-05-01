@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, ScrollView, Text, TextInput} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import {Button} from 'react-native-elements';
 import LineItems from '../../components/LineItems.js';
 import IconBack from '../../components/IconBack.js';
+import {getData, storeData} from '../../helpers/async_storage.js';
 
 const leftComponent = navigation => {
   return (
@@ -26,15 +27,40 @@ const OrderCreate = ({route, navigation}) => {
   const navigationNextFn = item => {
     navigation.navigate('OrderCreateEditLineItem', {
       screen: 'OrderCreate',
-      item,
+      data: {item},
     });
   };
 
-  let itemNew = route.params?.product ?? null;
-  let products = [];
-  if (itemNew) {
-    products.push(itemNew);
-  }
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    let initProduct = async item => {
+      let productsNew = await getData('@products');
+
+      if (!Array.isArray(productsNew)) {
+        productsNew = [];
+      }
+
+      if (
+        route.params &&
+        (!route.params.screen || route.params.screen === 'OrderHome')
+      ) {
+        if (Array.isArray(productsNew) && productsNew.length) {
+          await storeData('@products', []);
+        }
+      } else {
+        if (item) {
+          productsNew.push(item);
+          await storeData('@products', productsNew);
+        }
+        setProducts(productsNew);
+      }
+    };
+
+    let itemNew = route.params?.data?.product ?? null;
+    initProduct(itemNew);
+    console.log('route', route.params?.data?.product ?? null);
+  }, [route.params]);
 
   return (
     <View>

@@ -3,11 +3,6 @@ import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import common from '../styles/common.js';
 
 function showItems(item, index, navigationFn, product) {
-  let styleFirstItem = {};
-  if (index === 0) {
-    styleFirstItem = common.marginTopHeader;
-  }
-
   return (
     <TouchableOpacity onPress={() => navigationFn(product, item)}>
       <View
@@ -16,7 +11,6 @@ function showItems(item, index, navigationFn, product) {
           common.group(1, 'column'),
           common.margin(5, 15),
           common.borderBottom('rgba(0,0,0,.075)', 1),
-          styleFirstItem,
         ]}>
         <View style={[common.group(1, 'row'), common.padding(5, 5)]}>
           <View
@@ -56,18 +50,22 @@ function showItems(item, index, navigationFn, product) {
 }
 
 const ListVariant = props => {
-  return (
-    <FlatList
-      scrollEnabled={false}
-      showsVerticalScrollIndicator={false}
-      data={props.product.variants}
-      renderItem={({item, index}) =>
-        showItems(item, index, props.navigationFn, props.product)
-      }
-      keyExtractor={item => item.id}
-      extraData={props.product.variants}
-    />
-  );
+  if (!props.product || !props.product.variants) {
+    return <View />;
+  } else {
+    return (
+      <FlatList
+        scrollEnabled={false}
+        showsVerticalScrollIndicator={false}
+        data={props.product.variants}
+        renderItem={({item, index}) =>
+          showItems(item, index, props.navigationFn, props.product)
+        }
+        keyExtractor={item => item.id}
+        extraData={props.product.variants}
+      />
+    );
+  }
 };
 
 export default ListVariant;

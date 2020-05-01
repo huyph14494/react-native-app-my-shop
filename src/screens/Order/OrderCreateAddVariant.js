@@ -19,8 +19,7 @@ function OrderCreateAddVariant({route, navigation}) {
   const navigationNextFn = (product, variant) => {
     navigation.navigate('OrderCreate', {
       screen: 'OrderCreateAddVariant',
-      product,
-      variant,
+      data: {product, variant},
     });
   };
 
@@ -36,7 +35,7 @@ function OrderCreateAddVariant({route, navigation}) {
       <View
         style={[common.groupWidthHeight('100%', 'row'), common.marginTop(15)]}>
         <ListVariant
-          product={route.params.product}
+          product={route.params?.data?.product ?? []}
           navigationFn={navigationNextFn}
         />
       </View>

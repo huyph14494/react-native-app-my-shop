@@ -5,7 +5,7 @@ import common from '../styles/common.js';
 function showItems(item, index) {
   return (
     <View
-      key={item.id}
+      key={index}
       style={[
         common.group(1, 'column'),
         common.margin(5, 0),

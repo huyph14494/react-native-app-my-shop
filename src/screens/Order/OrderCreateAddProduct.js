@@ -59,7 +59,7 @@ function OrderCreateAddProduct({route, navigation}) {
   const navigationNextFn = product => {
     navigation.navigate('OrderCreateAddVariant', {
       screen: 'OrderCreateAddProduct',
-      product,
+      data: {product},
     });
   };
 

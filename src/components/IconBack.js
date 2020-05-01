@@ -10,6 +10,7 @@ const IconBack = ({navigation, screenNext, screenCurrent}) => {
       onPress={() =>
         navigation.navigate(screenNext, {
           screen: screenCurrent,
+          data: null,
         })
       }>
       <Icon color="white" name="arrow-left" size={22} />
