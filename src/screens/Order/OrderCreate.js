@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -17,9 +17,13 @@ const products = [
     id: '1',
     name: 'Ly Giữ Nhiệt Lock&Lock',
   },
+  {
+    id: '2',
+    name: 'Ly Giữ Nhiệt Lock&Lock',
+  },
 ];
 
-function leftComponent(navigation) {
+const leftComponent = navigation => {
   return (
     <TouchableOpacity
       style={common.padding(0, 5)}
@@ -28,26 +32,36 @@ function leftComponent(navigation) {
           screen: 'OrderCreate',
         })
       }>
-      <Icon color="white" name="check" size={28} />
+      <Icon color="white" name="arrow-left" size={28} />
     </TouchableOpacity>
   );
-}
+};
 
-// function leftComponent(navigation) {
-//   return (
-//     <TouchableOpacity
-//       style={common.padding(0, 5)}
-//       onPress={() =>
-//         navigation.navigate('ProductHome', {
-//           screen: 'ProductCreate',
-//         })
-//       }>
-//       <Icon color="white" name="arrow-left" size={28} />
-//     </TouchableOpacity>
-//   );
-// }
+let onAddProdct = null;
+let navigationNextFn = null;
 
 const OrderCreate = ({route, navigation}) => {
+  useEffect(() => {
+    navigationNextFn = item => {
+      navigation.navigate('OrderCreateEditLineItem', {
+        screen: 'OrderCreate',
+        item,
+      });
+    };
+
+    onAddProdct = () => {
+      navigation.navigate('OrderCreateAddProduct', {
+        screen: 'OrderCreate',
+      });
+    };
+
+    return () => {
+      navigationNextFn = null;
+      onAddProdct = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <View>
       <Header name={route.name} leftComponent={leftComponent(navigation)} />
@@ -89,7 +103,7 @@ const OrderCreate = ({route, navigation}) => {
                   }),
                   common.padding(0, 10),
                 ]}>
-                <LineItems items={products} />
+                <LineItems items={products} navigationFn={navigationNextFn} />
               </View>
 
               <View
@@ -105,6 +119,7 @@ const OrderCreate = ({route, navigation}) => {
                   type="solid"
                   containerStyle={[common.width100Per, common.marginTop(15)]}
                   raised={true}
+                  onPress={() => onAddProdct()}
                 />
               </View>
               <View

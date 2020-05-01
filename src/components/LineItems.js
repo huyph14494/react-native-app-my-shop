@@ -38,7 +38,6 @@ function showItems(item, index) {
           <Text style={common.padding(2, 0)}>{item.name}</Text>
           <Text style={common.padding(2, 0)}>Default value</Text>
           <Text style={common.padding(2, 0)}>100.000</Text>
-          <Text style={common.padding(2, 0)}>500.000 (100.000 x 5)</Text>
         </View>
         <View
           style={[
@@ -47,7 +46,7 @@ function showItems(item, index) {
               alignItems: 'flex-end',
             }),
           ]}>
-          <Text>100.000</Text>
+          <Text>500.000</Text>
         </View>
       </View>
     </View>

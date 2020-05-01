@@ -9,10 +9,7 @@ function showItems(item, index, navigationFn) {
   }
 
   return (
-    <TouchableOpacity
-      onPress={() => {
-        navigationFn(item);
-      }}>
+    <TouchableOpacity onPress={() => navigationFn(item)}>
       <View
         key={item.id}
         style={[
@@ -50,7 +47,7 @@ function showItems(item, index, navigationFn) {
                 alignItems: 'flex-end',
               }),
             ]}>
-            <Text>100.000</Text>
+            <Text style={common.textBold}>{item.price}</Text>
           </View>
         </View>
       </View>
@@ -58,17 +55,17 @@ function showItems(item, index, navigationFn) {
   );
 }
 
-const ListProduct = props => {
+const ListVariant = props => {
   return (
     <FlatList
       scrollEnabled={false}
       showsVerticalScrollIndicator={false}
-      data={props.products}
+      data={props.product.variants}
       renderItem={({item, index}) => showItems(item, index, props.navigationFn)}
       keyExtractor={item => item.id}
-      extraData={props.products}
+      extraData={props.product.variants}
     />
   );
 };
 
-export default ListProduct;
+export default ListVariant;

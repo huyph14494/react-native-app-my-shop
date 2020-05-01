@@ -3,6 +3,9 @@ import OrderList from './OrderList';
 import OrderDetail from './OrderDetail';
 import OrderHome from './OrderHome';
 import OrderCreate from './OrderCreate';
+import OrderCreateAddProduct from './OrderCreateAddProduct';
+import OrderCreateAddVariant from './OrderCreateAddVariant';
+
 import {Easing} from 'react-native';
 
 const config = {
@@ -40,6 +43,20 @@ const OrderContainer = ({route, navigation}) => {
       <Stack.Screen
         name="OrderCreate"
         component={OrderCreate}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="OrderCreateAddProduct"
+        component={OrderCreateAddProduct}
+        options={{
+          transitionSpec,
+        }}
+      />
+      <Stack.Screen
+        name="OrderCreateAddVariant"
+        component={OrderCreateAddVariant}
         options={{
           transitionSpec,
         }}

@@ -59,15 +59,24 @@ class ProductList extends Component {
     };
   }
 
+  navigationNextFn = product => {
+    this.props.navigation.navigate('ProductDetail', {
+      screen: 'ProductList',
+      product,
+    });
+  };
+
+  navigationBackFn = () => {
+    this.props.navigation.navigate('ProductHome', {
+      screen: 'ProductList',
+    });
+  };
+
   leftComponent = () => {
     return (
       <TouchableOpacity
         style={common.padding(0, 5)}
-        onPress={() =>
-          this.props.navigation.navigate('ProductHome', {
-            screen: 'ProductList',
-          })
-        }>
+        onPress={() => this.navigationBackFn()}>
         <Icon color="white" name="arrow-left" size={28} />
       </TouchableOpacity>
     );
@@ -103,7 +112,7 @@ class ProductList extends Component {
             ]}>
             <ListProduct
               products={products}
-              navigation={this.props.navigation}
+              navigationFn={this.navigationNextFn}
             />
           </View>
         </View>
