@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {
   View,
   ScrollView,
@@ -37,30 +37,19 @@ const leftComponent = navigation => {
   );
 };
 
-let onAddProdct = null;
-let navigationNextFn = null;
+const onAddProdct = navigation => {
+  navigation.navigate('OrderCreateAddProduct', {
+    screen: 'OrderCreate',
+  });
+};
 
 const OrderCreate = ({route, navigation}) => {
-  useEffect(() => {
-    navigationNextFn = item => {
-      navigation.navigate('OrderCreateEditLineItem', {
-        screen: 'OrderCreate',
-        item,
-      });
-    };
-
-    onAddProdct = () => {
-      navigation.navigate('OrderCreateAddProduct', {
-        screen: 'OrderCreate',
-      });
-    };
-
-    return () => {
-      navigationNextFn = null;
-      onAddProdct = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const navigationNextFn = item => {
+    navigation.navigate('OrderCreateEditLineItem', {
+      screen: 'OrderCreate',
+      item,
+    });
+  };
 
   return (
     <View>
@@ -119,7 +108,7 @@ const OrderCreate = ({route, navigation}) => {
                   type="solid"
                   containerStyle={[common.width100Per, common.marginTop(15)]}
                   raised={true}
-                  onPress={() => onAddProdct()}
+                  onPress={() => onAddProdct(navigation)}
                 />
               </View>
               <View
