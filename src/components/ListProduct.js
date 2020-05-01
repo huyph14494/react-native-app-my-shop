@@ -41,7 +41,7 @@ function showItems(item, index, navigationFn) {
                 alignItems: 'flex-start',
               }),
             ]}>
-            <Text style={common.textBold}>{item.name}</Text>
+            <Text style={common.textBold}>{item.title}</Text>
           </View>
           <View
             style={[

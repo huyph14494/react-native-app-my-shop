@@ -17,9 +17,19 @@ const leftComponent = navigation => {
 
 function OrderCreateAddVariant({route, navigation}) {
   const navigationNextFn = (product, variant) => {
+    let item = {
+      id: `${product.id}_${variant.id}`,
+      title_product: product.title,
+      title_variant: variant.title,
+      price: variant.price,
+      product_id: product.id,
+      variant_id: variant.id,
+      quantity: 1,
+    };
+
     navigation.navigate('OrderCreate', {
       screen: 'OrderCreateAddVariant',
-      data: {product, variant},
+      data: {item},
     });
   };
 

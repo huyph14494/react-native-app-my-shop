@@ -10,34 +10,34 @@ import IconBack from '../../components/IconBack.js';
 const products = [
   {
     id: '1',
-    name: 'Ly Giữ Nhiệt Lock&Lock Swing Tumbler',
+    title: 'Ly Giữ Nhiệt Lock&Lock Swing Tumbler',
     variants: [
       {
-        id: '1',
-        name: 'aa',
-        price: '100.000',
+        id: '2',
+        title: 'aa',
+        price: 100000,
       },
       {
-        id: '2',
-        name: 'bb',
-        price: '200.000',
+        id: '3',
+        title: 'bb',
+        price: 200000,
       },
     ],
   },
   {
-    id: '2',
-    name:
+    id: '4',
+    title:
       'Bình Nước Giữ Nhiệt Lock&Lock City Vacuum Bottle Olympic Montreal (700ml)',
     variants: [
       {
-        id: '1',
-        name: 'aa',
-        price: '100.000',
+        id: '5',
+        title: 'cc',
+        price: 520000,
       },
       {
-        id: '2',
-        name: 'bb',
-        price: '200.000',
+        id: '6',
+        title: 'dd',
+        price: 420000,
       },
     ],
   },

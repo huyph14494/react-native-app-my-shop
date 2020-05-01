@@ -20,7 +20,7 @@ function showItems(item, index) {
             }),
           ]}>
           <View style={common.badgeIconView}>
-            <Text style={common.badge}> 2 </Text>
+            <Text style={common.badge}> {item.quantity} </Text>
             <Image
               style={common.tinyLogo}
               source={require('../assets/no-image.jpg')}
@@ -35,9 +35,9 @@ function showItems(item, index) {
             }),
             common.padding(0, 5),
           ]}>
-          <Text style={common.padding(2, 0)}>{item.name}</Text>
-          <Text style={common.padding(2, 0)}>Default value</Text>
-          <Text style={common.padding(2, 0)}>100.000</Text>
+          <Text style={common.padding(2, 0)}>{item.title_product}</Text>
+          <Text style={common.padding(2, 0)}>{item.title_variant}</Text>
+          <Text style={common.padding(2, 0)}>{item.price}</Text>
         </View>
         <View
           style={[
@@ -46,7 +46,7 @@ function showItems(item, index) {
               alignItems: 'flex-end',
             }),
           ]}>
-          <Text>500.000</Text>
+          <Text>{item.price * item.quantity}</Text>
         </View>
       </View>
     </View>

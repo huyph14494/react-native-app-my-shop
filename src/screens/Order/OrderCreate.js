@@ -34,8 +34,8 @@ const OrderCreate = ({route, navigation}) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    let initProduct = async item => {
-      let productsNew = await getData('@products');
+    let getLineItems = async item => {
+      let productsNew = await getData('@line_items');
 
       if (!Array.isArray(productsNew)) {
         productsNew = [];
@@ -46,20 +46,29 @@ const OrderCreate = ({route, navigation}) => {
         (!route.params.screen || route.params.screen === 'OrderHome')
       ) {
         if (Array.isArray(productsNew) && productsNew.length) {
-          await storeData('@products', []);
+          await storeData('@line_items', []);
         }
       } else {
         if (item) {
-          productsNew.push(item);
-          await storeData('@products', productsNew);
+          let isAdd = true;
+          for (let i = 0; i < productsNew.length; i++) {
+            if (productsNew[i].id === item.id) {
+              productsNew[i].quantity++;
+              isAdd = false;
+              break;
+            }
+          }
+          if (isAdd) {
+            productsNew.push(item);
+          }
+          await storeData('@line_items', productsNew);
         }
         setProducts(productsNew);
       }
     };
 
-    let itemNew = route.params?.data?.product ?? null;
-    initProduct(itemNew);
-    console.log('route', route.params?.data?.product ?? null);
+    let itemNew = route.params?.data?.item ?? null;
+    getLineItems(itemNew);
   }, [route.params]);
 
   return (
