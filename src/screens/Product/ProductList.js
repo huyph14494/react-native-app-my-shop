@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
-import {View, TouchableOpacity} from 'react-native';
+import {View} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import IconBack from '../../components/IconBack.js';
 
