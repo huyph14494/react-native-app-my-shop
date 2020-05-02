@@ -6,57 +6,49 @@ import ListProduct from '../../components/ListProduct.js';
 import SearchBox from '../../components/SearchBox.js';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import IconBack from '../../components/IconBack.js';
-
-const products = [
-  {
-    id: '1',
-    name: 'Ly Giữ Nhiệt Lock&Lock Swing Tumbler',
-  },
-  {
-    id: '2',
-    name:
-      'Bình Nước Giữ Nhiệt Lock&Lock City Vacuum Bottle Olympic Montreal (700ml)',
-  },
-  {
-    id: '3',
-    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
-  },
-  {
-    id: '4',
-    name: 'Lốc 24 Lon Nước Tăng Lực Monster Energy',
-  },
-  {
-    id: '5',
-    name: 'Điện Thoại Vsmart Joy 2+',
-  },
-  {
-    id: '6',
-    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
-  },
-  {
-    id: '7',
-    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
-  },
-  {
-    id: '8',
-    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
-  },
-  {
-    id: '9',
-    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
-  },
-  {
-    id: '10',
-    name: 'Thùng 24 Lon Nước ngọt có ga Coca-Cola Plus lon ( 330ml x24)',
-  },
-];
+import {haravan} from '../../apis/haravan/haravan.js';
+import {getData, storeData} from '../../helpers/async_storage.js';
 
 class ProductList extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
+      products: [],
     };
+  }
+
+  async componentDidMount() {
+    try {
+      let productData = await getData('@products');
+      if (!productData) {
+        productData = {data: [], expired: null};
+      }
+
+      if (
+        productData &&
+        (!productData.expired || new Date() > new Date(productData.expired))
+      ) {
+        let data = await haravan.callApi({
+          entity: haravan.ENTITY_PRODUCT,
+          action: haravan.GET_PRODUCTS,
+          params: {fields: 'id,title,variants'},
+        });
+
+        if (data && data.products) {
+          let now = new Date();
+          productData = {
+            data: data.products,
+            expired: new Date(now.getTime() + 60000),
+          };
+          await storeData('@products', productData);
+        }
+      }
+      // eslint-disable-next-line react/no-did-mount-set-state
+      this.setState({products: productData.data, isLoading: false});
+    } catch (error) {
+      console.log('ProductList componentDidMount:', error);
+    }
   }
 
   navigationNextFn = product => {
@@ -78,11 +70,6 @@ class ProductList extends Component {
 
   render() {
     if (this.state.isLoading) {
-      setTimeout(() => {
-        this.setState({
-          isLoading: false,
-        });
-      }, 300);
       return <SplashScreen />;
     } else {
       return (
@@ -105,7 +92,7 @@ class ProductList extends Component {
               common.marginTop(15),
             ]}>
             <ListProduct
-              products={products}
+              products={this.state.products}
               navigationFn={this.navigationNextFn}
             />
           </View>

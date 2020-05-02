@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as productApi from './product';
 
 const API_KEY = '9fLel2rtGE5ghAu6uTIN7ebgGVZX-ZFtWXLh0E82F7c';
-const BASE_URL = 'https://apis.haravan.com/com/';
+const BASE_URL = 'https://apis.haravan.com/com';
 const ENTITY_PRODUCT = 'PRODUCT';
 const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
@@ -22,7 +22,7 @@ const callApi = async ({entity, action, params, data}) => {
   }
 
   if (!apiObj) {
-    return new Error('Not found entity API');
+    throw new Error('Not found entity API');
   }
 
   let config = {
@@ -44,18 +44,15 @@ const callApi = async ({entity, action, params, data}) => {
     config.headers['Content-Type'] = 'application/json';
   }
 
-  INSTANCE(config)
-    .then(function(response) {
-      // handle success
-      console.log('callApi', response);
-      return response;
-    })
-    .catch(function(error) {
-      // handle error
-      console.log('callApi', error);
-      return new Error('callApi: ' + error);
-    });
+  try {
+    let response = await INSTANCE(config);
+    console.log('callApi', entity);
+    return response.data;
+  } catch (error) {
+    console.log('callApi', error);
+    throw new Error('callApi: ' + error);
+  }
 };
 
-const haravan = {...callApi, ...productApi};
+const haravan = {callApi, ENTITY_PRODUCT, ENTITY_ORDER, ...productApi};
 export {haravan};

@@ -1,7 +1,7 @@
 const GET_PRODUCTS = 'GET_PRODUCTS';
 
 const productApi = new Map([
-  [GET_PRODUCTS, {endPoint: '/products.json', method: 'GET'}],
+  [GET_PRODUCTS, {endPoint: '/products.json', method: 'get'}],
 ]);
 
 const getAction = action => {

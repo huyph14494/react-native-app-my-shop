@@ -12,9 +12,9 @@ function showItems(item, index, navigationFn) {
     <TouchableOpacity
       onPress={() => {
         navigationFn(item);
-      }}>
+      }}
+      key={String(item.id)}>
       <View
-        key={item.id}
         style={[
           common.group(1, 'column'),
           common.margin(5, 15),
@@ -42,15 +42,7 @@ function showItems(item, index, navigationFn) {
               }),
             ]}>
             <Text style={common.textBold}>{item.title}</Text>
-          </View>
-          <View
-            style={[
-              common.container(1, 'column', {
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }),
-            ]}>
-            <Text>100.000</Text>
+            <Text>{item.variants?.length ?? 0} varaints</Text>
           </View>
         </View>
       </View>
@@ -65,7 +57,7 @@ const ListProduct = props => {
       showsVerticalScrollIndicator={false}
       data={props.products}
       renderItem={({item, index}) => showItems(item, index, props.navigationFn)}
-      keyExtractor={item => item.id}
+      keyExtractor={item => String(item.id)}
       extraData={props.products}
     />
   );
