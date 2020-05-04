@@ -48,7 +48,10 @@ const SearchBox = ({onSearch, textSearch}) => {
           common.padding(5, 5),
         ]}
         onPress={() => {
-          if (String(textValue).trim() !== '') {
+          if (
+            textValue &&
+            (String(textValue).trim() !== '' || textValue.length > 0)
+          ) {
             setTextValue('');
             onSearch('', true);
           }
