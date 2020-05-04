@@ -6,11 +6,15 @@ const BASE_URL = 'https://apis.haravan.com/com';
 const ENTITY_PRODUCT = 'PRODUCT';
 const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
+const TIME_CACHE_API = 5 * 60000;
+const LIMIT_LIST = 10;
 
 const INSTANCE = axios.create({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
 });
+
+const delayAPi = t => new Promise(resolve => setTimeout(resolve, t));
 
 const callApi = async ({entity, action, params, data}) => {
   let apiObj = null;
@@ -45,8 +49,15 @@ const callApi = async ({entity, action, params, data}) => {
   }
 
   try {
+    await delayAPi(1000);
     let response = await INSTANCE(config);
-    console.log('callApi', entity);
+    let now = new Date();
+    console.log(
+      'callApi',
+      entity,
+      `${now.getHours()}:${now.getMinutes()}`,
+      params,
+    );
     return response.data;
   } catch (error) {
     console.log('callApi', error);
@@ -54,5 +65,13 @@ const callApi = async ({entity, action, params, data}) => {
   }
 };
 
-const haravan = {callApi, ENTITY_PRODUCT, ENTITY_ORDER, ...productApi};
+const haravan = {
+  callApi,
+  delayAPi,
+  ENTITY_PRODUCT,
+  ENTITY_ORDER,
+  TIME_CACHE_API,
+  LIMIT_LIST,
+  ...productApi,
+};
 export {haravan};

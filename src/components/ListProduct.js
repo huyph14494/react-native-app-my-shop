@@ -1,6 +1,14 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import common from '../styles/common.js';
+import {haravan} from '../apis/haravan/haravan.js';
 
 function showItems(item, index, navigationFn) {
   let styleFirstItem = {};
@@ -50,15 +58,38 @@ function showItems(item, index, navigationFn) {
   );
 }
 
+const renderFooter = props => {
+  return (
+    <View style={common.footerList}>
+      {props.fetching_from_server ? (
+        <ActivityIndicator
+          color="red"
+          size="large"
+          style={common.margin(15, 15)}
+        />
+      ) : null}
+    </View>
+  );
+};
+
 const ListProduct = props => {
   return (
     <FlatList
-      scrollEnabled={false}
+      style={common.marginBottomHeaderSearch}
+      scrollEnabled={true}
       showsVerticalScrollIndicator={false}
       data={props.products}
       renderItem={({item, index}) => showItems(item, index, props.navigationFn)}
       keyExtractor={item => String(item.id)}
       extraData={props.products}
+      onEndReached={() => {
+        if (!props.fetching_from_server) {
+          props.loadMoreData();
+        }
+      }}
+      onEndReachedThreshold={0.1}
+      ListFooterComponent={renderFooter(props)}
+      initialNumToRender={haravan.LIMIT_LIST} // how many item to display first
     />
   );
 };

@@ -16,6 +16,9 @@ export default StyleSheet.create({
   marginBottomHeader: {
     marginBottom: marginHeader,
   },
+  marginBottomHeaderSearch: {
+    marginBottom: marginHeader + textIputHeight,
+  },
   widthFull: {
     width: '100%',
   },
@@ -247,5 +250,11 @@ export default StyleSheet.create({
     width: 18,
     height: 18,
     borderRadius: 18 / 2,
+  },
+  footerList: {
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
