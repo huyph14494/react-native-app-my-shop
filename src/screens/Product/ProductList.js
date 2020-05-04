@@ -17,12 +17,13 @@ class ProductList extends Component {
       isFetchingLoadMore: false,
       isListEnd: false,
       products: [],
+      textSearch: '',
     };
     this.page = 1;
     this._isMounted = false;
   }
 
-  getInitData = async (whereFn, isForceApi = false) => {
+  fetchData = async (whereFn, isForceApi = false, isCacheData = true) => {
     try {
       let productData = await getData('@products');
       let dataUpdate = {};
@@ -37,7 +38,7 @@ class ProductList extends Component {
           !productData.expired ||
           new Date() > new Date(productData.expired))
       ) {
-        await haravan.delayAPi(2000);
+        await haravan.delayAPi();
         let data = await haravan.callApi({
           entity: haravan.ENTITY_PRODUCT,
           action: haravan.GET_PRODUCTS,
@@ -45,6 +46,7 @@ class ProductList extends Component {
             fields: 'id,title,variants',
             page: this.page,
             limit: haravan.LIMIT_LIST,
+            query: this.state.textSearch,
           },
           whereFn,
         });
@@ -55,7 +57,9 @@ class ProductList extends Component {
             data: data.products,
             expired: new Date(now.getTime() + haravan.TIME_CACHE_API),
           };
-          await storeData('@products', productData);
+          if (isCacheData && String(this.state.textSearch).trim() === '') {
+            await storeData('@products', productData);
+          }
         }
 
         if (productData.data.length < haravan.LIMIT_LIST) {
@@ -75,7 +79,7 @@ class ProductList extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this.getInitData('ProductList componentDidMount getInitData');
+    this.fetchData('ProductList componentDidMount fetchData');
   }
 
   loadMoreData = () => {
@@ -83,7 +87,7 @@ class ProductList extends Component {
       //On click of Load More button We will call the web API again
       this.setState({isFetchingLoadMore: true}, async () => {
         try {
-          await haravan.delayAPi(2000);
+          await haravan.delayAPi();
           let data = await haravan.callApi({
             entity: haravan.ENTITY_PRODUCT,
             action: haravan.GET_PRODUCTS,
@@ -91,6 +95,7 @@ class ProductList extends Component {
               fields: 'id,title,variants',
               page: this.page + 1,
               limit: haravan.LIMIT_LIST,
+              query: this.state.textSearch,
             },
             whereFn: 'ProductList loadMoreData',
           });
@@ -143,7 +148,20 @@ class ProductList extends Component {
     this.page = 1;
 
     //Call the Service to get the latest data
-    this.getInitData('ProductList onRefresh getInitData', true);
+    this.fetchData('ProductList onRefresh fetchData', true);
+  };
+
+  onSearch = (textSearch, isClear) => {
+    if (!this.state.isFetchingLoadMore && !this.state.isLoading) {
+      this.setState({textSearch, isLoading: true}, async () => {
+        this.page = 1;
+        this.fetchData(
+          'ProductList onSearch fetchData',
+          isClear ? false : true,
+          false,
+        );
+      });
+    }
   };
 
   componentWillUnmount() {
@@ -185,7 +203,10 @@ class ProductList extends Component {
           />
 
           {/* ------------------- Filter --------------------- */}
-          <SearchBox />
+          <SearchBox
+            onSearch={this.onSearch}
+            textSearch={this.state.textSearch}
+          />
           {/* ------------------- LIST PRODUCT --------------------- */}
           <View
             style={[

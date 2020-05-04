@@ -115,6 +115,15 @@ export default StyleSheet.create({
 
     return styles;
   },
+  flex(flex) {
+    let styles = {};
+
+    if (flex) {
+      styles.flex = flex;
+    }
+
+    return styles;
+  },
   textInput: {
     height: textIputHeight,
     borderColor: 'rgba(0,0,0,.075)',
@@ -147,7 +156,7 @@ export default StyleSheet.create({
     width: widthWindow - 15 * 2,
     flexDirection: 'row',
     backgroundColor: 'white',
-    top: headerHeight + 10,
+    top: headerHeight + 15,
     borderColor: 'rgba(0,0,0,.075)',
     borderWidth: 1,
     borderRadius: 5,

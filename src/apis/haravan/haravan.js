@@ -7,6 +7,7 @@ const ENTITY_PRODUCT = 'PRODUCT';
 const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
 const TIME_CACHE_API = 5 * 60000;
+const TIME_DELAY_API = 1000;
 const LIMIT_LIST = 20;
 
 const INSTANCE = axios.create({
@@ -14,7 +15,8 @@ const INSTANCE = axios.create({
   timeout: TIME_OUT,
 });
 
-const delayAPi = t => new Promise(resolve => setTimeout(resolve, t));
+const delay = t => new Promise(resolve => setTimeout(resolve, t));
+const delayAPi = () => delay(TIME_DELAY_API);
 
 const callApi = async ({entity, action, params, data, whereFn}) => {
   let apiObj = null;
@@ -39,6 +41,13 @@ const callApi = async ({entity, action, params, data, whereFn}) => {
 
   // method get
   if (params) {
+    if (params.hasOwnProperty('query')) {
+      if (params.query && String(params.query).trim() !== '') {
+        params.query = encodeURIComponent(String(params.query).trim());
+      } else {
+        delete params.query;
+      }
+    }
     config.params = params;
   }
 
@@ -49,14 +58,15 @@ const callApi = async ({entity, action, params, data, whereFn}) => {
   }
 
   try {
-    await delayAPi(1000);
+    await delay(1000);
     let response = await INSTANCE(config);
     let now = new Date();
     console.log(
       'callApi',
-      entity,
-      `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
-      'page: ' + params?.page ?? 0,
+      entity + ' || ',
+      `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} || `,
+      'page: ' + (params?.page ?? 0) + ' || ',
+      'query: ' + (params?.query ?? 0) + ' || ',
       whereFn,
     );
     return response.data;
