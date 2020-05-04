@@ -7,7 +7,7 @@ const ENTITY_PRODUCT = 'PRODUCT';
 const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
 const TIME_CACHE_API = 5 * 60000;
-const LIMIT_LIST = 10;
+const LIMIT_LIST = 20;
 
 const INSTANCE = axios.create({
   baseURL: BASE_URL,
@@ -16,7 +16,7 @@ const INSTANCE = axios.create({
 
 const delayAPi = t => new Promise(resolve => setTimeout(resolve, t));
 
-const callApi = async ({entity, action, params, data}) => {
+const callApi = async ({entity, action, params, data, whereFn}) => {
   let apiObj = null;
 
   switch (entity) {
@@ -55,8 +55,9 @@ const callApi = async ({entity, action, params, data}) => {
     console.log(
       'callApi',
       entity,
-      `${now.getHours()}:${now.getMinutes()}`,
-      params,
+      `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
+      'page: ' + params?.page ?? 0,
+      whereFn,
     );
     return response.data;
   } catch (error) {

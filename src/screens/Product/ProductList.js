@@ -14,14 +14,15 @@ class ProductList extends Component {
     super(props);
     this.state = {
       isLoading: true,
-      fetching_from_server: false,
+      isFetchingLoadMore: false,
       isListEnd: false,
       products: [],
     };
     this.page = 1;
+    this._isMounted = false;
   }
 
-  async componentDidMount() {
+  getInitData = async (whereFn, isForceApi = false) => {
     try {
       let productData = await getData('@products');
       let dataUpdate = {};
@@ -32,7 +33,9 @@ class ProductList extends Component {
 
       if (
         productData &&
-        (!productData.expired || new Date() > new Date(productData.expired))
+        (isForceApi ||
+          !productData.expired ||
+          new Date() > new Date(productData.expired))
       ) {
         await haravan.delayAPi(2000);
         let data = await haravan.callApi({
@@ -43,6 +46,7 @@ class ProductList extends Component {
             page: this.page,
             limit: haravan.LIMIT_LIST,
           },
+          whereFn,
         });
 
         if (data && Array.isArray(data.products) && data.products.length > 0) {
@@ -61,17 +65,23 @@ class ProductList extends Component {
 
       dataUpdate.products = productData.data;
       dataUpdate.isLoading = false;
-      // eslint-disable-next-line react/no-did-mount-set-state
-      this.setState(dataUpdate);
+      if (this._isMounted) {
+        this.setState(dataUpdate);
+      }
     } catch (error) {
-      console.log('ProductList componentDidMount:', error);
+      console.log(whereFn, error);
     }
+  };
+
+  componentDidMount() {
+    this._isMounted = true;
+    this.getInitData('ProductList componentDidMount getInitData');
   }
 
   loadMoreData = () => {
-    if (!this.state.fetching_from_server && !this.state.isListEnd) {
+    if (!this.state.isFetchingLoadMore && !this.state.isListEnd) {
       //On click of Load More button We will call the web API again
-      this.setState({fetching_from_server: true}, async () => {
+      this.setState({isFetchingLoadMore: true}, async () => {
         try {
           await haravan.delayAPi(2000);
           let data = await haravan.callApi({
@@ -82,6 +92,7 @@ class ProductList extends Component {
               page: this.page + 1,
               limit: haravan.LIMIT_LIST,
             },
+            whereFn: 'ProductList loadMoreData',
           });
 
           if (
@@ -96,18 +107,23 @@ class ProductList extends Component {
             let dataUpdate = {
               products: [...this.state.products, ...data.products],
               //adding the new data with old one available
-              fetching_from_server: false,
+              isFetchingLoadMore: false,
               //updating the loading state to false
             };
             if (data.products.length < haravan.LIMIT_LIST) {
               dataUpdate.isListEnd = true;
             }
-            this.setState(dataUpdate);
+
+            if (this._isMounted) {
+              this.setState(dataUpdate);
+            }
           } else {
-            this.setState({
-              fetching_from_server: false,
-              isListEnd: true,
-            });
+            if (this._isMounted) {
+              this.setState({
+                isFetchingLoadMore: false,
+                isListEnd: true,
+              });
+            }
           }
         } catch (error) {
           console.log('ProductList loadMoreData:', error);
@@ -115,6 +131,24 @@ class ProductList extends Component {
       });
     }
   };
+
+  onRefresh = () => {
+    //Clear old data of the list
+    this.setState({
+      products: [],
+      isLoading: true,
+      isFetchingLoadMore: false,
+      isListEnd: false,
+    });
+    this.page = 1;
+
+    //Call the Service to get the latest data
+    this.getInitData('ProductList onRefresh getInitData', true);
+  };
+
+  componentWillUnmount() {
+    this._isMounted = false;
+  }
 
   navigationNextFn = product => {
     this.props.navigation.navigate('ProductDetail', {
@@ -160,9 +194,11 @@ class ProductList extends Component {
             ]}>
             <ListProduct
               products={this.state.products}
+              isLoading={this.state.isLoading}
               navigationFn={this.navigationNextFn}
               loadMoreData={this.loadMoreData}
-              fetching_from_server={this.state.fetching_from_server}
+              isFetchingLoadMore={this.state.isFetchingLoadMore}
+              onRefresh={this.onRefresh}
             />
           </View>
         </View>

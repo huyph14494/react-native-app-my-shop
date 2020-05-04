@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  RefreshControl,
 } from 'react-native';
 import common from '../styles/common.js';
 import {haravan} from '../apis/haravan/haravan.js';
@@ -61,7 +62,7 @@ function showItems(item, index, navigationFn) {
 const renderFooter = props => {
   return (
     <View style={common.footerList}>
-      {props.fetching_from_server ? (
+      {props.isFetchingLoadMore ? (
         <ActivityIndicator
           color="red"
           size="large"
@@ -83,13 +84,20 @@ const ListProduct = props => {
       keyExtractor={item => String(item.id)}
       extraData={props.products}
       onEndReached={() => {
-        if (!props.fetching_from_server) {
+        if (!props.isFetchingLoadMore) {
           props.loadMoreData();
         }
       }}
-      onEndReachedThreshold={0.1}
+      onEndReachedThreshold={0.2}
       ListFooterComponent={renderFooter(props)}
       initialNumToRender={haravan.LIMIT_LIST} // how many item to display first
+      refreshControl={
+        <RefreshControl
+          //refresh control used for the Pull to Refresh
+          refreshing={props.isLoading}
+          onRefresh={props.onRefresh}
+        />
+      }
     />
   );
 };
