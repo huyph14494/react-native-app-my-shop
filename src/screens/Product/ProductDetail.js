@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -13,7 +13,7 @@ import {CheckBox} from 'react-native-elements';
 import ModalVariantCreate from '../../components/ModalVariantCreate.js';
 import IconBack from '../../components/IconBack.js';
 
-function leftComponent(navigation) {
+const leftComponent = navigation => {
   return (
     <IconBack
       navigation={navigation}
@@ -21,10 +21,65 @@ function leftComponent(navigation) {
       screenCurrent={'ProductDetail'}
     />
   );
-}
+};
+
+const FormGeneral = ({productData, isAction, onAction}) => {
+  const [title, setTitle] = useState(productData.title);
+  const [description, setDescription] = useState(productData.body_html);
+  const [published, setPublished] = useState(!!productData.published_at);
+
+  useEffect(() => {
+    if (isAction) {
+      onAction({title, description, published});
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAction]);
+
+  return (
+    <View
+      style={[
+        common.container(1, 'column', {
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+        }),
+        common.padding(15, 15),
+      ]}>
+      <TextInput
+        style={common.textInputNoBorder}
+        underlineColorAndroid={'rgba(0,0,0,.075)'}
+        placeholder={'Title'}
+        value={title}
+        onChangeText={text => {
+          setTitle(text);
+        }}
+      />
+      <TextInput
+        style={[common.textInputNoBorder, common.marginTop(15)]}
+        multiline
+        numberOfLines={4}
+        underlineColorAndroid={'rgba(0,0,0,.075)'}
+        placeholder={'Description'}
+        value={description}
+        onChangeText={text => {
+          setDescription(text);
+        }}
+      />
+
+      <CheckBox
+        title="Publish"
+        checked={published}
+        containerStyle={common.checkBoxElementCustom}
+        textStyle={common.fontWeight('normal')}
+        onPress={() => setPublished(!published)}
+      />
+    </View>
+  );
+};
 
 const ProductDetail = ({route, navigation}) => {
   const [modalVarVisible, setModalVarVisible] = useState(false);
+  const [isAction, setIsAction] = useState(false);
+  const productData = route.params?.data?.product ?? null;
 
   return (
     <View>
@@ -45,39 +100,8 @@ const ProductDetail = ({route, navigation}) => {
               ]}>
               <Text style={common.textHeader}>General</Text>
             </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-              ]}>
-              <TextInput
-                style={common.textInputNoBorder}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Title'}
-                value={route.params.product.name}
-              />
-              <TextInput
-                style={[common.textInputNoBorder, common.marginTop(15)]}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Description'}
-                value={route.params.product.name}
-              />
-              <TextInput
-                style={[common.textInputNoBorder, common.marginTop(15)]}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Price'}
-              />
 
-              <CheckBox
-                title="Publish"
-                checked={true}
-                containerStyle={common.checkBoxElementCustom}
-                textStyle={common.fontWeight('normal')}
-              />
-            </View>
+            <FormGeneral productData={productData} isAction={isAction} />
           </View>
 
           {/* ------------------------------------------------------ */}

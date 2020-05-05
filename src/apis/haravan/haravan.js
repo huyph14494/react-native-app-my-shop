@@ -7,7 +7,7 @@ const ENTITY_PRODUCT = 'PRODUCT';
 const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
 const TIME_CACHE_API = 5 * 60000;
-const TIME_DELAY_API = 1000;
+const TIME_DELAY_API = 500;
 const LIMIT_LIST = 20;
 
 const INSTANCE = axios.create({
@@ -58,7 +58,7 @@ const callApi = async ({entity, action, params, data, whereFn}) => {
   }
 
   try {
-    await delay(1000);
+    await delay(500);
     let response = await INSTANCE(config);
     let now = new Date();
     console.log(

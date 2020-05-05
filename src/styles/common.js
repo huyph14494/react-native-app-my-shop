@@ -124,6 +124,15 @@ export default StyleSheet.create({
 
     return styles;
   },
+  height(height) {
+    let styles = {};
+
+    if (height) {
+      styles.height = height;
+    }
+
+    return styles;
+  },
   textInput: {
     height: textIputHeight,
     borderColor: 'rgba(0,0,0,.075)',
@@ -219,7 +228,9 @@ export default StyleSheet.create({
     };
   },
   modalView: {
-    margin: 20,
+    marginTop: marginHeader + 7,
+    marginBottom: 20,
+    marginHorizontal: 20,
     backgroundColor: 'white',
     borderRadius: 5,
     padding: 20,

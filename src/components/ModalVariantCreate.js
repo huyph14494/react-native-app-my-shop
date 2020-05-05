@@ -10,7 +10,7 @@ const ModalVariantCreate = props => {
       transparent={true}
       visible={props.modalVarVisible}
       onRequestClose={() => {
-        Alert.alert('Modal has been closed.');
+        props.setModalVarVisible(false);
       }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={[common.modalView]}>

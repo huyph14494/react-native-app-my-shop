@@ -8,6 +8,7 @@ import SplashScreen from '../SplashScreen/SplashScreen';
 import IconBack from '../../components/IconBack.js';
 import {haravan} from '../../apis/haravan/haravan.js';
 import {getData, storeData} from '../../helpers/async_storage.js';
+const fields = 'id,title,variants,body_html,published_at';
 
 class ProductList extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ class ProductList extends Component {
           entity: haravan.ENTITY_PRODUCT,
           action: haravan.GET_PRODUCTS,
           params: {
-            fields: 'id,title,variants',
+            fields,
             page: this.page,
             limit: haravan.LIMIT_LIST,
             query: this.state.textSearch,
@@ -92,7 +93,7 @@ class ProductList extends Component {
             entity: haravan.ENTITY_PRODUCT,
             action: haravan.GET_PRODUCTS,
             params: {
-              fields: 'id,title,variants',
+              fields,
               page: this.page + 1,
               limit: haravan.LIMIT_LIST,
               query: this.state.textSearch,
@@ -171,7 +172,7 @@ class ProductList extends Component {
   navigationNextFn = product => {
     this.props.navigation.navigate('ProductDetail', {
       screen: 'ProductList',
-      product,
+      data: {product},
     });
   };
 
