@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, memo} from 'react';
 import {
   View,
   ScrollView,
@@ -6,12 +6,13 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CheckBox} from 'react-native-elements';
-import ModalVariantCreate from '../../components/ModalVariantCreate.js';
+import ModalVariant from '../../components/ModalVariant.js';
 import IconBack from '../../components/IconBack.js';
 
 const leftComponent = navigation => {
@@ -77,6 +78,7 @@ const FormGeneral = ({productData, isAction, onAction}) => {
   );
 };
 
+let variantTmp = {};
 const ContainerVariants = ({productData}) => {
   const [modalVarVisible, setModalVarVisible] = useState(false);
 
@@ -95,7 +97,6 @@ const ContainerVariants = ({productData}) => {
       </View>
 
       {/* ------------------------------------------------------ */}
-
       <TouchableOpacity
         style={[
           common.container(1, 'row', {
@@ -106,6 +107,7 @@ const ContainerVariants = ({productData}) => {
           common.borderBottom('rgba(0,0,0,.075)', 1),
         ]}
         onPress={() => {
+          variantTmp = {};
           setModalVarVisible(true);
         }}>
         <View
@@ -130,61 +132,74 @@ const ContainerVariants = ({productData}) => {
       </TouchableOpacity>
 
       {/* ------------------------------------------------------ */}
-      {Array.isArray(productData.variants) && productData.variants.length
-        ? productData.variants.map((item, index) => (
-            <View
-              key={index}
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }),
-                ]}>
-                <Image
-                  style={common.tinyLogo}
-                  source={require('../../assets/no-image.jpg')}
-                />
-              </View>
-              <View
-                style={[
-                  common.container(3, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }),
-                ]}>
-                <Text>Title: {item.title}</Text>
-                <Text>Sku: {item.sku}</Text>
-              </View>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }),
-                ]}>
-                <Text>{item.price}</Text>
-              </View>
-            </View>
-          ))
-        : ''}
-
+      <ContainerListVariant
+        variants={productData.variants}
+        setModalVarVisible={setModalVarVisible}
+      />
       {/* ------------------------------------------------------ */}
-      <ModalVariantCreate
+      <ModalVariant
         setModalVarVisible={setModalVarVisible}
         modalVarVisible={modalVarVisible}
+        item={variantTmp}
       />
     </View>
   );
 };
+
+const ContainerListVariant = memo(({variants, setModalVarVisible}) => {
+  if (Array.isArray(variants) && variants.length) {
+    return variants.map((item, index) => (
+      <TouchableOpacity
+        key={index}
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'center',
+            alignItems: 'center',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}
+        onPress={() => {
+          variantTmp = item;
+          setModalVarVisible(true);
+        }}>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }),
+          ]}>
+          <Image
+            style={common.tinyLogo}
+            source={require('../../assets/no-image.jpg')}
+          />
+        </View>
+        <View
+          style={[
+            common.container(3, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }),
+          ]}>
+          <Text>Title: {item.title}</Text>
+          <Text>Sku: {item.sku}</Text>
+        </View>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+            }),
+          ]}>
+          <Text>{item.price}</Text>
+        </View>
+      </TouchableOpacity>
+    ));
+  } else {
+    return '';
+  }
+});
 
 const ProductDetail = ({route, navigation}) => {
   const [isAction, setIsAction] = useState(false);

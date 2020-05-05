@@ -8,7 +8,7 @@ const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
 const TIME_CACHE_API = 5 * 60000;
 const TIME_DELAY_API = 500;
-const LIMIT_LIST = 20;
+const LIMIT_LIST = 10;
 
 const INSTANCE = axios.create({
   baseURL: BASE_URL,

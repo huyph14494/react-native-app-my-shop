@@ -10,7 +10,7 @@ import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {CheckBox} from 'react-native-elements';
-import ModalVariantCreate from '../../components/ModalVariantCreate.js';
+import ModalVariant from '../../components/ModalVariant.js';
 import IconBack from '../../components/IconBack.js';
 
 function leftComponent(navigation) {
@@ -138,7 +138,7 @@ const ProductCreate = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
           {/* ------------------------------------------------------ */}
-          <ModalVariantCreate
+          <ModalVariant
             setModalVarVisible={setModalVarVisible}
             modalVarVisible={modalVarVisible}
           />
