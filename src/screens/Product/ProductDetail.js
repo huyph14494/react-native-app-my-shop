@@ -5,6 +5,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Image,
 } from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
@@ -76,8 +77,116 @@ const FormGeneral = ({productData, isAction, onAction}) => {
   );
 };
 
-const ProductDetail = ({route, navigation}) => {
+const ContainerVariants = ({productData}) => {
   const [modalVarVisible, setModalVarVisible] = useState(false);
+
+  return (
+    <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Variants</Text>
+      </View>
+
+      {/* ------------------------------------------------------ */}
+
+      <TouchableOpacity
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}
+        onPress={() => {
+          setModalVarVisible(true);
+        }}>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'center',
+            }),
+            common.padding(0, 10),
+          ]}>
+          <Icon color="red" name="plus-circle" size={20} />
+        </View>
+        <View
+          style={[
+            common.container(12, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }),
+          ]}>
+          <Text>Add Variant</Text>
+        </View>
+      </TouchableOpacity>
+
+      {/* ------------------------------------------------------ */}
+      {Array.isArray(productData.variants) && productData.variants.length
+        ? productData.variants.map((item, index) => (
+            <View
+              key={index}
+              style={[
+                common.container(1, 'row', {
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }),
+                common.padding(15, 15),
+                common.borderBottom('rgba(0,0,0,.075)', 1),
+              ]}>
+              <View
+                style={[
+                  common.container(1, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                  }),
+                ]}>
+                <Image
+                  style={common.tinyLogo}
+                  source={require('../../assets/no-image.jpg')}
+                />
+              </View>
+              <View
+                style={[
+                  common.container(3, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                  }),
+                ]}>
+                <Text>Title: {item.title}</Text>
+                <Text>Sku: {item.sku}</Text>
+              </View>
+              <View
+                style={[
+                  common.container(1, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-end',
+                  }),
+                ]}>
+                <Text>{item.price}</Text>
+              </View>
+            </View>
+          ))
+        : ''}
+
+      {/* ------------------------------------------------------ */}
+      <ModalVariantCreate
+        setModalVarVisible={setModalVarVisible}
+        modalVarVisible={modalVarVisible}
+      />
+    </View>
+  );
+};
+
+const ProductDetail = ({route, navigation}) => {
   const [isAction, setIsAction] = useState(false);
   const productData = route.params?.data?.product ?? null;
 
@@ -85,8 +194,16 @@ const ProductDetail = ({route, navigation}) => {
     <View>
       <Header name={route.name} leftComponent={leftComponent(navigation)} />
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={[common.container(1, 'column', {alignItems: 'center'})]}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={common.marginBottomHeader}>
+        <View
+          style={[
+            common.container(1, 'column', {
+              alignItems: 'center',
+              marginBottom: 30,
+            }),
+          ]}>
           {/* ------------------------------------------------------ */}
           <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
             <View
@@ -105,55 +222,7 @@ const ProductDetail = ({route, navigation}) => {
           </View>
 
           {/* ------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Variants</Text>
-            </View>
-            <TouchableOpacity
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-              ]}
-              onPress={() => {
-                setModalVarVisible(true);
-              }}>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                ]}>
-                <Icon color="red" name="plus-circle" size={20} />
-              </View>
-              <View
-                style={[
-                  common.container(12, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }),
-                ]}>
-                <Text>Add Variant</Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          {/* ------------------------------------------------------ */}
-          <ModalVariantCreate
-            setModalVarVisible={setModalVarVisible}
-            modalVarVisible={modalVarVisible}
-          />
+          <ContainerVariants productData={productData} />
         </View>
       </ScrollView>
     </View>

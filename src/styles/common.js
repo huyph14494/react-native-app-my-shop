@@ -14,7 +14,7 @@ export default StyleSheet.create({
     marginTop: marginHeader,
   },
   marginBottomHeader: {
-    marginBottom: marginHeader,
+    marginBottom: marginHeader + 18,
   },
   marginBottomHeaderSearch: {
     marginBottom: marginHeader + textIputHeight,
