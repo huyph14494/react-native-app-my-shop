@@ -1,4 +1,4 @@
-import React, {useState, useEffect, memo} from 'react';
+import React, {useState, useCallback, memo} from 'react';
 import {
   View,
   ScrollView,
@@ -23,59 +23,6 @@ const leftComponent = navigation => {
     />
   );
 };
-
-const FormGeneral = memo(({productData, isAction, onAction}) => {
-  const [title, setTitle] = useState(productData.title);
-  const [description, setDescription] = useState(productData.body_html);
-  const [published, setPublished] = useState(!!productData.published_at);
-
-  useEffect(() => {
-    if (isAction) {
-      onAction({title, description, published});
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAction]);
-
-  return (
-    <View
-      style={[
-        common.container(1, 'column', {
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-        }),
-        common.padding(15, 15),
-      ]}>
-      <TextInput
-        style={common.textInputNoBorder}
-        underlineColorAndroid={'rgba(0,0,0,.075)'}
-        placeholder={'Title'}
-        value={title}
-        onChangeText={text => {
-          setTitle(text);
-        }}
-      />
-      <TextInput
-        style={[common.textInputNoBorder, common.marginTop(15)]}
-        multiline
-        numberOfLines={4}
-        underlineColorAndroid={'rgba(0,0,0,.075)'}
-        placeholder={'Description'}
-        value={description}
-        onChangeText={text => {
-          setDescription(text);
-        }}
-      />
-
-      <CheckBox
-        title="Publish"
-        checked={published}
-        containerStyle={common.checkBoxElementCustom}
-        textStyle={common.fontWeight('normal')}
-        onPress={() => setPublished(!published)}
-      />
-    </View>
-  );
-});
 
 let variantTmp = {};
 const ContainerVariants = memo(({productData, onAction}) => {
@@ -217,15 +164,21 @@ const ContainerListVariant = memo(({variants, setModalVarVisible}) => {
 });
 
 const ProductDetail = ({route, navigation}) => {
-  const [isAction, setIsAction] = useState(false);
   const productData = route.params?.data?.product ?? null;
-  const onActionChangeVariant = variants => {
-    productData.variants = variants;
-  };
+  if (productData) {
+    productData.published = !!productData.published_at;
+  }
+  const [productState, setProductState] = useState(productData || {});
 
-  const onActionUpdateProduct = variants => {
-    productData.variants = variants;
-  };
+  const onActionChangeVariant = useCallback(
+    variants => {
+      (() => {
+        productData.variants = variants;
+      })();
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
 
   return (
     <View>
@@ -255,7 +208,48 @@ const ProductDetail = ({route, navigation}) => {
               <Text style={common.textHeader}>General</Text>
             </View>
 
-            <FormGeneral productData={productData} isAction={isAction} />
+            <View
+              style={[
+                common.container(1, 'column', {
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                }),
+                common.padding(15, 15),
+              ]}>
+              <TextInput
+                style={common.textInputNoBorder}
+                underlineColorAndroid={'rgba(0,0,0,.075)'}
+                placeholder={'Title'}
+                value={productState.title}
+                onChangeText={text => {
+                  setProductState({...productState, title: text});
+                }}
+              />
+              <TextInput
+                style={[common.textInputNoBorder, common.marginTop(15)]}
+                multiline
+                numberOfLines={4}
+                underlineColorAndroid={'rgba(0,0,0,.075)'}
+                placeholder={'Description'}
+                value={productState.body_html}
+                onChangeText={text => {
+                  setProductState({...productState, body_html: text});
+                }}
+              />
+
+              <CheckBox
+                title="Publish"
+                checked={productState.published}
+                containerStyle={common.checkBoxElementCustom}
+                textStyle={common.fontWeight('normal')}
+                onPress={() => {
+                  setProductState({
+                    ...productState,
+                    published: !productState.published,
+                  });
+                }}
+              />
+            </View>
           </View>
 
           {/* ------------------------------------------------------ */}
