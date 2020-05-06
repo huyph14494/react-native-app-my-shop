@@ -61,7 +61,7 @@ const ListVariant = props => {
         renderItem={({item, index}) =>
           showItems(item, index, props.navigationFn, props.product)
         }
-        keyExtractor={item => item.id}
+        keyExtractor={item => String(item.id)}
         extraData={props.product.variants}
       />
     );
