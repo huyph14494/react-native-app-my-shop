@@ -10,4 +10,10 @@ function formatDate(date) {
     1}/${dateTmp.getFullYear()}`;
 }
 
-export {formatDateTime, formatDate};
+function createUUID() {
+  let dateTmp = new Date();
+  return `${dateTmp.getHours()}_${dateTmp.getMinutes()}_${dateTmp.getSeconds()}_${dateTmp.getMilliseconds()}_${dateTmp.getDate()}_${dateTmp.getMonth() +
+    1}_${dateTmp.getFullYear()}`;
+}
+
+export {formatDateTime, formatDate, createUUID};

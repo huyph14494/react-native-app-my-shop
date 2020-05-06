@@ -13,7 +13,7 @@ import {Button} from 'react-native-elements';
 
 const ModalVariantCreate = props => {
   const [variant, setVariant] = useState({});
-  let action = variant && variant.id ? 2 : 1; // 2: update, 1: create
+  let action = variant && variant.id ? 2 : 1; // 3: delete, 2: update, 1: create
 
   useEffect(() => {
     setVariant(props.item);
@@ -98,6 +98,24 @@ const ModalVariantCreate = props => {
                       props.setModalVarVisible(false);
                     }}
                   />
+
+                  {action === 2 ? (
+                    <Button
+                      title={'Delete'}
+                      containerStyle={[
+                        common.width100Per,
+                        common.marginTop(15),
+                      ]}
+                      raised={true}
+                      onPress={() => {
+                        props.onAction(variant, 3);
+                        props.setModalVarVisible(false);
+                      }}
+                    />
+                  ) : (
+                    <View />
+                  )}
+
                   <Button
                     title="Close"
                     type="outline"

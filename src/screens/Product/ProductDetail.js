@@ -16,6 +16,7 @@ import IconBack from '../../components/IconBack.js';
 import SplashScreen from '../SplashScreen/SplashScreen';
 import {haravan} from '../../apis/haravan/haravan.js';
 import {removeData} from '../../helpers/async_storage.js';
+import {createUUID} from '../../helpers/moment.js';
 
 // const leftComponent = navigation => {
 //   return (
@@ -49,8 +50,10 @@ const ContainerVariants = memo(({productData, onAction}) => {
   const onActionVariant = (item, action) => {
     let variantsNew = [];
     if (action === 1) {
+      item.id = createUUID();
+      item._isNew = true;
       variantsNew = [...productData.variants, item];
-    } else {
+    } else if (action === 2) {
       variantsNew = productData.variants.map(variantObj => {
         if (variantObj.id === item.id) {
           return item;
@@ -58,6 +61,10 @@ const ContainerVariants = memo(({productData, onAction}) => {
           return variantObj;
         }
       });
+    } else if (action === 3) {
+      variantsNew = productData.variants.filter(
+        variantObj => variantObj.id !== item.id,
+      );
     }
     onAction(variantsNew);
   };
@@ -205,6 +212,7 @@ const compareProduct = (productOld, productNew) => {
   if (productOld.variants.length === productNew.variants.length) {
     for (let i = 0; i < productOld.variants.length; i++) {
       if (
+        productOld.variants[i].id !== productNew.variants[i].id ||
         productOld.variants[i].title !== productNew.variants[i].title ||
         productOld.variants[i].sku !== productNew.variants[i].sku ||
         productOld.variants[i].price !== productNew.variants[i].price
@@ -226,7 +234,7 @@ const compareProduct = (productOld, productNew) => {
         price: productOld.variants[i].price,
         sku: productOld.variants[i].sku,
       };
-      if (productOld.variants[i].id) {
+      if (productOld.variants[i].id && !productOld.variants[i]._isNew) {
         item.id = productOld.variants[i].id;
       }
       variantsNew.push(item);
