@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
+  Alert,
 } from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
@@ -49,6 +50,7 @@ const ContainerVariants = memo(({productData, onAction}) => {
   const [modalVarVisible, setModalVarVisible] = useState(false);
   const onActionVariant = (item, action) => {
     let variantsNew = [];
+    let _isUpdate = true;
     if (action === 1) {
       item.id = createUUID();
       item._isNew = true;
@@ -62,11 +64,26 @@ const ContainerVariants = memo(({productData, onAction}) => {
         }
       });
     } else if (action === 3) {
-      variantsNew = productData.variants.filter(
-        variantObj => variantObj.id !== item.id,
-      );
+      if (productData.variants.length === 1) {
+        Alert.alert(
+          //title
+          'Warning',
+          //body
+          'You should not delete the final variant!!!',
+          [{text: 'Yes'}],
+          {cancelable: true},
+          //clicking out side of alert will not cancel
+        );
+        _isUpdate = false;
+      } else {
+        variantsNew = productData.variants.filter(
+          variantObj => variantObj.id !== item.id,
+        );
+      }
     }
-    onAction(variantsNew);
+    if (_isUpdate) {
+      onAction(variantsNew);
+    }
   };
 
   return (
@@ -185,37 +202,37 @@ const ContainerListVariant = memo(({variants, setModalVarVisible}) => {
       </TouchableOpacity>
     ));
   } else {
-    return '';
+    return <View />;
   }
 });
 
-const compareProduct = (productOld, productNew) => {
+const compareProduct = (productOld, proGeneral, proVariant) => {
   let result = {};
   let isUpdate = false;
 
-  if (productOld.title !== productNew.title) {
+  if (productOld.title !== proGeneral.title) {
     isUpdate = true;
-    result.title = productNew.title;
+    result.title = proGeneral.title;
   }
 
-  if (productOld.body_html !== productNew.body_html) {
+  if (productOld.body_html !== proGeneral.body_html) {
     isUpdate = true;
-    result.body_html = productNew.body_html;
+    result.body_html = proGeneral.body_html;
   }
 
-  if (productOld.published !== productNew.published) {
+  if (productOld.published !== proGeneral.published) {
     isUpdate = true;
-    result.published = productNew.published;
+    result.published = proGeneral.published;
   }
 
   let isUpdateVar = false;
-  if (productOld.variants.length === productNew.variants.length) {
+  if (productOld.variants.length === proVariant.variants.length) {
     for (let i = 0; i < productOld.variants.length; i++) {
       if (
-        productOld.variants[i].id !== productNew.variants[i].id ||
-        productOld.variants[i].title !== productNew.variants[i].title ||
-        productOld.variants[i].sku !== productNew.variants[i].sku ||
-        productOld.variants[i].price !== productNew.variants[i].price
+        productOld.variants[i].id !== proVariant.variants[i].id ||
+        productOld.variants[i].title !== proVariant.variants[i].title ||
+        productOld.variants[i].sku !== proVariant.variants[i].sku ||
+        productOld.variants[i].price !== proVariant.variants[i].price
       ) {
         isUpdateVar = true;
         break;
@@ -227,15 +244,15 @@ const compareProduct = (productOld, productNew) => {
 
   if (isUpdateVar) {
     let variantsNew = [];
-    for (let i = 0; i < productOld.variants.length; i++) {
+    for (let i = 0; i < proVariant.variants.length; i++) {
       let item = {
-        option1: productOld.variants[i].title,
-        title: productOld.variants[i].title,
-        price: productOld.variants[i].price,
-        sku: productOld.variants[i].sku,
+        option1: proVariant.variants[i].title,
+        title: proVariant.variants[i].title,
+        price: proVariant.variants[i].price,
+        sku: proVariant.variants[i].sku,
       };
-      if (productOld.variants[i].id && !productOld.variants[i]._isNew) {
-        item.id = productOld.variants[i].id;
+      if (proVariant.variants[i].id && !proVariant.variants[i]._isNew) {
+        item.id = proVariant.variants[i].id;
       }
       variantsNew.push(item);
     }
@@ -253,14 +270,30 @@ const ProductDetail = ({route, navigation}) => {
   if (productData) {
     productData.published = !!productData.published_at;
   }
-  const [productState, setProductState] = useState(
-    productData ? {...productData} : {},
+  const [proGeneral, setProGeneral] = useState(
+    productData
+      ? {
+          id: productData.id,
+          title: productData.title,
+          body_html: productData.body_html,
+          published: productData.published,
+        }
+      : {},
+  );
+
+  const [proVariant, setProVariant] = useState(
+    productData
+      ? {
+          id: productData.id,
+          variants: productData.variants,
+        }
+      : {},
   );
 
   const onActionChangeVariant = useCallback(
     variants => {
       (() => {
-        productData.variants = variants;
+        setProVariant({...proVariant, variants});
       })();
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -274,7 +307,7 @@ const ProductDetail = ({route, navigation}) => {
   useEffect(() => {
     let updateProductApi = async () => {
       try {
-        let dataUpdate = compareProduct(productData, productState);
+        let dataUpdate = compareProduct(productData, proGeneral, proVariant);
         if (dataUpdate) {
           dataUpdate.id = productData.id;
           dataUpdate = {product: dataUpdate};
@@ -352,9 +385,9 @@ const ProductDetail = ({route, navigation}) => {
                   style={common.textInputNoBorder}
                   underlineColorAndroid={'rgba(0,0,0,.075)'}
                   placeholder={'Title'}
-                  value={productState.title}
+                  value={proGeneral.title}
                   onChangeText={text => {
-                    setProductState({...productState, title: text});
+                    setProGeneral({...proGeneral, title: text});
                   }}
                 />
                 <TextInput
@@ -363,21 +396,21 @@ const ProductDetail = ({route, navigation}) => {
                   numberOfLines={4}
                   underlineColorAndroid={'rgba(0,0,0,.075)'}
                   placeholder={'Description'}
-                  value={productState.body_html}
+                  value={proGeneral.body_html}
                   onChangeText={text => {
-                    setProductState({...productState, body_html: text});
+                    setProGeneral({...proGeneral, body_html: text});
                   }}
                 />
 
                 <CheckBox
                   title="Publish"
-                  checked={productState.published}
+                  checked={proGeneral.published}
                   containerStyle={common.checkBoxElementCustom}
                   textStyle={common.fontWeight('normal')}
                   onPress={() => {
-                    setProductState({
-                      ...productState,
-                      published: !productState.published,
+                    setProGeneral({
+                      ...proGeneral,
+                      published: !proGeneral.published,
                     });
                   }}
                 />
@@ -386,7 +419,7 @@ const ProductDetail = ({route, navigation}) => {
 
             {/* ------------------------------------------------------ */}
             <ContainerVariants
-              productData={productData}
+              productData={proVariant}
               onAction={onActionChangeVariant}
             />
           </View>
