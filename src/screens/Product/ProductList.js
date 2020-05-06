@@ -158,14 +158,17 @@ class ProductList extends Component {
 
   onSearch = (textSearch, isClear) => {
     if (!this.state.isFetchingLoadMore && !this.state.isLoading) {
-      this.setState({textSearch, isLoading: true}, async () => {
-        this.page = 1;
-        this.fetchData(
-          'ProductList onSearch fetchData',
-          isClear ? false : true,
-          false,
-        );
-      });
+      this.setState(
+        {textSearch, isListEnd: false, isLoading: true},
+        async () => {
+          this.page = 1;
+          this.fetchData(
+            'ProductList onSearch fetchData',
+            isClear ? false : true,
+            false,
+          );
+        },
+      );
     }
   };
 

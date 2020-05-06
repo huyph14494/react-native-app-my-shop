@@ -209,6 +209,7 @@ function OrderCreateAddProduct({route, navigation}) {
       setStateAll({
         ...stateAll,
         isLoading: true,
+        isListEnd: false,
         textSearch: textSearchTmp,
         isClear,
         action: 3,

@@ -74,6 +74,7 @@ const renderFooter = props => {
 };
 
 const ListProduct = props => {
+  console.log('ListProduct');
   return (
     <FlatList
       style={common.marginBottomHeaderSearch}
