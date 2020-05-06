@@ -7,17 +7,52 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
 import common from '../styles/common';
 import {Button} from 'react-native-elements';
+
+const validateData = variant => {
+  let messError = [];
+  if (!variant.title || String(variant.title).trim() === '') {
+    messError.push('Title must not be blank!!!');
+  }
+  if (!variant.sku || String(variant.sku).trim() === '') {
+    messError.push('SKU must not be blank!!!');
+  }
+  if (!variant.price || String(variant.price).trim() === '') {
+    messError.push('Price must not be blank!!!');
+  } else {
+    if (Number.isNaN(variant.price) || isNaN(variant.price)) {
+      messError.push('Price must be a number!!!');
+    }
+  }
+
+  messError = messError.join(' \n ');
+  if (messError) {
+    Alert.alert(
+      //title
+      'Warning',
+      //body
+      messError,
+      [{text: 'Yes'}],
+      {cancelable: true},
+      //clicking out side of alert will not cancel
+    );
+  }
+
+  return messError ? true : false;
+};
 
 const ModalVariantCreate = props => {
   const [variant, setVariant] = useState({});
   let action = variant && variant.id ? 2 : 1; // 3: delete, 2: update, 1: create
 
   useEffect(() => {
-    setVariant(props.item);
-  }, [props.item]);
+    if (props.modalVarVisible) {
+      setVariant(props.item);
+    }
+  }, [props.item, props.modalVarVisible]);
 
   return (
     <Modal
@@ -94,8 +129,11 @@ const ModalVariantCreate = props => {
                     containerStyle={[common.width100Per, common.marginTop(15)]}
                     raised={true}
                     onPress={() => {
-                      props.onAction(variant, action);
-                      props.setModalVarVisible(false);
+                      let error = validateData(variant);
+                      if (!error) {
+                        props.onAction(variant, action);
+                        props.setModalVarVisible(false);
+                      }
                     }}
                   />
 
