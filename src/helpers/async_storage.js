@@ -28,4 +28,14 @@ const storeData = async (key, value) => {
   }
 };
 
-export {getData, storeData};
+const removeData = async key => {
+  try {
+    await AsyncStorage.removeItem(key);
+    return true;
+  } catch (exception) {
+    console.log(new Error('removeData ' + exception));
+    return false;
+  }
+};
+
+export {getData, storeData, removeData};
