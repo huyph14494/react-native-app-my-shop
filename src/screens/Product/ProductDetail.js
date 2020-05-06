@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   TextInput,
   Image,
-  ActivityIndicator,
 } from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
@@ -25,7 +24,7 @@ const leftComponent = navigation => {
   );
 };
 
-const FormGeneral = ({productData, isAction, onAction}) => {
+const FormGeneral = memo(({productData, isAction, onAction}) => {
   const [title, setTitle] = useState(productData.title);
   const [description, setDescription] = useState(productData.body_html);
   const [published, setPublished] = useState(!!productData.published_at);
@@ -76,11 +75,26 @@ const FormGeneral = ({productData, isAction, onAction}) => {
       />
     </View>
   );
-};
+});
 
 let variantTmp = {};
-const ContainerVariants = ({productData}) => {
+const ContainerVariants = memo(({productData, onAction}) => {
   const [modalVarVisible, setModalVarVisible] = useState(false);
+  const onActionVariant = (item, action) => {
+    let variantsNew = [];
+    if (action === 1) {
+      variantsNew = [...productData.variants, item];
+    } else {
+      variantsNew = productData.variants.map(variantObj => {
+        if (variantObj.id === item.id) {
+          return item;
+        } else {
+          return variantObj;
+        }
+      });
+    }
+    onAction(variantsNew);
+  };
 
   return (
     <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
@@ -141,10 +155,11 @@ const ContainerVariants = ({productData}) => {
         setModalVarVisible={setModalVarVisible}
         modalVarVisible={modalVarVisible}
         item={variantTmp}
+        onAction={onActionVariant}
       />
     </View>
   );
-};
+});
 
 const ContainerListVariant = memo(({variants, setModalVarVisible}) => {
   if (Array.isArray(variants) && variants.length) {
@@ -204,6 +219,13 @@ const ContainerListVariant = memo(({variants, setModalVarVisible}) => {
 const ProductDetail = ({route, navigation}) => {
   const [isAction, setIsAction] = useState(false);
   const productData = route.params?.data?.product ?? null;
+  const onActionChangeVariant = variants => {
+    productData.variants = variants;
+  };
+
+  const onActionUpdateProduct = variants => {
+    productData.variants = variants;
+  };
 
   return (
     <View>
@@ -237,7 +259,10 @@ const ProductDetail = ({route, navigation}) => {
           </View>
 
           {/* ------------------------------------------------------ */}
-          <ContainerVariants productData={productData} />
+          <ContainerVariants
+            productData={productData}
+            onAction={onActionChangeVariant}
+          />
         </View>
       </ScrollView>
     </View>
