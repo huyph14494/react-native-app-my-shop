@@ -301,7 +301,19 @@ const ProductDetail = ({route, navigation}) => {
   );
 
   const updateProduct = () => {
-    setIsCreate(true);
+    if (String(proGeneral.title).trim() === '') {
+      Alert.alert(
+        //title
+        'Warning',
+        //body
+        'Title Product must not be blank!!!',
+        [{text: 'Yes'}],
+        {cancelable: true},
+        //clicking out side of alert will not cancel
+      );
+    } else {
+      setIsCreate(true);
+    }
   };
 
   useEffect(() => {
@@ -327,7 +339,7 @@ const ProductDetail = ({route, navigation}) => {
       }
 
       navigation.navigate('ProductHome', {
-        screen: 'ProductList',
+        screen: 'ProductDetail',
         data: null,
       });
     };
