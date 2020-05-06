@@ -84,7 +84,11 @@ class ProductList extends Component {
   }
 
   loadMoreData = () => {
-    if (!this.state.isFetchingLoadMore && !this.state.isListEnd) {
+    if (
+      !this.state.isFetchingLoadMore &&
+      !this.state.isLoading &&
+      !this.state.isListEnd
+    ) {
       //On click of Load More button We will call the web API again
       this.setState({isFetchingLoadMore: true}, async () => {
         try {

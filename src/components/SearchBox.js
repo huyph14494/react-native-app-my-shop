@@ -52,6 +52,7 @@ const SearchBox = ({onSearch, textSearch}) => {
             textValue &&
             (String(textValue).trim() !== '' || textValue.length > 0)
           ) {
+            actionSearch.cancel();
             setTextValue('');
             onSearch('', true);
           }
