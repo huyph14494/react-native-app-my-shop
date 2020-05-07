@@ -9,8 +9,14 @@ import {getData, storeData} from '../../helpers/async_storage.js';
 import {Picker} from '@react-native-community/picker';
 import {CheckBox} from 'react-native-elements';
 import ModalCustomItem from '../../components/ModalCustomItem.js';
+import {createUUID} from '../../helpers/moment.js';
 
-let itemTmp = {};
+let dataTmp = {
+  item: {},
+  action: 1,
+  type: 1,
+};
+
 const leftComponent = navigation => {
   return (
     <IconBack
@@ -29,7 +35,7 @@ const onAddProdct = navigation => {
 
 const OrderCreate = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [products, setProducts] = useState([]);
+  const [lineItems, setLineItems] = useState([]);
 
   const navigationNextFn = item => {
     navigation.navigate('OrderCreateEditLineItem', {
@@ -38,39 +44,54 @@ const OrderCreate = ({route, navigation}) => {
     });
   };
 
-  const onActionCustomItem = () => {};
+  const onActionCustomItem = (item, action, type) => {
+    if (action === 1) {
+      item.id = createUUID();
+      setLineItems([...lineItems, item]);
+    } else if (action === 2) {
+      let lineItemsNews = lineItems.map(obj =>
+        obj.id === item.id ? {...item} : obj,
+      );
+      setLineItems(lineItemsNews);
+    } else if (action === 3) {
+      let lineItemsNews = lineItems.filter(obj =>
+        obj.id !== item.id ? true : false,
+      );
+      setLineItems(lineItemsNews);
+    }
+  };
 
   useEffect(() => {
     let getLineItems = async item => {
-      let productsNew = await getData('@line_items');
+      let lineItemsNew = await getData('@line_items');
 
-      if (!Array.isArray(productsNew)) {
-        productsNew = [];
+      if (!Array.isArray(lineItemsNew)) {
+        lineItemsNew = [];
       }
 
       if (
         route.params &&
         (!route.params.screen || route.params.screen === 'OrderHome')
       ) {
-        if (Array.isArray(productsNew) && productsNew.length) {
+        if (Array.isArray(lineItemsNew) && lineItemsNew.length) {
           await storeData('@line_items', []);
         }
       } else {
         if (item) {
           let isAdd = true;
-          for (let i = 0; i < productsNew.length; i++) {
-            if (productsNew[i].id === item.id) {
-              productsNew[i].quantity++;
+          for (let i = 0; i < lineItemsNew.length; i++) {
+            if (lineItemsNew[i].id === item.id) {
+              lineItemsNew[i].quantity++;
               isAdd = false;
               break;
             }
           }
           if (isAdd) {
-            productsNew.push(item);
+            lineItemsNew.push(item);
           }
-          await storeData('@line_items', productsNew);
+          await storeData('@line_items', lineItemsNew);
         }
-        setProducts(productsNew);
+        setLineItems(lineItemsNew);
       }
     };
 
@@ -119,7 +140,7 @@ const OrderCreate = ({route, navigation}) => {
                   }),
                   common.padding(0, 10),
                 ]}>
-                <LineItems items={products} navigationFn={navigationNextFn} />
+                <LineItems items={lineItems} navigationFn={navigationNextFn} />
               </View>
 
               <View
@@ -153,7 +174,11 @@ const OrderCreate = ({route, navigation}) => {
                   containerStyle={[common.width100Per, common.marginTop(15)]}
                   raised={true}
                   onPress={() => {
-                    itemTmp = {};
+                    dataTmp = {
+                      item: {},
+                      action: 1,
+                      type: 1,
+                    };
                     setModalVisible(true);
                   }}
                 />
@@ -182,7 +207,7 @@ const OrderCreate = ({route, navigation}) => {
           <ModalCustomItem
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
-            item={itemTmp}
+            data={dataTmp}
             onAction={onActionCustomItem}
           />
 

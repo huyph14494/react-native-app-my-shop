@@ -143,6 +143,21 @@ export default StyleSheet.create({
     height: textIputHeight,
     width: '100%',
   },
+  borderTop(borderTopColor = 'rgba(0,0,0,.075)', borderTopWidth = 1) {
+    let styles = {
+      borderTopColor: 'rgba(0,0,0,.075)',
+      borderTopWidth: 1,
+    };
+
+    if (borderTopColor) {
+      styles.borderTopColor = borderTopColor;
+    }
+
+    if (borderTopWidth) {
+      styles.borderTopWidth = borderTopWidth;
+    }
+    return styles;
+  },
   borderBottom(borderBottomColor = 'rgba(0,0,0,.075)', borderBottomWidth = 1) {
     let styles = {
       borderBottomColor: 'rgba(0,0,0,.075)',
@@ -256,20 +271,57 @@ export default StyleSheet.create({
     position: 'relative',
     padding: 5,
   },
-  badge: {
-    color: '#fff',
-    fontSize: 11,
-    position: 'absolute',
-    zIndex: 10,
-    top: -1,
-    right: 1,
-    padding: 1,
-    backgroundColor: 'red',
-    paddingLeft: 3,
-    // borderRadius: 5,
-    width: 18,
-    height: 18,
-    borderRadius: 18 / 2,
+  badge(value = 1) {
+    let option = {
+      measure: 18,
+      paddingLeft: 3,
+      paddingTop: 1,
+      top: -1,
+      right: 0,
+    };
+
+    if (value < 10) {
+      option = {
+        measure: 18,
+        paddingLeft: 3,
+        paddingTop: 1,
+        top: -1,
+        right: 0,
+      };
+    } else if (value < 100) {
+      option = {
+        measure: 20,
+        paddingLeft: 1.3,
+        paddingTop: 2,
+        top: -1,
+        right: -1,
+      };
+    } else {
+      option = {
+        measure: 24,
+        paddingLeft: 0,
+        paddingTop: 4,
+        top: -1,
+        right: -3,
+      };
+    }
+
+    let style = {
+      color: '#fff',
+      fontSize: 11,
+      position: 'absolute',
+      zIndex: 10,
+      top: option.top,
+      right: option.right,
+      backgroundColor: 'red',
+      paddingLeft: option.paddingLeft,
+      paddingTop: option.paddingTop,
+      // borderRadius: 5,
+      width: option.measure,
+      height: option.measure,
+      borderRadius: option.measure / 2,
+    };
+    return style;
   },
   footerList: {
     padding: 10,
@@ -288,5 +340,35 @@ export default StyleSheet.create({
     borderBottomWidth: 1,
     borderRadius: 10,
     alignSelf: 'center',
+  },
+  numbericLeft: {
+    height: textIputHeight + 8,
+    borderColor: 'rgba(0,0,0,.075)',
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '20%',
+    backgroundColor: '#FF0000',
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+  },
+  numbericCenter: {
+    height: textIputHeight + 8,
+    borderColor: 'rgba(0,0,0,.075)',
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    width: '20%',
+    paddingLeft: 10,
+  },
+  numbericRight: {
+    height: textIputHeight + 8,
+    borderColor: 'rgba(0,0,0,.075)',
+    borderWidth: 1,
+    width: '20%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#32CD32',
+    borderBottomRightRadius: 5,
+    borderTopRightRadius: 5,
   },
 });

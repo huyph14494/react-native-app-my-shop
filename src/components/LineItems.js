@@ -20,7 +20,7 @@ function showItems(item, index) {
             }),
           ]}>
           <View style={common.badgeIconView}>
-            <Text style={common.badge}> {item.quantity} </Text>
+            <Text style={common.badge(item.quantity)}> {item.quantity} </Text>
             <Image
               style={common.tinyLogo}
               source={require('../assets/no-image.jpg')}
@@ -35,8 +35,14 @@ function showItems(item, index) {
             }),
             common.padding(0, 5),
           ]}>
-          <Text style={common.padding(2, 0)}>{item.title_product}</Text>
-          <Text style={common.padding(2, 0)}>{item.title_variant}</Text>
+          <Text style={common.padding(2, 0)}>{item.title}</Text>
+
+          {item.title_variant || item.sku ? (
+            <Text style={common.padding(2, 0)}>
+              {item.title_variant + ' - ' + item.sku}
+            </Text>
+          ) : null}
+
           <Text style={common.padding(2, 0)}>{item.price}</Text>
         </View>
         <View
