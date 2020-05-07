@@ -332,7 +332,7 @@ export default StyleSheet.create({
   picker: {
     height: textIputHeight + 8,
     width: '100%',
-    marginTop: 15,
+    marginTop: 8,
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 10,

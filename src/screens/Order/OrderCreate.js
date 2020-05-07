@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, memo} from 'react';
 import {View, ScrollView, Text, TextInput} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
@@ -33,9 +33,136 @@ const onAddProdct = navigation => {
   });
 };
 
-const OrderCreate = ({route, navigation}) => {
+const Note = memo(({orderData, setOrderData}) => {
+  return (
+    <View
+      style={[
+        common.groupWidth(1, 'column'),
+        common.marginTop(15),
+        common.marginBottom(15),
+      ]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Note</Text>
+      </View>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+        ]}>
+        <TextInput
+          style={common.textInputNoBorder}
+          underlineColorAndroid={'rgba(0,0,0,.075)'}
+          placeholder={'Add Note'}
+          value={orderData.note}
+          onChangeText={text => {
+            setOrderData({
+              ...orderData,
+              note: text,
+            });
+          }}
+        />
+      </View>
+    </View>
+  );
+});
+
+const Pricing = memo(({orderData, setOrderData, lineItems}) => {
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  useEffect(() => {
+    if (Array.isArray(lineItems) && lineItems.length) {
+      setTotalPrice(
+        lineItems.reduce((accumulator, currentValue) => {
+          return (
+            Number(currentValue.price || 0) *
+              Number(currentValue.quantity || 0) +
+            accumulator
+          );
+        }, 0),
+      );
+    }
+  }, [lineItems]);
+
+  return (
+    <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Pricing</Text>
+      </View>
+      <View
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(10, 15),
+        ]}>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }),
+          ]}>
+          <Text style={common.fontSize(16)}>Total</Text>
+        </View>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+            }),
+          ]}>
+          <Text style={common.fontSize(16)}>{String(totalPrice)}</Text>
+        </View>
+      </View>
+      <View
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'center',
+            alignItems: 'center',
+          }),
+          common.padding(0, 10),
+          common.marginBottom(20),
+        ]}>
+        <View style={common.picker}>
+          <Picker
+            selectedValue={orderData.financial_status}
+            onValueChange={(itemValue, itemIndex) => {
+              setOrderData({
+                ...orderData,
+                financial_status: itemValue,
+              });
+            }}>
+            <Picker.Item label="Mark As Pending" value="pending" />
+            <Picker.Item label="Mark As Paid" value="paid" />
+          </Picker>
+        </View>
+      </View>
+    </View>
+  );
+});
+
+const Items = memo(({navigation, lineItems, setLineItems}) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [lineItems, setLineItems] = useState([]);
 
   const navigationNextFn = item => {
     navigation.navigate('OrderCreateEditLineItem', {
@@ -76,6 +203,132 @@ const OrderCreate = ({route, navigation}) => {
     await storeData('@line_items', lineItemsNew);
     setLineItems(lineItemsNew);
   };
+
+  return (
+    <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Items</Text>
+      </View>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(0, 15),
+        ]}>
+        <View
+          style={[
+            common.container(1, 'row', {
+              justifyContent: 'center',
+              alignItems: 'center',
+            }),
+            common.padding(0, 10),
+          ]}>
+          <LineItems
+            items={lineItems}
+            navigationFn={navigationNextFn}
+            onAction={onActionLineItems}
+          />
+        </View>
+
+        <View
+          style={[
+            common.container(1, 'row', {
+              justifyContent: 'center',
+              alignItems: 'center',
+            }),
+            common.padding(0, 10),
+          ]}>
+          <Button
+            title="Add Product"
+            type="solid"
+            containerStyle={[common.width100Per, common.marginTop(15)]}
+            raised={true}
+            onPress={() => onAddProdct(navigation)}
+          />
+        </View>
+        <View
+          style={[
+            common.container(1, 'row', {
+              justifyContent: 'center',
+              alignItems: 'center',
+            }),
+            common.padding(0, 10),
+            common.marginBottom(10),
+          ]}>
+          <Button
+            title="Add Custom Item"
+            type="outline"
+            containerStyle={[common.width100Per, common.marginTop(15)]}
+            raised={true}
+            onPress={() => {
+              dataTmp = {
+                item: {},
+                action: 1,
+                type: 1,
+              };
+              setModalVisible(true);
+            }}
+          />
+        </View>
+      </View>
+      {/* ------------------------------------------------------ */}
+      <ModalCustomItem
+        setModalVisible={setModalVisible}
+        modalVisible={modalVisible}
+        data={dataTmp}
+        onAction={onActionCustomItem}
+      />
+    </View>
+  );
+});
+
+const CheckBoxFulfillment = memo(({orderData, setOrderData}) => {
+  return (
+    <View style={[common.groupWidth(1, 'column')]}>
+      <View
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }),
+          common.padding(0, 10),
+        ]}>
+        <CheckBox
+          title="Mark As Fulfilled"
+          checked={orderData.fulfillment_status}
+          containerStyle={common.checkBoxElementCustom}
+          textStyle={[common.fontWeight('normal'), common.textBold]}
+          onPress={() => {
+            setOrderData({
+              ...orderData,
+              fulfillment_status: !orderData.fulfillment_status,
+            });
+          }}
+        />
+      </View>
+    </View>
+  );
+});
+
+const OrderCreate = ({route, navigation}) => {
+  const [lineItems, setLineItems] = useState([]);
+  const [orderData, setOrderData] = useState({
+    fulfillment_status: false,
+    financial_status: 'pending',
+    email: 'foo@example.com',
+    is_confirm: true,
+    note: '',
+  });
 
   useEffect(() => {
     let getLineItems = async item => {
@@ -128,204 +381,24 @@ const OrderCreate = ({route, navigation}) => {
             common.marginBottom(15),
           ]}>
           {/* ------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Items</Text>
-            </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(0, 15),
-              ]}>
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                ]}>
-                <LineItems
-                  items={lineItems}
-                  navigationFn={navigationNextFn}
-                  onAction={onActionLineItems}
-                />
-              </View>
-
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                ]}>
-                <Button
-                  title="Add Product"
-                  type="solid"
-                  containerStyle={[common.width100Per, common.marginTop(15)]}
-                  raised={true}
-                  onPress={() => onAddProdct(navigation)}
-                />
-              </View>
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                  common.marginBottom(10),
-                ]}>
-                <Button
-                  title="Add Custom Item"
-                  type="outline"
-                  containerStyle={[common.width100Per, common.marginTop(15)]}
-                  raised={true}
-                  onPress={() => {
-                    dataTmp = {
-                      item: {},
-                      action: 1,
-                      type: 1,
-                    };
-                    setModalVisible(true);
-                  }}
-                />
-              </View>
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                  common.marginBottom(10),
-                ]}>
-                <CheckBox
-                  title="Mark As Fulfilled"
-                  // checked={proGeneral.published}
-                  containerStyle={common.checkBoxElementCustom}
-                  textStyle={common.fontWeight('normal')}
-                  onPress={() => {}}
-                />
-              </View>
-            </View>
-          </View>
-
+          <Items
+            navigation={navigation}
+            setLineItems={setLineItems}
+            lineItems={lineItems}
+          />
+          <CheckBoxFulfillment
+            orderData={orderData}
+            setOrderData={setOrderData}
+          />
           {/* ------------------------------------------------------ */}
-          <ModalCustomItem
-            setModalVisible={setModalVisible}
-            modalVisible={modalVisible}
-            data={dataTmp}
-            onAction={onActionCustomItem}
+          <Pricing
+            orderData={orderData}
+            setOrderData={setOrderData}
+            lineItems={lineItems}
           />
 
           {/* ------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Pricing</Text>
-            </View>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(10, 15),
-              ]}>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }),
-                ]}>
-                <Text style={common.fontSize(16)}>Total</Text>
-              </View>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }),
-                ]}>
-                <Text style={common.fontSize(16)}>100.000</Text>
-              </View>
-            </View>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(0, 10),
-                common.marginBottom(20),
-              ]}>
-              <View style={common.picker}>
-                <Picker
-                  selectedValue={'pending'}
-                  onValueChange={(itemValue, itemIndex) =>
-                    console.log(itemValue)
-                  }>
-                  <Picker.Item label="Mark As Pending" value="pending" />
-                  <Picker.Item label="Mark As Paid" value="paid" />
-                </Picker>
-              </View>
-            </View>
-          </View>
-
-          {/* ------------------------------------------------------ */}
-          <View
-            style={[
-              common.groupWidth(1, 'column'),
-              common.marginTop(15),
-              common.marginBottom(15),
-            ]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Note</Text>
-            </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-              ]}>
-              <TextInput
-                style={common.textInputNoBorder}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Add Note'}
-              />
-            </View>
-          </View>
+          <Note orderData={orderData} setOrderData={setOrderData} />
         </View>
       </ScrollView>
     </View>
