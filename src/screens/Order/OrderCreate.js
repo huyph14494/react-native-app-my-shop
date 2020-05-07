@@ -6,7 +6,11 @@ import {Button} from 'react-native-elements';
 import LineItems from '../../components/LineItems.js';
 import IconBack from '../../components/IconBack.js';
 import {getData, storeData} from '../../helpers/async_storage.js';
+import {Picker} from '@react-native-community/picker';
+import {CheckBox} from 'react-native-elements';
+import ModalCustomItem from '../../components/ModalCustomItem.js';
 
+let itemTmp = {};
 const leftComponent = navigation => {
   return (
     <IconBack
@@ -24,6 +28,9 @@ const onAddProdct = navigation => {
 };
 
 const OrderCreate = ({route, navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [products, setProducts] = useState([]);
+
   const navigationNextFn = item => {
     navigation.navigate('OrderCreateEditLineItem', {
       screen: 'OrderCreate',
@@ -31,7 +38,7 @@ const OrderCreate = ({route, navigation}) => {
     });
   };
 
-  const [products, setProducts] = useState([]);
+  const onActionCustomItem = () => {};
 
   useEffect(() => {
     let getLineItems = async item => {
@@ -138,17 +145,46 @@ const OrderCreate = ({route, navigation}) => {
                     alignItems: 'center',
                   }),
                   common.padding(0, 10),
-                  common.marginBottom(20),
+                  common.marginBottom(10),
                 ]}>
                 <Button
                   title="Add Custom Item"
                   type="outline"
                   containerStyle={[common.width100Per, common.marginTop(15)]}
                   raised={true}
+                  onPress={() => {
+                    itemTmp = {};
+                    setModalVisible(true);
+                  }}
+                />
+              </View>
+              <View
+                style={[
+                  common.container(1, 'row', {
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }),
+                  common.padding(0, 10),
+                  common.marginBottom(10),
+                ]}>
+                <CheckBox
+                  title="Mark As Fulfilled"
+                  // checked={proGeneral.published}
+                  containerStyle={common.checkBoxElementCustom}
+                  textStyle={common.fontWeight('normal')}
+                  onPress={() => {}}
                 />
               </View>
             </View>
           </View>
+
+          {/* ------------------------------------------------------ */}
+          <ModalCustomItem
+            setModalVisible={setModalVisible}
+            modalVisible={modalVisible}
+            item={itemTmp}
+            onAction={onActionCustomItem}
+          />
 
           {/* ------------------------------------------------------ */}
           <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
@@ -197,30 +233,18 @@ const OrderCreate = ({route, navigation}) => {
                   alignItems: 'center',
                 }),
                 common.padding(0, 10),
-                common.marginBottom(5),
-              ]}>
-              <Button
-                title="Mark As Pending"
-                type="outline"
-                containerStyle={[common.width100Per, common.marginTop(15)]}
-                raised={true}
-              />
-            </View>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(0, 10),
                 common.marginBottom(20),
               ]}>
-              <Button
-                title="Mark As Paid"
-                type="outline"
-                containerStyle={[common.width100Per, common.marginTop(15)]}
-                raised={true}
-              />
+              <View style={common.picker}>
+                <Picker
+                  selectedValue={'pending'}
+                  onValueChange={(itemValue, itemIndex) =>
+                    console.log(itemValue)
+                  }>
+                  <Picker.Item label="Mark As Pending" value="pending" />
+                  <Picker.Item label="Mark As Paid" value="paid" />
+                </Picker>
+              </View>
             </View>
           </View>
 

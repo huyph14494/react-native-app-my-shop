@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {View, Text, FlatList, Image} from 'react-native';
 import common from '../styles/common.js';
 
@@ -70,4 +70,4 @@ const LineItems = props => {
   }
 };
 
-export default LineItems;
+export default memo(LineItems);

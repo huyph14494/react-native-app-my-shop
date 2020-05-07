@@ -277,4 +277,16 @@ export default StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
+  picker: {
+    height: textIputHeight + 8,
+    width: '100%',
+    marginTop: 15,
+    marginLeft: 20,
+    marginRight: 20,
+    marginBottom: 10,
+    borderColor: '#a0aec0',
+    borderBottomWidth: 1,
+    borderRadius: 10,
+    alignSelf: 'center',
+  },
 });

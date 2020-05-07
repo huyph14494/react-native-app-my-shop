@@ -12,18 +12,18 @@ import {
 import common from '../styles/common';
 import {Button} from 'react-native-elements';
 
-const validateData = variant => {
+const validateData = itemSelect => {
   let messError = [];
-  if (!variant.title || String(variant.title).trim() === '') {
+  if (!itemSelect.title || String(itemSelect.title).trim() === '') {
     messError.push('Title must not be blank!!!');
   }
-  if (!variant.sku || String(variant.sku).trim() === '') {
+  if (!itemSelect.sku || String(itemSelect.sku).trim() === '') {
     messError.push('SKU must not be blank!!!');
   }
-  if (!variant.price || String(variant.price).trim() === '') {
+  if (!itemSelect.price || String(itemSelect.price).trim() === '') {
     messError.push('Price must not be blank!!!');
   } else {
-    if (Number.isNaN(variant.price) || isNaN(variant.price)) {
+    if (Number.isNaN(itemSelect.price) || isNaN(itemSelect.price)) {
       messError.push('Price must be a number!!!');
     }
   }
@@ -44,28 +44,29 @@ const validateData = variant => {
   return messError ? true : false;
 };
 
-const ModalVariant = props => {
-  const [variant, setVariant] = useState({});
-  let action = variant && variant.id ? 2 : 1; // 3: delete, 2: update, 1: create
+const ModalCustomItem = props => {
+  const [itemSelect, setItemSelect] = useState({});
+  let action = itemSelect && itemSelect.id ? 2 : 1; // 3: delete, 2: update, 1: create
 
   useEffect(() => {
     if (props.modalVarVisible) {
-      setVariant(props.item);
+      setItemSelect(props.item);
     }
-  }, [props.item, props.modalVarVisible]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.modalVisible]);
 
   return (
     <Modal
       animationType="fade"
       transparent={true}
-      visible={props.modalVarVisible}
+      visible={props.modalVisible}
       onRequestClose={() => {
-        props.setModalVarVisible(false);
+        props.setModalVisible(false);
       }}>
       <TouchableOpacity
         activeOpacity={1}
         onPressOut={() => {
-          props.setModalVarVisible(false);
+          props.setModalVisible(false);
         }}>
         <ScrollView
           showsVerticalScrollIndicator={false}
@@ -84,7 +85,7 @@ const ModalVariant = props => {
                     common.borderBottom('rgba(0,0,0,.075)', 1),
                   ]}>
                   <Text style={common.textHeader}>
-                    {action === 2 ? 'Update Variant' : 'Create Variant'}
+                    {action === 2 ? 'Update Item' : 'Create Item'}
                   </Text>
                 </View>
                 <View
@@ -99,27 +100,18 @@ const ModalVariant = props => {
                     style={common.textInputNoBorder}
                     underlineColorAndroid={'rgba(0,0,0,.075)'}
                     placeholder={'Title'}
-                    value={variant.title || ''}
+                    value={itemSelect.title || ''}
                     onChangeText={text => {
-                      setVariant({...variant, title: text});
-                    }}
-                  />
-                  <TextInput
-                    style={[common.textInputNoBorder, common.marginTop(15)]}
-                    underlineColorAndroid={'rgba(0,0,0,.075)'}
-                    placeholder={'Sku'}
-                    value={variant.sku || ''}
-                    onChangeText={text => {
-                      setVariant({...variant, sku: text});
+                      setItemSelect({...itemSelect, title: text});
                     }}
                   />
                   <TextInput
                     style={[common.textInputNoBorder, common.marginTop(15)]}
                     underlineColorAndroid={'rgba(0,0,0,.075)'}
                     placeholder={'Price'}
-                    value={variant.price ? String(variant.price) : ''}
+                    value={itemSelect.price ? String(itemSelect.price) : ''}
                     onChangeText={text => {
-                      setVariant({...variant, price: text});
+                      setItemSelect({...itemSelect, price: text});
                     }}
                   />
 
@@ -129,10 +121,10 @@ const ModalVariant = props => {
                     containerStyle={[common.width100Per, common.marginTop(15)]}
                     raised={true}
                     onPress={() => {
-                      let error = validateData(variant);
+                      let error = validateData(itemSelect);
                       if (!error) {
-                        props.onAction(variant, action);
-                        props.setModalVarVisible(false);
+                        props.onAction(itemSelect, action);
+                        props.setModalVisible(false);
                       }
                     }}
                   />
@@ -146,8 +138,8 @@ const ModalVariant = props => {
                       ]}
                       raised={true}
                       onPress={() => {
-                        props.onAction(variant, 3);
-                        props.setModalVarVisible(false);
+                        props.onAction(itemSelect, 3);
+                        props.setModalVisible(false);
                       }}
                     />
                   ) : (
@@ -160,7 +152,7 @@ const ModalVariant = props => {
                     containerStyle={[common.width100Per, common.marginTop(15)]}
                     raised={true}
                     onPress={() => {
-                      props.setModalVarVisible(false);
+                      props.setModalVisible(false);
                     }}
                   />
                 </View>
@@ -173,4 +165,4 @@ const ModalVariant = props => {
   );
 };
 
-export default ModalVariant;
+export default ModalCustomItem;
