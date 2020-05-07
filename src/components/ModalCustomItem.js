@@ -19,7 +19,6 @@ const validateData = itemSelect => {
     messError.push('Title must not be blank!!!');
   }
   if (!itemSelect.price || String(itemSelect.price).trim() === '') {
-    messError.push('Price must not be blank!!!');
   } else {
     if (Number.isNaN(itemSelect.price) || isNaN(itemSelect.price)) {
       messError.push('Price must be a number!!!');
@@ -52,9 +51,10 @@ const ModalCustomItem = props => {
   };
 
   useEffect(() => {
-    if (props.modalVisible) {
-      setItemSelect(props.data.item);
+    if (props.modalVisible && props.data && props.data.item) {
+      setItemSelect({...props.data.item});
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.data.item, props.modalVisible]);
 
   return (
@@ -100,46 +100,42 @@ const ModalCustomItem = props => {
                     common.padding(15, 15),
                   ]}>
                   <Text style={[common.marginTop(10), common.textBold]}>
-                    Title:
+                    Title:{' '}
+                    {props.data.type === 2 ? itemSelect.title || '' : null}
                   </Text>
-                  <TextInput
-                    style={common.textInputNoBorder}
-                    underlineColorAndroid={'rgba(0,0,0,.075)'}
-                    value={itemSelect.title || ''}
-                    onChangeText={text => {
-                      setItemSelect({...itemSelect, title: text});
-                    }}
-                    editable={props.data.type === 1}
-                  />
+
+                  {props.data.type === 1 ? (
+                    <TextInput
+                      style={common.textInputNoBorder}
+                      underlineColorAndroid={'rgba(0,0,0,.075)'}
+                      value={itemSelect.title || ''}
+                      onChangeText={text => {
+                        setItemSelect({...itemSelect, title: text});
+                      }}
+                    />
+                  ) : null}
 
                   {props.data.type === 2 ? (
-                    <View>
-                      <Text style={[common.marginTop(10), common.textBold]}>
-                        Sku:
-                      </Text>
-                      <TextInput
-                        style={common.textInputNoBorder}
-                        underlineColorAndroid={'rgba(0,0,0,.075)'}
-                        value={itemSelect.sku || ''}
-                        editable={false}
-                      />
-                    </View>
-                  ) : (
-                    <View />
-                  )}
+                    <Text style={[common.marginTop(10), common.textBold]}>
+                      Sku: {itemSelect.sku || ''}
+                    </Text>
+                  ) : null}
 
                   <Text style={[common.marginTop(10), common.textBold]}>
-                    Price:
+                    Price:{' '}
+                    {props.data.type === 2 ? itemSelect.price || '0' : null}
                   </Text>
-                  <TextInput
-                    style={[common.textInputNoBorder]}
-                    underlineColorAndroid={'rgba(0,0,0,.075)'}
-                    value={itemSelect.price ? String(itemSelect.price) : ''}
-                    onChangeText={text => {
-                      setItemSelect({...itemSelect, price: text});
-                    }}
-                    editable={props.data.type === 1}
-                  />
+
+                  {props.data.type === 1 ? (
+                    <TextInput
+                      style={[common.textInputNoBorder]}
+                      underlineColorAndroid={'rgba(0,0,0,.075)'}
+                      value={itemSelect.price ? String(itemSelect.price) : ''}
+                      onChangeText={text => {
+                        setItemSelect({...itemSelect, price: text});
+                      }}
+                    />
+                  ) : null}
 
                   <Text style={[common.marginTop(10), common.textBold]}>
                     Quantity:
@@ -147,6 +143,7 @@ const ModalCustomItem = props => {
                   <NumbericeInput
                     styleContainer={common.margin(12, 0)}
                     onAction={onActionNumberic}
+                    initData={itemSelect.quantity || 1}
                   />
                   <Button
                     title={props.data.action === 2 ? 'Update' : 'Create'}

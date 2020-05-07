@@ -1,11 +1,12 @@
 import React, {memo} from 'react';
-import {View, Text, FlatList, Image} from 'react-native';
+import {View, Text, FlatList, Image, TouchableOpacity} from 'react-native';
 import common from '../styles/common.js';
 
-function showItems(item, index) {
+function showItems(item, index, onAction) {
   return (
-    <View
+    <TouchableOpacity
       key={index}
+      onPress={() => onAction(item)}
       style={[
         common.group(1, 'column'),
         common.margin(5, 0),
@@ -39,7 +40,7 @@ function showItems(item, index) {
 
           {item.title_variant || item.sku ? (
             <Text style={common.padding(2, 0)}>
-              {item.title_variant + ' - ' + item.sku}
+              {item.title_variant + (item.sku ? ' - ' + item.sku : '')}
             </Text>
           ) : null}
 
@@ -55,7 +56,7 @@ function showItems(item, index) {
           <Text>{item.price * item.quantity}</Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -66,7 +67,7 @@ const LineItems = props => {
         scrollEnabled={true}
         showsVerticalScrollIndicator={false}
         data={props.items}
-        renderItem={({item, index}) => showItems(item, index)}
+        renderItem={({item, index}) => showItems(item, index, props.onAction)}
         keyExtractor={item => item.id}
         extraData={props.items}
       />

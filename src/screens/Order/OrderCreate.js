@@ -44,21 +44,37 @@ const OrderCreate = ({route, navigation}) => {
     });
   };
 
-  const onActionCustomItem = (item, action, type) => {
+  const onActionLineItems = item => {
+    dataTmp = {
+      item,
+      action: 2,
+      type: item.hasOwnProperty('sku') ? 2 : 1,
+    };
+    setModalVisible(true);
+  };
+
+  const onActionCustomItem = async (item, action, type) => {
+    let lineItemsNew = [];
     if (action === 1) {
       item.id = createUUID();
-      setLineItems([...lineItems, item]);
+      if (!item.quantity) {
+        item.quantity = 1;
+      }
+      if (!item.price) {
+        item.price = String(0);
+      }
+      lineItemsNew = [...lineItems, item];
     } else if (action === 2) {
-      let lineItemsNews = lineItems.map(obj =>
+      lineItemsNew = lineItems.map(obj =>
         obj.id === item.id ? {...item} : obj,
       );
-      setLineItems(lineItemsNews);
     } else if (action === 3) {
-      let lineItemsNews = lineItems.filter(obj =>
+      lineItemsNew = lineItems.filter(obj =>
         obj.id !== item.id ? true : false,
       );
-      setLineItems(lineItemsNews);
     }
+    await storeData('@line_items', lineItemsNew);
+    setLineItems(lineItemsNew);
   };
 
   useEffect(() => {
@@ -140,7 +156,11 @@ const OrderCreate = ({route, navigation}) => {
                   }),
                   common.padding(0, 10),
                 ]}>
-                <LineItems items={lineItems} navigationFn={navigationNextFn} />
+                <LineItems
+                  items={lineItems}
+                  navigationFn={navigationNextFn}
+                  onAction={onActionLineItems}
+                />
               </View>
 
               <View

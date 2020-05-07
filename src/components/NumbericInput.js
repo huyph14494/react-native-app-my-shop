@@ -3,13 +3,17 @@ import {View, TextInput, TouchableOpacity} from 'react-native';
 import common from '../styles/common';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const NumbericeInput = ({styleContainer, onAction}) => {
-  const [item, setItem] = useState('1');
+const NumbericeInput = ({styleContainer, onAction, initData}) => {
+  const [item, setItem] = useState(String(initData || 1));
 
   useEffect(() => {
     onAction(item);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
+
+  useEffect(() => {
+    setItem(String(initData || 1));
+  }, [initData]);
 
   return (
     <View style={[common.container(1, 'row'), styleContainer]}>

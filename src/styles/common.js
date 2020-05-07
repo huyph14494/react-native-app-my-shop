@@ -243,7 +243,7 @@ export default StyleSheet.create({
     };
   },
   modalView: {
-    marginTop: marginHeader + 7,
+    marginTop: marginHeader,
     marginBottom: 20,
     marginHorizontal: 20,
     backgroundColor: 'white',
@@ -283,7 +283,7 @@ export default StyleSheet.create({
     if (value < 10) {
       option = {
         measure: 18,
-        paddingLeft: 3,
+        paddingLeft: 2.9,
         paddingTop: 1,
         top: -1,
         right: 0,
@@ -291,7 +291,7 @@ export default StyleSheet.create({
     } else if (value < 100) {
       option = {
         measure: 20,
-        paddingLeft: 1.3,
+        paddingLeft: 1.1,
         paddingTop: 2,
         top: -1,
         right: -1,
