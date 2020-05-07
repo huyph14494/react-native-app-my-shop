@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as productApi from './product';
+import * as orderApi from './order';
 
 const API_KEY = '9fLel2rtGE5ghAu6uTIN7ebgGVZX-ZFtWXLh0E82F7c';
 const BASE_URL = 'https://apis.haravan.com/com';
@@ -24,6 +25,9 @@ const callApi = async ({entity, action, id, params, data, whereFn}) => {
   switch (entity) {
     case ENTITY_PRODUCT:
       apiObj = productApi.getAction(action);
+      break;
+    case ENTITY_ORDER:
+      apiObj = orderApi.getAction(action);
       break;
   }
 
@@ -86,5 +90,6 @@ const haravan = {
   TIME_CACHE_API,
   LIMIT_LIST,
   ...productApi,
+  ...orderApi,
 };
 export {haravan};

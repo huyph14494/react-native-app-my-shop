@@ -1,5 +1,12 @@
 import React, {useEffect, useState, memo} from 'react';
-import {View, ScrollView, Text, TextInput} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import {Button} from 'react-native-elements';
@@ -10,6 +17,10 @@ import {Picker} from '@react-native-community/picker';
 import {CheckBox} from 'react-native-elements';
 import ModalCustomItem from '../../components/ModalCustomItem.js';
 import {createUUID} from '../../helpers/moment.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {haravan} from '../../apis/haravan/haravan.js';
+import SplashScreen from '../SplashScreen/SplashScreen.js';
+import {removeData} from '../../helpers/async_storage.js';
 
 let dataTmp = {
   item: {},
@@ -17,13 +28,27 @@ let dataTmp = {
   type: 1,
 };
 
-const leftComponent = navigation => {
+// const leftComponent = navigation => {
+//   return (
+//     <IconBack
+//       navigation={navigation}
+//       screenNext={'OrderHome'}
+//       screenCurrent={'OrderCreate'}
+//     />
+//   );
+// };
+
+const leftComponent = onAction => {
   return (
-    <IconBack
-      navigation={navigation}
-      screenNext={'OrderHome'}
-      screenCurrent={'OrderCreate'}
-    />
+    <View>
+      <TouchableOpacity
+        style={[common.padding(8, 18)]}
+        onPress={() => {
+          onAction();
+        }}>
+        <Icon color="white" name="check" size={22} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -320,13 +345,27 @@ const CheckBoxFulfillment = memo(({orderData, setOrderData}) => {
   );
 });
 
+const formatLineItems = lineItems => {
+  return lineItems.map(item => {
+    let itemNew = {
+      title: item.title,
+      price: Number(item.price || 0),
+      quantity: Number(item.quantity || 1),
+    };
+
+    if (item.variant_id) {
+      itemNew.variant_id = item.variant_id;
+    }
+    return itemNew;
+  });
+};
+
 const OrderCreate = ({route, navigation}) => {
+  const [isCreate, setIsCreate] = useState(false);
   const [lineItems, setLineItems] = useState([]);
   const [orderData, setOrderData] = useState({
     fulfillment_status: false,
     financial_status: 'pending',
-    email: 'foo@example.com',
-    is_confirm: true,
     note: '',
   });
 
@@ -368,41 +407,99 @@ const OrderCreate = ({route, navigation}) => {
     getLineItems(itemNew);
   }, [route.params]);
 
-  return (
-    <View>
-      <Header name={route.name} leftComponent={leftComponent(navigation)} />
+  const createOrder = () => {
+    let messError = [];
+    if (!Array.isArray(lineItems) || !lineItems.length) {
+      messError.push('You have to choose the product!!!');
+    }
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={common.marginBottomHeader}>
-        <View
-          style={[
-            common.container(1, 'column', {alignItems: 'center'}),
-            common.marginBottom(15),
-          ]}>
-          {/* ------------------------------------------------------ */}
-          <Items
-            navigation={navigation}
-            setLineItems={setLineItems}
-            lineItems={lineItems}
-          />
-          <CheckBoxFulfillment
-            orderData={orderData}
-            setOrderData={setOrderData}
-          />
-          {/* ------------------------------------------------------ */}
-          <Pricing
-            orderData={orderData}
-            setOrderData={setOrderData}
-            lineItems={lineItems}
-          />
+    messError = messError.join(' \n ');
+    if (messError) {
+      Alert.alert('Warning', messError, [{text: 'Yes'}], {cancelable: true});
+    } else {
+      setIsCreate(true);
+    }
+  };
 
-          {/* ------------------------------------------------------ */}
-          <Note orderData={orderData} setOrderData={setOrderData} />
-        </View>
-      </ScrollView>
-    </View>
-  );
+  useEffect(() => {
+    let createOrderApi = async () => {
+      try {
+        let dataCreate = {
+          order: {
+            email: 'foo@example.com',
+            financial_status: orderData.financial_status,
+            is_confirm: true,
+            note: orderData.note,
+            line_items: formatLineItems(lineItems),
+          },
+        };
+
+        if (orderData.fulfillment_status) {
+          dataCreate.order.fulfillment_status = 'fulfilled';
+        }
+        await haravan.delayAPi();
+        await haravan.callApi({
+          entity: haravan.ENTITY_ORDER,
+          action: haravan.CREATE_ORDER,
+          data: dataCreate,
+          whereFn: 'OrderCreate createOrderApi',
+        });
+        await removeData('@orders');
+      } catch (error) {
+        console.log('OrderCreate createOrderApi:', error);
+      }
+
+      navigation.navigate('OrderHome', {
+        screen: 'OrderCreate',
+        data: null,
+      });
+    };
+
+    if (isCreate) {
+      createOrderApi();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isCreate]);
+
+  if (isCreate) {
+    return <SplashScreen />;
+  } else {
+    return (
+      <View>
+        <Header name={route.name} leftComponent={leftComponent(createOrder)} />
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={common.marginBottomHeader}>
+          <View
+            style={[
+              common.container(1, 'column', {alignItems: 'center'}),
+              common.marginBottom(15),
+            ]}>
+            {/* ------------------------------------------------------ */}
+            <Items
+              navigation={navigation}
+              setLineItems={setLineItems}
+              lineItems={lineItems}
+            />
+            <CheckBoxFulfillment
+              orderData={orderData}
+              setOrderData={setOrderData}
+            />
+            {/* ------------------------------------------------------ */}
+            <Pricing
+              orderData={orderData}
+              setOrderData={setOrderData}
+              lineItems={lineItems}
+            />
+
+            {/* ------------------------------------------------------ */}
+            <Note orderData={orderData} setOrderData={setOrderData} />
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
 };
 
 export default OrderCreate;
