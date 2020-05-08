@@ -1,9 +1,17 @@
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import common from '../styles/common.js';
 import {formatDateTime} from '../helpers/moment';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from 'react-native';
+import {haravan} from '../apis/haravan/haravan.js';
 
-function showItems(item, index, navigation) {
+function showItems(item, index, navigationFn) {
   let styleFirstItem = {};
   if (index === 0) {
     styleFirstItem = common.marginTopHeader;
@@ -11,12 +19,9 @@ function showItems(item, index, navigation) {
 
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate('OrderDetail', {
-          screen: 'OrderList',
-          order: item,
-        })
-      }>
+      onPress={() => {
+        navigationFn(item);
+      }}>
       <View
         key={item.id}
         style={[
@@ -42,7 +47,11 @@ function showItems(item, index, navigation) {
                 alignItems: 'flex-end',
               }),
             ]}>
-            <Text style={common.labelWarning}>{item.financial_status}</Text>
+            {item.financial_status === 'paid' ? (
+              <Text style={common.labelSuccess}>{item.financial_status}</Text>
+            ) : (
+              <Text style={common.labelDanger}>{item.financial_status}</Text>
+            )}
           </View>
           <View
             style={[
@@ -51,7 +60,11 @@ function showItems(item, index, navigation) {
                 alignItems: 'flex-end',
               }),
             ]}>
-            <Text style={common.labelDanger}>{item.fulfillment_status}</Text>
+            {item.fulfillment_status === 'fulfilled' ? (
+              <Text style={common.labelSuccess}>{item.fulfillment_status}</Text>
+            ) : (
+              <Text style={common.labelWarning}>{item.fulfillment_status}</Text>
+            )}
           </View>
         </View>
         <View
@@ -67,7 +80,7 @@ function showItems(item, index, navigation) {
                 alignItems: 'flex-start',
               }),
             ]}>
-            <Text>{formatDateTime(new Date())}</Text>
+            <Text>{formatDateTime(item.created_at)}</Text>
           </View>
           <View
             style={[
@@ -76,7 +89,7 @@ function showItems(item, index, navigation) {
                 alignItems: 'flex-end',
               }),
             ]}>
-            <Text style={common.textHeader}>100.000</Text>
+            <Text style={common.textHeader}>{item.total_price}</Text>
           </View>
         </View>
       </View>
@@ -84,15 +97,45 @@ function showItems(item, index, navigation) {
   );
 }
 
+const renderFooter = props => {
+  return (
+    <View style={common.footerList}>
+      {props.isFetchingLoadMore ? (
+        <ActivityIndicator
+          color="red"
+          size="large"
+          style={common.margin(15, 15)}
+        />
+      ) : null}
+    </View>
+  );
+};
+
 const ListOrder = props => {
   return (
     <FlatList
+      style={common.marginBottomHeaderSearch}
       scrollEnabled={true}
       showsVerticalScrollIndicator={false}
       data={props.orders}
-      renderItem={({item, index}) => showItems(item, index, props.navigation)}
-      keyExtractor={item => item.id}
+      renderItem={({item, index}) => showItems(item, index, props.navigationFn)}
+      keyExtractor={item => String(item.id)}
       extraData={props.orders}
+      onEndReached={() => {
+        if (!props.isFetchingLoadMore) {
+          props.loadMoreData();
+        }
+      }}
+      onEndReachedThreshold={0.2}
+      ListFooterComponent={renderFooter(props)}
+      initialNumToRender={haravan.LIMIT_LIST} // how many item to display first
+      refreshControl={
+        <RefreshControl
+          //refresh control used for the Pull to Refresh
+          refreshing={props.isLoading}
+          onRefresh={props.onRefresh}
+        />
+      }
     />
   );
 };
