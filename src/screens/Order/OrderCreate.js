@@ -44,6 +44,7 @@ const leftComponent = onAction => {
       <TouchableOpacity
         style={[common.padding(8, 18)]}
         onPress={() => {
+          console.log('sssss');
           onAction();
         }}>
         <Icon color="white" name="check" size={22} />
@@ -189,13 +190,6 @@ const Pricing = memo(({orderData, setOrderData, lineItems}) => {
 const Items = memo(({navigation, lineItems, setLineItems}) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const navigationNextFn = item => {
-    navigation.navigate('OrderCreateEditLineItem', {
-      screen: 'OrderCreate',
-      data: {item},
-    });
-  };
-
   const onActionLineItems = item => {
     dataTmp = {
       item,
@@ -258,11 +252,7 @@ const Items = memo(({navigation, lineItems, setLineItems}) => {
             }),
             common.padding(0, 10),
           ]}>
-          <LineItems
-            items={lineItems}
-            navigationFn={navigationNextFn}
-            onAction={onActionLineItems}
-          />
+          <LineItems items={lineItems} onAction={onActionLineItems} />
         </View>
 
         <View

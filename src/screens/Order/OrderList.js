@@ -9,7 +9,7 @@ import IconBack from '../../components/IconBack.js';
 import {haravan} from '../../apis/haravan/haravan.js';
 import {getData, storeData} from '../../helpers/async_storage.js';
 const fields =
-  'id,order_number,financial_status,fulfillment_status,created_at,customer,total_price';
+  'id,order_number,financial_status,fulfillment_status,created_at,line_items,total_price,fulfillments';
 
 class OrderList extends Component {
   constructor(props) {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';

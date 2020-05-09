@@ -1,266 +1,410 @@
-import React, {useEffect, useState} from 'react';
-import {View, ScrollView, Text, TextInput} from 'react-native';
+import React, {useEffect, useState, memo, useRef} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
-import {Button} from 'react-native-elements';
+import {Button, CheckBox} from 'react-native-elements';
 import LineItems from '../../components/LineItems.js';
 import IconBack from '../../components/IconBack.js';
-import {getData, storeData} from '../../helpers/async_storage.js';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {haravan} from '../../apis/haravan/haravan.js';
+import SplashScreen from '../SplashScreen/SplashScreen.js';
+import {removeData} from '../../helpers/async_storage.js';
 
-const leftComponent = navigation => {
+// const leftComponent = navigation => {
+//   return (
+// <IconBack
+//   navigation={navigation}
+//   screenNext={'OrderHome'}
+//   screenCurrent={'OrderCreate'}
+// />
+//   );
+// };
+
+const leftComponent = (navigation, onAction) => {
   return (
-    <IconBack
-      navigation={navigation}
-      screenNext={'OrderHome'}
-      screenCurrent={'OrderCreate'}
-    />
+    <View>
+      <IconBack
+        navigation={navigation}
+        screenNext={'OrderHome'}
+        screenCurrent={'OrderDetail'}
+      />
+      <TouchableOpacity
+        style={[common.padding(8, 18)]}
+        onPress={() => {
+          onAction();
+        }}>
+        <Icon color="white" name="check" size={22} />
+      </TouchableOpacity>
+    </View>
   );
 };
 
-const onAddProdct = navigation => {
-  navigation.navigate('OrderCreateAddProduct', {
-    screen: 'OrderCreate',
+const Note = memo(({orderData, setOrderData}) => {
+  return (
+    <View
+      style={[
+        common.groupWidth(1, 'column'),
+        common.marginTop(15),
+        common.marginBottom(15),
+      ]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Note</Text>
+      </View>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 25),
+        ]}>
+        <TextInput
+          style={common.textInputNoBorder}
+          underlineColorAndroid={'rgba(0,0,0,.075)'}
+          placeholder={'Add Note'}
+          value={orderData.note}
+          onChangeText={text => {
+            setOrderData({
+              ...orderData,
+              note: text,
+            });
+          }}
+        />
+      </View>
+    </View>
+  );
+});
+
+const Pricing = memo(({orderData, setOrderData}) => {
+  return (
+    <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Pricing</Text>
+      </View>
+      <View
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(10, 25),
+        ]}>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+            }),
+          ]}>
+          <Text style={common.fontSize(16)}>Total</Text>
+        </View>
+        <View
+          style={[
+            common.container(1, 'column', {
+              justifyContent: 'center',
+              alignItems: 'flex-end',
+            }),
+          ]}>
+          <Text style={common.fontSize(16)}>
+            {String(orderData.total_price)}
+          </Text>
+        </View>
+      </View>
+      <View
+        style={[
+          common.container(1, 'row', {
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+          }),
+          common.padding(0, 25),
+          common.marginBottom(20),
+        ]}>
+        {String(orderData.financial_status)
+          .trim()
+          .toLowerCase() === 'paid' ? (
+          <CheckBox
+            title="Paid"
+            checked={true}
+            containerStyle={[common.labelSuccessCheckBox]}
+            checkedColor={'green'}
+            textStyle={[
+              common.fontWeight('normal'),
+              common.textBold,
+              common.colorLabelSuccess,
+            ]}
+          />
+        ) : (
+          <Button
+            title="Mark As Paid"
+            containerStyle={[common.width100Per, common.marginTop(15)]}
+            raised={true}
+            onPress={() => {
+              return setOrderData({
+                ...orderData,
+                financial_status: 'paid',
+                isUpdate: true,
+              });
+            }}
+          />
+        )}
+      </View>
+    </View>
+  );
+});
+
+const Items = memo(({lineItems, orderData, setOrderData}) => {
+  return (
+    <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(15, 15),
+          common.borderBottom('rgba(0,0,0,.075)', 1),
+        ]}>
+        <Text style={common.textHeader}>Items</Text>
+      </View>
+      <View
+        style={[
+          common.container(1, 'column', {
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+          }),
+          common.padding(0, 15),
+        ]}>
+        <View
+          style={[
+            common.container(1, 'row', {
+              justifyContent: 'center',
+              alignItems: 'center',
+            }),
+            common.padding(0, 10),
+          ]}>
+          <LineItems items={lineItems} onAction={() => {}} />
+        </View>
+
+        <View
+          style={[
+            common.container(1, 'row', {
+              justifyContent: 'center',
+              alignItems: 'center',
+            }),
+            common.padding(0, 10),
+            common.marginBottom(10),
+          ]}>
+          {String(orderData.fulfillment_status)
+            .trim()
+            .toLowerCase() === 'fulfilled' ? (
+            <CheckBox
+              title="Fulfilled"
+              checked={true}
+              containerStyle={[common.labelSuccessCheckBox]}
+              checkedColor={'green'}
+              textStyle={[
+                common.fontWeight('normal'),
+                common.textBold,
+                common.colorLabelSuccess,
+              ]}
+            />
+          ) : (
+            <Button
+              title="Mark As Fulfilled"
+              containerStyle={[common.width100Per, common.marginTop(15)]}
+              raised={true}
+              onPress={() => {
+                return setOrderData({
+                  ...orderData,
+                  fulfillment_status: 'fulfilled',
+                  isUpdate: true,
+                });
+              }}
+            />
+          )}
+        </View>
+      </View>
+    </View>
+  );
+});
+
+const compareUpdate = (orderOld, orderNew) => {
+  let isUpdateApi = false;
+  let fieldChange = {
+    note: false,
+    fulfillment_status: false,
+    financial_status: false,
+  };
+  if (
+    orderNew.isNextScreen &&
+    String(orderOld.note).trim() !== String(orderNew.note).trim()
+  ) {
+    isUpdateApi = true;
+    fieldChange.note = true;
+  }
+
+  if (orderOld.fulfillment_status !== orderNew.fulfillment_status) {
+    isUpdateApi = true;
+    fieldChange.fulfillment_status = true;
+  } else if (orderOld.financial_status !== orderNew.financial_status) {
+    isUpdateApi = true;
+    fieldChange.financial_status = true;
+  }
+  return {isUpdateApi, fieldChange};
+};
+
+const callApiUpdateOrder = async options => {
+  await haravan.delayAPi();
+  await haravan.callApi({
+    ...options,
+    entity: haravan.ENTITY_ORDER,
+    whereFn: 'OrderDetail ' + options.action,
   });
 };
 
 const OrderDetail = ({route, navigation}) => {
-  const navigationNextFn = item => {
-    navigation.navigate('OrderCreateEditLineItem', {
-      screen: 'OrderCreate',
-      data: {item},
-    });
-  };
+  const orderOld = route.params?.data?.order ?? {};
 
-  const [products, setProducts] = useState([]);
+  const [orderData, setOrderData] = useState({
+    ...orderOld,
+    isUpdate: false,
+    isNextScreen: false,
+  });
+  const isInitialMount = useRef(true);
 
   useEffect(() => {
-    let getLineItems = async item => {
-      let productsNew = await getData('@line_items');
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+    } else {
+      if (orderData.isUpdate) {
+        let updateOrderApi = async () => {
+          let {isUpdateApi, fieldChange} = compareUpdate(orderOld, orderData);
+          if (isUpdateApi) {
+            try {
+              if (fieldChange.note) {
+                await callApiUpdateOrder({
+                  action: haravan.UPDATE_ORDER,
+                  id: orderData.id,
+                  data: {
+                    order: {
+                      id: orderData.id,
+                      note: orderData.note,
+                    },
+                  },
+                });
+              } else if (fieldChange.financial_status) {
+                await callApiUpdateOrder({
+                  action: haravan.UPDATE_ORDER_PAID,
+                  id: orderData.id,
+                  data: {
+                    transaction: {
+                      kind: 'capture',
+                      send_email: false,
+                    },
+                  },
+                });
+              } else if (
+                fieldChange.fulfillment_status &&
+                orderData.fulfillment_status
+              ) {
+                await callApiUpdateOrder({
+                  action: haravan.UPDATE_ORDER_FULFILLED,
+                  id: orderData.id,
+                  data: {
+                    fulfillment: {
+                      notify_customer: false,
+                    },
+                  },
+                });
+              }
 
-      if (!Array.isArray(productsNew)) {
-        productsNew = [];
-      }
-
-      if (
-        route.params &&
-        (!route.params.screen || route.params.screen === 'OrderHome')
-      ) {
-        if (Array.isArray(productsNew) && productsNew.length) {
-          await storeData('@line_items', []);
-        }
-      } else {
-        if (item) {
-          let isAdd = true;
-          for (let i = 0; i < productsNew.length; i++) {
-            if (productsNew[i].id === item.id) {
-              productsNew[i].quantity++;
-              isAdd = false;
-              break;
+              await removeData('@orders');
+            } catch (error) {
+              console.log('OrderDetail updateOrderApi', error);
             }
           }
-          if (isAdd) {
-            productsNew.push(item);
+
+          if (orderData.isNextScreen) {
+            navigation.navigate('OrderHome', {
+              screen: 'OrderDetail',
+              data: null,
+            });
+          } else {
+            setOrderData({
+              ...orderData,
+              isUpdate: false,
+            });
           }
-          await storeData('@line_items', productsNew);
-        }
-        setProducts(productsNew);
+        };
+
+        updateOrderApi();
       }
-    };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderData]);
 
-    let itemNew = route.params?.data?.item ?? null;
-    getLineItems(itemNew);
-  }, [route.params]);
+  if (orderData.isUpdate) {
+    return <SplashScreen />;
+  } else {
+    return (
+      <View>
+        <Header
+          name={route.name}
+          leftComponent={leftComponent(navigation, () => {
+            return setOrderData({
+              ...orderData,
+              isUpdate: true,
+              isNextScreen: true,
+            });
+          })}
+        />
 
-  return (
-    <View>
-      <Header name={route.name} leftComponent={leftComponent(navigation)} />
-
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={common.marginBottomHeader}>
-        <View
-          style={[
-            common.container(1, 'column', {alignItems: 'center'}),
-            common.marginBottom(15),
-          ]}>
-          {/* ------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Items</Text>
-            </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(0, 15),
-              ]}>
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                ]}>
-                <LineItems items={products} navigationFn={navigationNextFn} />
-              </View>
-
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                ]}>
-                <Button
-                  title="Add Product"
-                  type="solid"
-                  containerStyle={[common.width100Per, common.marginTop(15)]}
-                  raised={true}
-                  onPress={() => onAddProdct(navigation)}
-                />
-              </View>
-              <View
-                style={[
-                  common.container(1, 'row', {
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }),
-                  common.padding(0, 10),
-                  common.marginBottom(20),
-                ]}>
-                <Button
-                  title="Add Custom Item"
-                  type="outline"
-                  containerStyle={[common.width100Per, common.marginTop(15)]}
-                  raised={true}
-                />
-              </View>
-            </View>
-          </View>
-
-          {/* ------------------------------------------------------ */}
-          <View style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Pricing</Text>
-            </View>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(10, 15),
-              ]}>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                  }),
-                ]}>
-                <Text style={common.fontSize(16)}>Total</Text>
-              </View>
-              <View
-                style={[
-                  common.container(1, 'column', {
-                    justifyContent: 'center',
-                    alignItems: 'flex-end',
-                  }),
-                ]}>
-                <Text style={common.fontSize(16)}>100.000</Text>
-              </View>
-            </View>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(0, 10),
-                common.marginBottom(5),
-              ]}>
-              <Button
-                title="Mark As Pending"
-                type="outline"
-                containerStyle={[common.width100Per, common.marginTop(15)]}
-                raised={true}
-              />
-            </View>
-            <View
-              style={[
-                common.container(1, 'row', {
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }),
-                common.padding(0, 10),
-                common.marginBottom(20),
-              ]}>
-              <Button
-                title="Mark As Paid"
-                type="outline"
-                containerStyle={[common.width100Per, common.marginTop(15)]}
-                raised={true}
-              />
-            </View>
-          </View>
-
-          {/* ------------------------------------------------------ */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={common.marginBottomHeader}>
           <View
             style={[
-              common.groupWidth(1, 'column'),
-              common.marginTop(15),
+              common.container(1, 'column', {alignItems: 'center'}),
               common.marginBottom(15),
             ]}>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-                common.borderBottom('rgba(0,0,0,.075)', 1),
-              ]}>
-              <Text style={common.textHeader}>Note</Text>
-            </View>
-            <View
-              style={[
-                common.container(1, 'column', {
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                }),
-                common.padding(15, 15),
-              ]}>
-              <TextInput
-                style={common.textInputNoBorder}
-                underlineColorAndroid={'rgba(0,0,0,.075)'}
-                placeholder={'Add Note'}
-              />
-            </View>
+            {/* ------------------------------------------------------ */}
+            <Items
+              lineItems={orderData.line_items}
+              setOrderData={setOrderData}
+              orderData={orderData}
+            />
+            {/* ------------------------------------------------------ */}
+            <Pricing orderData={orderData} setOrderData={setOrderData} />
+
+            {/* ------------------------------------------------------ */}
+            <Note orderData={orderData} setOrderData={setOrderData} />
           </View>
-        </View>
-      </ScrollView>
-    </View>
-  );
+        </ScrollView>
+      </View>
+    );
+  }
 };
 
 export default OrderDetail;

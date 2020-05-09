@@ -31,9 +31,14 @@ import {createUUID} from '../../helpers/moment.js';
 //   );
 // };
 
-const leftComponent = onAction => {
+const leftComponent = (navigation, onAction) => {
   return (
     <View>
+      <IconBack
+        navigation={navigation}
+        screenNext={'ProductList'}
+        screenCurrent={'ProductDetail'}
+      />
       <TouchableOpacity
         style={[common.padding(8, 18)]}
         onPress={() => {
@@ -357,7 +362,7 @@ const ProductDetail = ({route, navigation}) => {
       <View>
         <Header
           name={route.name}
-          leftComponent={leftComponent(updateProduct)}
+          leftComponent={leftComponent(navigation, updateProduct)}
         />
 
         <ScrollView

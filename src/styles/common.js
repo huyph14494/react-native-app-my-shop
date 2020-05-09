@@ -195,6 +195,18 @@ export default StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  labelSuccessCheckBox: {
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    marginLeft: 0,
+    borderRadius: 5,
+    backgroundColor: '#e5f2ce',
+    borderWidth: 1.5,
+    borderColor: '#cddeb5',
+  },
+  colorLabelSuccess: {
+    color: '#4b6319',
+  },
   labelSuccess: {
     paddingVertical: 5,
     paddingHorizontal: 10,

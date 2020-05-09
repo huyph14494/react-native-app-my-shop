@@ -68,7 +68,7 @@ const LineItems = props => {
         showsVerticalScrollIndicator={false}
         data={props.items}
         renderItem={({item, index}) => showItems(item, index, props.onAction)}
-        keyExtractor={item => item.id}
+        keyExtractor={item => String(item.id)}
         extraData={props.items}
       />
     );

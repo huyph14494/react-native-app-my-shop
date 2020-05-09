@@ -63,7 +63,6 @@ const callApi = async ({entity, action, id, params, data, whereFn}) => {
 
   try {
     // console.log(data);
-
     await delay(TIME_DELAY_API);
     let response = await INSTANCE(config);
     let now = new Date();
@@ -77,8 +76,8 @@ const callApi = async ({entity, action, id, params, data, whereFn}) => {
     );
     return response.data;
   } catch (error) {
-    console.log('callApi', error);
-    throw new Error('callApi: ' + error);
+    console.log(whereFn, error);
+    throw new Error(whereFn, error);
   }
 };
 
