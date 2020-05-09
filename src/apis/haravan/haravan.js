@@ -17,7 +17,7 @@ const INSTANCE = axios.create({
 });
 
 const delay = t => new Promise(resolve => setTimeout(resolve, t));
-const delayAPi = () => delay(TIME_DELAY_API);
+const delayAPi = time => delay(time || TIME_DELAY_API);
 
 const callApi = async ({entity, action, id, params, data, whereFn}) => {
   let apiObj = null;

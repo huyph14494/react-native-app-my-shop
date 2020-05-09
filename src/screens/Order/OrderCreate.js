@@ -44,7 +44,6 @@ const leftComponent = onAction => {
       <TouchableOpacity
         style={[common.padding(8, 18)]}
         onPress={() => {
-          console.log('sssss');
           onAction();
         }}>
         <Icon color="white" name="check" size={22} />
@@ -427,7 +426,19 @@ const OrderCreate = ({route, navigation}) => {
         if (orderData.fulfillment_status) {
           dataCreate.order.fulfillment_status = 'fulfilled';
         }
-        await haravan.delayAPi();
+
+        let total_price = 0;
+        for (let i = 0; i < lineItems.length; i++) {
+          if (lineItems[i] && lineItems[i].price) {
+            total_price += lineItems[i].price;
+            break;
+          }
+        }
+        if (!total_price) {
+          dataCreate.order.financial_status = 'paid';
+        }
+
+        await haravan.delayAPi(1500);
         await haravan.callApi({
           entity: haravan.ENTITY_ORDER,
           action: haravan.CREATE_ORDER,

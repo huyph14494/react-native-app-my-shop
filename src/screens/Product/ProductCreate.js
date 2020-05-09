@@ -269,7 +269,7 @@ const ProductCreate = ({route, navigation}) => {
       try {
         let dataCreate = compareProduct(proGeneral, proVariant);
         dataCreate = {product: dataCreate};
-        await haravan.delayAPi();
+        await haravan.delayAPi(1500);
         await haravan.callApi({
           entity: haravan.ENTITY_PRODUCT,
           action: haravan.CREATE_PRODUCT,

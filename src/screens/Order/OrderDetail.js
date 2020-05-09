@@ -315,6 +315,7 @@ const OrderDetail = ({route, navigation}) => {
                   },
                 });
               } else if (fieldChange.financial_status) {
+                orderOld.financial_status = 'paid';
                 await callApiUpdateOrder({
                   action: haravan.UPDATE_ORDER_PAID,
                   id: orderData.id,
@@ -329,6 +330,7 @@ const OrderDetail = ({route, navigation}) => {
                 fieldChange.fulfillment_status &&
                 orderData.fulfillment_status
               ) {
+                orderOld.fulfillment_status = 'fulfilled';
                 await callApiUpdateOrder({
                   action: haravan.UPDATE_ORDER_FULFILLED,
                   id: orderData.id,
