@@ -19,19 +19,19 @@ import {haravan} from '../../apis/haravan/haravan.js';
 import {removeData} from '../../helpers/async_storage.js';
 import {createUUID} from '../../helpers/moment.js';
 
-// const leftComponent = navigation => {
-//   return (
-//     <View>
-//           <IconBack
-//       navigation={navigation}
-//       screenNext={'ProductHome'}
-//       screenCurrent={'ProductCreate'}
-//     />
-//     </View>
-//   );
-// };
+const leftComponent = navigation => {
+  return (
+    <View>
+      <IconBack
+        navigation={navigation}
+        screenNext={'ProductHome'}
+        screenCurrent={'ProductCreate'}
+      />
+    </View>
+  );
+};
 
-const leftComponent = onAction => {
+const rightComponent = onAction => {
   return (
     <View>
       <TouchableOpacity
@@ -300,7 +300,8 @@ const ProductCreate = ({route, navigation}) => {
       <View>
         <Header
           name={route.name}
-          leftComponent={leftComponent(createProduct)}
+          leftComponent={leftComponent(navigation)}
+          rightComponent={rightComponent(createProduct)}
         />
 
         <ScrollView
@@ -345,9 +346,7 @@ const ProductCreate = ({route, navigation}) => {
                     setProGeneral({...proGeneral, title: text});
                   }}
                 />
-                <Text style={[common.marginTop(10)]}>
-                  Description:
-                </Text>
+                <Text style={[common.marginTop(10)]}>Description:</Text>
                 <TextInput
                   style={[common.textInputNoBorder]}
                   multiline

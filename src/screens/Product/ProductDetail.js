@@ -19,26 +19,9 @@ import {haravan} from '../../apis/haravan/haravan.js';
 import {removeData} from '../../helpers/async_storage.js';
 import {createUUID} from '../../helpers/moment.js';
 
-// const leftComponent = navigation => {
-//   return (
-//     <View>
-//       <IconBack
-//         navigation={navigation}
-//         screenNext={'ProductList'}
-//         screenCurrent={'ProductDetail'}
-//       />
-//     </View>
-//   );
-// };
-
-const leftComponent = (navigation, onAction) => {
+const rightComponent = onAction => {
   return (
     <View>
-      <IconBack
-        navigation={navigation}
-        screenNext={'ProductList'}
-        screenCurrent={'ProductDetail'}
-      />
       <TouchableOpacity
         style={[common.padding(8, 18)]}
         onPress={() => {
@@ -46,6 +29,18 @@ const leftComponent = (navigation, onAction) => {
         }}>
         <Icon color="white" name="check" size={22} />
       </TouchableOpacity>
+    </View>
+  );
+};
+
+const leftComponent = navigation => {
+  return (
+    <View>
+      <IconBack
+        navigation={navigation}
+        screenNext={'ProductList'}
+        screenCurrent={'ProductDetail'}
+      />
     </View>
   );
 };
@@ -362,7 +357,8 @@ const ProductDetail = ({route, navigation}) => {
       <View>
         <Header
           name={route.name}
-          leftComponent={leftComponent(navigation, updateProduct)}
+          leftComponent={leftComponent(navigation)}
+          rightComponent={rightComponent(updateProduct)}
         />
 
         <ScrollView

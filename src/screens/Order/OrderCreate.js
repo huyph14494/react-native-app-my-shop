@@ -28,17 +28,19 @@ let dataTmp = {
   type: 1,
 };
 
-// const leftComponent = navigation => {
-//   return (
-//     <IconBack
-//       navigation={navigation}
-//       screenNext={'OrderHome'}
-//       screenCurrent={'OrderCreate'}
-//     />
-//   );
-// };
+const leftComponent = navigation => {
+  return (
+    <View>
+      <IconBack
+        navigation={navigation}
+        screenNext={'OrderHome'}
+        screenCurrent={'OrderCreate'}
+      />
+    </View>
+  );
+};
 
-const leftComponent = onAction => {
+const rightComponent = onAction => {
   return (
     <View>
       <TouchableOpacity
@@ -467,7 +469,11 @@ const OrderCreate = ({route, navigation}) => {
   } else {
     return (
       <View>
-        <Header name={route.name} leftComponent={leftComponent(createOrder)} />
+        <Header
+          name={route.name}
+          leftComponent={leftComponent(navigation)}
+          rightComponent={rightComponent(createOrder)}
+        />
 
         <ScrollView
           showsVerticalScrollIndicator={false}

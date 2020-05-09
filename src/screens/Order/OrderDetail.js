@@ -17,17 +17,19 @@ import SplashScreen from '../SplashScreen/SplashScreen.js';
 import {removeData} from '../../helpers/async_storage.js';
 import {formatDateTime} from '../../helpers/moment.js';
 
-// const leftComponent = navigation => {
-//   return (
-// <IconBack
-//   navigation={navigation}
-//   screenNext={'OrderHome'}
-//   screenCurrent={'OrderCreate'}
-// />
-//   );
-// };
+const rightComponent = onAction => {
+  return (
+    <TouchableOpacity
+      style={[common.padding(8, 18)]}
+      onPress={() => {
+        onAction();
+      }}>
+      <Icon color="white" name="check" size={22} />
+    </TouchableOpacity>
+  );
+};
 
-const leftComponent = (navigation, onAction) => {
+const leftComponent = navigation => {
   return (
     <View>
       <IconBack
@@ -35,13 +37,6 @@ const leftComponent = (navigation, onAction) => {
         screenNext={'OrderHome'}
         screenCurrent={'OrderDetail'}
       />
-      <TouchableOpacity
-        style={[common.padding(8, 18)]}
-        onPress={() => {
-          onAction();
-        }}>
-        <Icon color="white" name="check" size={22} />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -375,13 +370,14 @@ const OrderDetail = ({route, navigation}) => {
       <View>
         <Header
           name={route.name}
-          leftComponent={leftComponent(navigation, () => {
+          rightComponent={rightComponent(() => {
             return setOrderData({
               ...orderData,
               isUpdate: true,
               isNextScreen: true,
             });
           })}
+          leftComponent={leftComponent(navigation)}
         />
 
         <ScrollView
