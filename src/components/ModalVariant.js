@@ -95,28 +95,28 @@ const ModalVariant = props => {
                     }),
                     common.padding(15, 15),
                   ]}>
+                  <Text style={[common.marginTop(10)]}>Title:</Text>
                   <TextInput
                     style={common.textInputNoBorder}
                     underlineColorAndroid={'rgba(0,0,0,.075)'}
-                    placeholder={'Title'}
                     value={variant.title || ''}
                     onChangeText={text => {
                       setVariant({...variant, title: text});
                     }}
                   />
+                  <Text style={[common.marginTop(10)]}>Sku:</Text>
                   <TextInput
-                    style={[common.textInputNoBorder, common.marginTop(15)]}
+                    style={[common.textInputNoBorder]}
                     underlineColorAndroid={'rgba(0,0,0,.075)'}
-                    placeholder={'Sku'}
                     value={variant.sku || ''}
                     onChangeText={text => {
                       setVariant({...variant, sku: text});
                     }}
                   />
+                  <Text style={[common.marginTop(10)]}>Price:</Text>
                   <TextInput
-                    style={[common.textInputNoBorder, common.marginTop(15)]}
+                    style={[common.textInputNoBorder]}
                     underlineColorAndroid={'rgba(0,0,0,.075)'}
-                    placeholder={'Price'}
                     value={variant.price ? String(variant.price) : ''}
                     onChangeText={text => {
                       setVariant({...variant, price: text});

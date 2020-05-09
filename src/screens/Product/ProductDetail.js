@@ -398,21 +398,21 @@ const ProductDetail = ({route, navigation}) => {
                   }),
                   common.padding(15, 15),
                 ]}>
+                <Text>Title:</Text>
                 <TextInput
                   style={common.textInputNoBorder}
                   underlineColorAndroid={'rgba(0,0,0,.075)'}
-                  placeholder={'Title'}
                   value={proGeneral.title}
                   onChangeText={text => {
                     setProGeneral({...proGeneral, title: text});
                   }}
                 />
+                <Text style={[common.marginTop(10)]}>Description:</Text>
                 <TextInput
-                  style={[common.textInputNoBorder, common.marginTop(15)]}
+                  style={[common.textInputNoBorder]}
                   multiline
                   numberOfLines={4}
                   underlineColorAndroid={'rgba(0,0,0,.075)'}
-                  placeholder={'Description'}
                   value={proGeneral.body_html}
                   onChangeText={text => {
                     setProGeneral({...proGeneral, body_html: text});
