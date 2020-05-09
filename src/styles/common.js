@@ -85,6 +85,15 @@ export default StyleSheet.create({
     }
     return styles;
   },
+  paddingTop(paddingTop) {
+    let styles = {};
+
+    if (paddingTop) {
+      styles.paddingTop = paddingTop;
+    }
+
+    return styles;
+  },
   margin(marginVertical, marginHorizontal) {
     let styles = {};
 
@@ -95,6 +104,15 @@ export default StyleSheet.create({
     if (marginHorizontal) {
       styles.marginHorizontal = marginHorizontal;
     }
+    return styles;
+  },
+  marginLeft(marginLeft) {
+    let styles = {};
+
+    if (marginLeft) {
+      styles.marginLeft = marginLeft;
+    }
+
     return styles;
   },
   marginTop(marginTop) {

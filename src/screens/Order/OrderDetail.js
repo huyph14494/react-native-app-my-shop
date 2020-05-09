@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {haravan} from '../../apis/haravan/haravan.js';
 import SplashScreen from '../SplashScreen/SplashScreen.js';
 import {removeData} from '../../helpers/async_storage.js';
+import {formatDateTime} from '../../helpers/moment.js';
 
 // const leftComponent = navigation => {
 //   return (
@@ -391,6 +392,59 @@ const OrderDetail = ({route, navigation}) => {
               common.container(1, 'column', {alignItems: 'center'}),
               common.marginBottom(15),
             ]}>
+            {/* ------------------------------------------------------ */}
+            <View
+              style={[common.groupWidth(1, 'column'), common.marginTop(15)]}>
+              <View
+                style={[
+                  common.container(1, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                  }),
+                  common.padding(15, 15),
+                  common.borderBottom('rgba(0,0,0,.075)', 1),
+                ]}>
+                <Text style={common.textHeader}>{orderData.order_number}</Text>
+              </View>
+              <View
+                style={[
+                  common.container(1, 'column', {
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                  }),
+                  common.padding(0, 25),
+                  common.paddingTop(10),
+                ]}>
+                <Text>Created at: {formatDateTime(orderData.created_at)}</Text>
+              </View>
+              <View
+                style={[
+                  common.container(1, 'row', {
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                  }),
+                  common.padding(12, 25),
+                ]}>
+                {orderData.financial_status === 'paid' ? (
+                  <Text style={[common.labelSuccess]}>
+                    {orderData.financial_status}
+                  </Text>
+                ) : (
+                  <Text style={[common.labelDanger]}>
+                    {orderData.financial_status}
+                  </Text>
+                )}
+                {orderData.fulfillment_status === 'fulfilled' ? (
+                  <Text style={[common.labelSuccess, common.marginLeft(15)]}>
+                    {orderData.fulfillment_status}
+                  </Text>
+                ) : (
+                  <Text style={[common.labelWarning, common.marginLeft(15)]}>
+                    {orderData.fulfillment_status}
+                  </Text>
+                )}
+              </View>
+            </View>
             {/* ------------------------------------------------------ */}
             <Items
               lineItems={orderData.line_items}
