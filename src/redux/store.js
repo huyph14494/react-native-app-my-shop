@@ -4,4 +4,8 @@ import {createStore, applyMiddleware} from 'redux';
 
 const store = createStore(reducer, applyMiddleware(thunk));
 
+store.subscribe(() => {
+  console.log('subscribe', store.getState());
+});
+
 export default store;

@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import loadingReducer from './loading.reducer';
+import userReducer from './user.reducer';
 
 const reducer = combineReducers({
-  loading: loadingReducer,
+  userInfo: userReducer,
 });
 
 export default reducer;
