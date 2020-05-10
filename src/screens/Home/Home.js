@@ -17,12 +17,12 @@ class Home extends Component {
       totalProducts: 0,
     };
     this._isMounted = false;
+    this._isFirstLoad = true;
   }
 
   fetchData = async whereFn => {
     try {
       let summaryData = await getData('@summary');
-      let dataUpdate = {};
       if (!summaryData) {
         summaryData = {
           totalOrders: 0,
@@ -52,19 +52,15 @@ class Home extends Component {
         }
 
         await storeData('@summary', summaryData);
-      } else {
-        dataUpdate = {
-          totalOrders: summaryData.totalOrders,
-          totalProducts: summaryData.totalProducts,
-        };
       }
 
       if (this._isMounted) {
         this.setState({
           isLoading: false,
-          totalOrders: dataUpdate.totalOrders,
-          totalProducts: dataUpdate.totalProducts,
+          totalOrders: summaryData.totalOrders,
+          totalProducts: summaryData.totalProducts,
         });
+        this._isFirstLoad = false;
       }
     } catch (error) {
       console.log(whereFn, error);
@@ -73,19 +69,26 @@ class Home extends Component {
 
   componentDidMount() {
     this._isMounted = true;
-    this.props.navigation.addListener('focus', e => {
-      if (this.state.isLoading) {
-        this.fetchData('Home componentDidMount fetchData');
-      } else {
-        this.setState({isLoading: true}, () => {
+
+    if (this._isFirstLoad) {
+      this.fetchData('Home componentDidMount fetchData');
+    }
+    this._unsubscribe = this.props.navigation.addListener('focus', e => {
+      if (!this._isFirstLoad) {
+        if (this.state.isLoading) {
           this.fetchData('Home componentDidMount fetchData');
-        });
+        } else {
+          this.setState({isLoading: true}, () => {
+            this.fetchData('Home componentDidMount fetchData');
+          });
+        }
       }
     });
   }
 
   componentWillUnmount() {
     this._isMounted = false;
+    this._unsubscribe();
   }
 
   render() {

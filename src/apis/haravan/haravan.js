@@ -66,14 +66,14 @@ const callApi = async ({entity, action, id, params, data, whereFn}) => {
     await delay(TIME_DELAY_API);
     let response = await INSTANCE(config);
     let now = new Date();
-    console.log(
-      'callApi',
-      entity + ' || ',
-      `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} || `,
-      'page: ' + (params?.page ?? 0) + ' || ',
-      'query: ' + (params?.query ?? 0) + ' || ',
-      whereFn,
-    );
+    // console.log(
+    //   'callApi',
+    //   entity + ' || ',
+    //   `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()} || `,
+    //   'page: ' + (params?.page ?? 0) + ' || ',
+    //   'query: ' + (params?.query ?? 0) + ' || ',
+    //   whereFn,
+    // );
     return response.data;
   } catch (error) {
     console.log(whereFn, error);
