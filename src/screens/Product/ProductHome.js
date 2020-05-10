@@ -78,7 +78,7 @@ const ProductHome = ({route, navigation}) => {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Text style={common.textHeader}>Add Products</Text>
+              <Text style={common.textHeader}>Create Product</Text>
             </View>
           </TouchableOpacity>
           {/* ------------------------------------------------------ */}

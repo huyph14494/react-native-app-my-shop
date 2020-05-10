@@ -6,6 +6,9 @@ import Header from '../../components/Header.js';
 import {formatDate} from '../../helpers/moment.js';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <View style={common.container(1, 'column', {alignItems: 'center'})}>
@@ -37,11 +40,11 @@ class Home extends Component {
                 <Text style={common.marginBottom(15)}>Orders</Text>
                 <Text>18</Text>
               </View>
-              <View
+              {/* <View
                 style={common.container(1, 'column', {alignItems: 'center'})}>
                 <Text style={common.marginBottom(15)}>Revenue</Text>
                 <Text>100$</Text>
-              </View>
+              </View> */}
             </View>
           </View>
           {/* ------------------------------------------------------------------------------ */}
@@ -53,7 +56,12 @@ class Home extends Component {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Button title="+ Create Product" type="outline" />
+              <Button
+                title="+ Create Product"
+                type="outline"
+                containerStyle={common.btnOutlineContainer}
+                onPress={() => this.props.navigation.navigate('Product')}
+              />
             </View>
             <View
               style={[
@@ -62,7 +70,12 @@ class Home extends Component {
                 }),
                 common.padding(15, 15),
               ]}>
-              <Button title="+ Create Order" type="outline" />
+              <Button
+                title="+ Create Order"
+                type="outline"
+                containerStyle={common.btnOutlineContainer}
+                onPress={() => this.props.navigation.navigate('Order')}
+              />
             </View>
           </View>
         </ScrollView>

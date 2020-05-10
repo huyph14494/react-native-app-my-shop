@@ -265,6 +265,10 @@ export default StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,.075)',
   },
+  btnOutlineContainer: {
+    borderWidth: 1.5,
+    borderColor: '#007bff',
+  },
   marginTopLogin: {
     marginTop: -(heightWindow * 0.15),
   },
