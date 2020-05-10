@@ -11,6 +11,19 @@ import {Provider, useSelector} from 'react-redux';
 import {Easing} from 'react-native';
 import LoginScreen from './User/LoginScreen.js';
 
+const config = {
+  animation: 'timing',
+  config: {
+    duration: 220,
+    easing: Easing.in(Easing.linear),
+  },
+};
+
+const transitionSpec = {
+  open: config,
+  close: config,
+};
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -35,40 +48,6 @@ function showTabScreens() {
   ));
 }
 
-const AuthNavigator = () => {
-  const config = {
-    animation: 'timing',
-    config: {
-      duration: 180,
-      easing: Easing.in(Easing.linear),
-    },
-  };
-
-  const transitionSpec = {
-    open: config,
-    close: config,
-  };
-
-  return (
-    <Stack.Navigator
-      initialRouteName="LoginScreen"
-      screenOptions={{
-        headerShown: false,
-        cardOverlayEnabled: true,
-        gestureEnabled: false,
-        gestureDirection: 'horizontal',
-      }}>
-      <Stack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        options={{
-          transitionSpec,
-        }}
-      />
-    </Stack.Navigator>
-  );
-};
-
 const AppNavigator = () => {
   return (
     <Tab.Navigator
@@ -91,8 +70,34 @@ const NavigationMain = () => {
 
   return (
     <NavigationContainer>
-      {userInfo.login_status && <AppNavigator />}
-      {!userInfo.login_status && <AuthNavigator />}
+      {/* {userInfo.login_status && <AppNavigator />}
+      {!userInfo.login_status && <AuthNavigator />} */}
+
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          cardOverlayEnabled: true,
+          gestureEnabled: false,
+          gestureDirection: 'horizontal',
+        }}>
+        {!userInfo.login_status ? (
+          <Stack.Screen
+            name="Auth"
+            component={LoginScreen}
+            options={{
+              transitionSpec,
+            }}
+          />
+        ) : (
+          <Stack.Screen
+            name="App"
+            component={AppNavigator}
+            options={{
+              transitionSpec,
+            }}
+          />
+        )}
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
