@@ -65,7 +65,7 @@ const callApi = async ({entity, action, id, params, data, whereFn}) => {
     // console.log(data);
     await delay(TIME_DELAY_API);
     let response = await INSTANCE(config);
-    let now = new Date();
+    // let now = new Date();
     // console.log(
     //   'callApi',
     //   entity + ' || ',

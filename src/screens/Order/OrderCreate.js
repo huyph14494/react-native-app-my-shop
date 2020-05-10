@@ -404,7 +404,7 @@ const OrderCreate = ({route, navigation}) => {
       messError.push('You have to choose the product!!!');
     }
 
-    messError = messError.join(' \n ');
+    messError = messError.join(' \n');
     if (messError) {
       Alert.alert('Warning', messError, [{text: 'Yes'}], {cancelable: true});
     } else {

@@ -466,4 +466,35 @@ export default StyleSheet.create({
     borderBottomRightRadius: 5,
     borderTopRightRadius: 5,
   },
+  notificationView: {
+    position: 'absolute',
+    zIndex: 2,
+    top: 10,
+    opacity: 0.98,
+  },
+  notificationText: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: 'black',
+  },
+  notification: {
+    backgroundColor: '#efeff4',
+    width: widthWindow - 10,
+    height: headerHeight + 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: 'rgba(0,0,0,.075)',
+    borderWidth: 1,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.51,
+    shadowRadius: 13.16,
+
+    elevation: 20,
+  },
 });

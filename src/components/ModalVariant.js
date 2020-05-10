@@ -28,7 +28,7 @@ const validateData = variant => {
     }
   }
 
-  messError = messError.join(' \n ');
+  messError = messError.join(' \n');
   if (messError) {
     Alert.alert(
       //title

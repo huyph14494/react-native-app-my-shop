@@ -248,7 +248,7 @@ const ProductCreate = ({route, navigation}) => {
       messError.push('You have to create variant!!!');
     }
 
-    messError = messError.join(' \n ');
+    messError = messError.join(' \n');
     if (messError) {
       Alert.alert(
         //title

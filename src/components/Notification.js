@@ -1,21 +1,30 @@
 import React, {useRef} from 'react';
 import {Animated, Text, View} from 'react-native';
-// import {Easing} from 'react-native';
-// Animated.timing(this.state.xPosition, {
-//   toValue: 100,
-//   easing: Easing.back(),
-//   duration: 2000
-// }).start();
+import common from '../styles/common';
+import {Easing} from 'react-native';
 
 const Notification = props => {
-  const valueY = useRef(new Animated.Value(-100)).current; // Initial value for opacity: 0
+  const valueY = useRef(new Animated.Value(-100)).current; // Initial value for translateY: -100
+  const opacity = useRef(new Animated.Value(0.98)).current; // Initial value for opacity: 0
 
   React.useEffect(() => {
-    Animated.timing(valueY, {
-      toValue: 0,
-      duration: 2000,
-      useNativeDriver: true,
-    }).start();
+    Animated.sequence([
+      Animated.timing(valueY, {
+        toValue: 0,
+        duration: 1150,
+        easing: Easing.bounce,
+        useNativeDriver: true,
+      }),
+      Animated.delay(2000),
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 1000,
+        easing: Easing.ease,
+        useNativeDriver: true,
+      }),
+    ]).start(); // start the sequence group
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [valueY]);
 
   return (
@@ -23,6 +32,7 @@ const Notification = props => {
       style={{
         ...props.style,
         transform: [{translateY: valueY}], // Bind opacity to animated value
+        opacity,
       }}>
       {props.children}
     </Animated.View>
@@ -32,22 +42,10 @@ const Notification = props => {
 // You can then use your `FadeInView` in place of a `View` in your components:
 export default () => {
   return (
-    <View
-      style={{
-        position: 'absolute',
-        zIndex: 2,
-        top: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-      <Notification
-        style={{
-          backgroundColor: 'powderblue',
-          width: 250,
-          height: 50,
-        }}>
-        <Text style={{fontSize: 28, textAlign: 'center', margin: 10}}>
-          Fading in
+    <View style={common.notificationView}>
+      <Notification style={common.notification}>
+        <Text style={common.notificationText}>
+          You have successfully created an order
         </Text>
       </Notification>
     </View>

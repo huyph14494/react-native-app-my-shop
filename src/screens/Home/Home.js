@@ -7,6 +7,7 @@ import {formatDate} from '../../helpers/moment.js';
 import {haravan} from '../../apis/haravan/haravan.js';
 import {getData, storeData} from '../../helpers/async_storage.js';
 import SplashScreen from '../SplashScreen/SplashScreen.js';
+import Notification from '../../components/Notification.js';
 
 class Home extends Component {
   constructor(props) {
@@ -98,6 +99,7 @@ class Home extends Component {
       return (
         <View style={common.container(1, 'column', {alignItems: 'center'})}>
           <Header name={this.props.route.name} />
+          <Notification />
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <View
