@@ -277,6 +277,7 @@ const ProductCreate = ({route, navigation}) => {
           whereFn: 'ProductCreate createProductApi',
         });
         await removeData('@products');
+        await removeData('@summary');
       } catch (error) {
         console.log('ProductCreate createProductApi:', error);
       }

@@ -448,6 +448,7 @@ const OrderCreate = ({route, navigation}) => {
           whereFn: 'OrderCreate createOrderApi',
         });
         await removeData('@orders');
+        await removeData('@summary');
       } catch (error) {
         console.log('OrderCreate createOrderApi:', error);
       }

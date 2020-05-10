@@ -7,7 +7,7 @@ const BASE_URL = 'https://apis.haravan.com/com';
 const ENTITY_PRODUCT = 'PRODUCT';
 const ENTITY_ORDER = 'ORDER';
 const TIME_OUT = 2000;
-const TIME_CACHE_API = 5 * 60000;
+const TIME_CACHE_API = 10 * 60000;
 const TIME_DELAY_API = 600;
 const LIMIT_LIST = 10;
 
