@@ -6,10 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MyNotification from '../../components/MyNotification.js';
 
 const OrderHome = ({route, navigation}) => {
+  let message = route.params?.data?.message ?? '';
+
   return (
     <View>
+      <MyNotification message={message} />
       <Header name={route.name} />
-      <MyNotification />
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View

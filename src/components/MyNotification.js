@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Animated, Text, View} from 'react-native';
 import common from '../styles/common';
 import {Easing} from 'react-native';
@@ -22,10 +22,12 @@ const MyNotification = props => {
         easing: Easing.ease,
         useNativeDriver: true,
       }),
-    ]).start(); // start the sequence group
+    ]).start(() => {
+      props.setIsShow(false);
+    }); // start the sequence group
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [valueY]);
+  }, []);
 
   return (
     <Animated.View // Special animatable View
@@ -40,14 +42,22 @@ const MyNotification = props => {
 };
 
 // You can then use your `FadeInView` in place of a `View` in your components:
-export default () => {
+export default ({message}) => {
+  const [_isShow, setIsShow] = useState(false);
+  React.useEffect(() => {
+    if (message && String(message).trim() !== '') {
+      setIsShow(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
+
   return (
     <View style={common.notificationView}>
-      <MyNotification style={common.notification}>
-        <Text style={common.notificationText}>
-          You have successfully created an order
-        </Text>
-      </MyNotification>
+      {_isShow && (
+        <MyNotification style={common.notification} setIsShow={setIsShow}>
+          <Text style={common.notificationText}>{message}</Text>
+        </MyNotification>
+      )}
     </View>
   );
 };

@@ -51,7 +51,7 @@ function showTabScreens() {
 const AppNavigator = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Order"
       backBehavior="order"
       screenOptions={({route}) => ({
         tabBarVisible: getIsTabBarVisible(route),

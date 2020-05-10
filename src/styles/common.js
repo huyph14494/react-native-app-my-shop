@@ -471,6 +471,7 @@ export default StyleSheet.create({
     zIndex: 2,
     top: 10,
     opacity: 0.98,
+    marginHorizontal: 5,
   },
   notificationText: {
     fontSize: 18,

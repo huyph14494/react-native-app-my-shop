@@ -3,10 +3,14 @@ import {View, Text, TouchableOpacity, ScrollView} from 'react-native';
 import common from '../../styles/common.js';
 import Header from '../../components/Header.js';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MyNotification from '../../components/MyNotification.js';
 
 const ProductHome = ({route, navigation}) => {
+  let message = route.params?.data?.message ?? '';
+
   return (
     <View>
+      <MyNotification message={message} />
       <Header name={route.name} />
 
       <ScrollView showsVerticalScrollIndicator={false}>

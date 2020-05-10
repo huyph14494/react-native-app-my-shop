@@ -414,6 +414,7 @@ const OrderCreate = ({route, navigation}) => {
 
   useEffect(() => {
     let createOrderApi = async () => {
+      let orderNew = null;
       try {
         let dataCreate = {
           order: {
@@ -441,7 +442,7 @@ const OrderCreate = ({route, navigation}) => {
         }
 
         await haravan.delayAPi(1500);
-        await haravan.callApi({
+        orderNew = await haravan.callApi({
           entity: haravan.ENTITY_ORDER,
           action: haravan.CREATE_ORDER,
           data: dataCreate,
@@ -455,7 +456,13 @@ const OrderCreate = ({route, navigation}) => {
 
       navigation.navigate('OrderHome', {
         screen: 'OrderCreate',
-        data: null,
+        data: {
+          message: `${
+            orderNew && orderNew.order && orderNew.order.order_number
+              ? orderNew.order.order_number
+              : 'The'
+          } order has been created successfully`,
+        },
       });
     };
 

@@ -284,7 +284,11 @@ const ProductCreate = ({route, navigation}) => {
 
       navigation.navigate('ProductHome', {
         screen: 'ProductCreate',
-        data: null,
+        data: {
+          message: `${
+            proGeneral && proGeneral.title ? proGeneral.title : 'The'
+          } product has been created successfully`,
+        },
       });
     };
 
