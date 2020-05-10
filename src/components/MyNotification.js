@@ -3,7 +3,7 @@ import {Animated, Text, View} from 'react-native';
 import common from '../styles/common';
 import {Easing} from 'react-native';
 
-const Notification = props => {
+const MyNotification = props => {
   const valueY = useRef(new Animated.Value(-100)).current; // Initial value for translateY: -100
   const opacity = useRef(new Animated.Value(0.98)).current; // Initial value for opacity: 0
 
@@ -43,11 +43,11 @@ const Notification = props => {
 export default () => {
   return (
     <View style={common.notificationView}>
-      <Notification style={common.notification}>
+      <MyNotification style={common.notification}>
         <Text style={common.notificationText}>
           You have successfully created an order
         </Text>
-      </Notification>
+      </MyNotification>
     </View>
   );
 };

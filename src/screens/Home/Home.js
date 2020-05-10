@@ -7,7 +7,6 @@ import {formatDate} from '../../helpers/moment.js';
 import {haravan} from '../../apis/haravan/haravan.js';
 import {getData, storeData} from '../../helpers/async_storage.js';
 import SplashScreen from '../SplashScreen/SplashScreen.js';
-import Notification from '../../components/Notification.js';
 
 class Home extends Component {
   constructor(props) {
@@ -21,9 +20,16 @@ class Home extends Component {
     this._isFirstLoad = true;
   }
 
-  fetchData = async whereFn => {
+  fetchData = async (whereFn, _isGetData = true, summaryDataExist = null) => {
     try {
-      let summaryData = await getData('@summary');
+      let summaryData = null;
+
+      if (_isGetData) {
+        summaryData = await getData('@summary');
+      } else {
+        summaryData = summaryDataExist;
+      }
+
       if (!summaryData) {
         summaryData = {
           totalOrders: 0,
@@ -74,14 +80,31 @@ class Home extends Component {
     if (this._isFirstLoad) {
       this.fetchData('Home componentDidMount fetchData');
     }
-    this._unsubscribe = this.props.navigation.addListener('focus', e => {
+    this._unsubscribe = this.props.navigation.addListener('focus', async e => {
       if (!this._isFirstLoad) {
-        if (this.state.isLoading) {
-          this.fetchData('Home componentDidMount fetchData');
+        let summaryData = await getData('@summary');
+        if (
+          summaryData &&
+          summaryData.totalOrders === this.state.totalOrders &&
+          summaryData.totalProducts === this.state.totalProducts
+        ) {
+          // nothing
         } else {
-          this.setState({isLoading: true}, () => {
-            this.fetchData('Home componentDidMount fetchData');
-          });
+          if (this.state.isLoading) {
+            this.fetchData(
+              'Home componentDidMount fetchData',
+              false,
+              summaryData,
+            );
+          } else {
+            this.setState({isLoading: true}, () => {
+              this.fetchData(
+                'Home componentDidMount fetchData',
+                false,
+                summaryData,
+              );
+            });
+          }
         }
       }
     });
@@ -99,7 +122,6 @@ class Home extends Component {
       return (
         <View style={common.container(1, 'column', {alignItems: 'center'})}>
           <Header name={this.props.route.name} />
-          <Notification />
 
           <ScrollView showsVerticalScrollIndicator={false}>
             <View
