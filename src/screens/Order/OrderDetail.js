@@ -347,7 +347,13 @@ const OrderDetail = ({route, navigation}) => {
           if (orderData.isNextScreen) {
             navigation.navigate('OrderHome', {
               screen: 'OrderDetail',
-              data: null,
+              data: {
+                message: `${
+                  orderData && orderData.order_number
+                    ? orderData.order_number
+                    : 'The'
+                } order has been updated successfully`,
+              },
             });
           } else {
             setOrderData({
