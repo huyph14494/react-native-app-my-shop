@@ -343,7 +343,7 @@ const ProductDetail = ({route, navigation}) => {
         data: {
           message: `${
             proGeneral && proGeneral.title ? proGeneral.title : 'The'
-          } product has been created successfully`,
+          } product has been updated successfully`,
         },
       });
     };
